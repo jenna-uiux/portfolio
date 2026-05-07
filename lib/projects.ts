@@ -598,7 +598,7 @@ export const projects: CaseStudy[] = [
         id: "overview",
         title: "Overview",
         eyebrow: "Case-aware clarity, not generic legal advice",
-        body: "Strawberry Matcha is an AI agent for people filing their own marriage-based green card. The name maps to the domain: **strawberry** for marriage, **matcha** for the green card itself.\n\nMost guidance online is about immigration in general. The product goal here is the opposite — guidance about *your* case, grounded in the situation you actually have.",
+        body: "Strawberry Matcha is an AI agent for people filing their own marriage-based green card. Most guidance online is about immigration in general. The product goal here is the opposite. Guidance about **your** case, grounded in the situation you actually have.",
       },
       {
         id: "problem",

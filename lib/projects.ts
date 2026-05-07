@@ -624,7 +624,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "prose",
             body:
-              "That gap is what a lawyer fills. They look at your situation, decide what applies, and walk you through every form field knowing your facts.\n\nI wanted to see if an AI agent could do the same translation work.",
+              "That gap is what a lawyer fills. They look at your situation, decide what applies, and walk you through every form field knowing your facts.",
           },
         ],
       },

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import type { CaseStudy } from "@/lib/projects";
 import {
   ContentBlockRenderer,
@@ -46,8 +46,19 @@ export function CaseStudyLayout({ project }: Props) {
     return () => window.removeEventListener("scroll", onScroll);
   }, [sectionKey]);
 
+  const accentOverride: CSSProperties | undefined =
+    project.slug === "strawberry-matcha"
+      ? ({
+          "--accent": "#788449",
+          "--accent-orange": "#788449",
+          "--accent-soft": "rgba(120, 132, 73, 0.14)",
+          "--brown": "#788449",
+          "--eyebrow": "#788449",
+        } as CSSProperties)
+      : undefined;
+
   return (
-    <div className="pt-28 pb-24">
+    <div className="pt-28 pb-24" style={accentOverride}>
       <div className="container-ultra grid gap-12 md:grid-cols-12">
         <aside
           aria-label="Case study outline"

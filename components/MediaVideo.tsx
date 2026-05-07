@@ -4,6 +4,13 @@ import { useState } from "react";
 
 import type { ImageRatio } from "@/lib/projects";
 
+function resolveMediaUrl(url: string) {
+  const base = process.env.NEXT_PUBLIC_MEDIA_CDN_BASE;
+  if (!base) return url;
+  if (!url.startsWith("/media/")) return url;
+  return `${base.replace(/\/$/, "")}${url}`;
+}
+
 const ratioClass: Record<ImageRatio, string> = {
   "16/9": "aspect-[16/9]",
   "21/9": "aspect-[21/9]",
@@ -39,6 +46,8 @@ export function MediaVideo({
 }: Props) {
   const [errored, setErrored] = useState(false);
   const effectiveMuted = autoPlay ? true : (muted ?? false);
+  const resolvedSrc = resolveMediaUrl(src);
+  const resolvedPoster = poster ? resolveMediaUrl(poster) : undefined;
 
   return (
     <div
@@ -55,7 +64,7 @@ export function MediaVideo({
           <div className="absolute left-4 top-4 t-mono">Drop video here</div>
           <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
             <p className="max-w-[34ch] t-caption">{description}</p>
-            <p className="mt-3 max-w-[44ch] break-all t-mono">{src}</p>
+            <p className="mt-3 max-w-[44ch] break-all t-mono">{resolvedSrc}</p>
           </div>
         </>
       ) : (
@@ -64,8 +73,8 @@ export function MediaVideo({
             "absolute inset-0 h-full w-full",
             objectFit === "contain" ? "object-contain" : "object-cover",
           ].join(" ")}
-          src={src}
-          poster={poster}
+          src={resolvedSrc}
+          poster={resolvedPoster}
           controls={controls}
           playsInline
           preload={autoPlay ? "auto" : "metadata"}

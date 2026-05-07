@@ -189,6 +189,10 @@ export type CaseContentBlock =
       kind: "annotation";
       label: string;
       body: string;
+    }
+  | {
+      kind: "prose";
+      body: string;
     };
 
 export type CaseSection = {
@@ -618,9 +622,9 @@ export const projects: CaseStudy[] = [
               "Information about immigration is everywhere. What's missing is ==information about your case==.",
           },
           {
-            kind: "callout",
+            kind: "prose",
             body:
-              "That gap is what a lawyer fills. They look at your situation, decide what applies, and walk you through every form field knowing your facts. I wanted to see if an AI agent could do the same translation work.",
+              "That gap is what a lawyer fills. They look at your situation, decide what applies, and walk you through every form field knowing your facts.\n\nI wanted to see if an AI agent could do the same translation work.",
           },
         ],
       },

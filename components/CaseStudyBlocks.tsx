@@ -328,6 +328,21 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
     );
   }
 
+  if (block.kind === "prose") {
+    return (
+      <div className="w-full max-w-none prose-rhythm t-body">
+        {block.body
+          .split("\n\n")
+          .filter(Boolean)
+          .map((para, i) => (
+            <p key={i}>
+              <RichText text={para} />
+            </p>
+          ))}
+      </div>
+    );
+  }
+
   if (block.kind === "annotation") {
     return (
       <div className="flex flex-col gap-4 border-t hairline pt-8 md:flex-row md:items-start md:gap-10">

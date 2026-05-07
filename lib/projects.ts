@@ -781,19 +781,6 @@ export const projects: CaseStudy[] = [
             mediaType: "video",
             ratio: "16/9",
           },
-          {
-            kind: "subheading",
-            title: "Six agents, one product",
-            body: "The user never sees the agents. They see one coherent product. That coherence has to be designed.",
-          },
-        ],
-        bullets: [
-          "**01 — Intake & Risk Screener** · turns onboarding answers into a risk profile.",
-          "**02 — Case Strategist** · generates the dynamic document and milestone plan.",
-          "**03 — Form Preparation** · translates user data into form-ready field values.",
-          "**04 — Document Reviewer** · checks uploads against the user's case context.",
-          "**05 — RFE Response** · drafts replies when USCIS asks for more evidence.",
-          "**06 — Explain Agent** · powers the contextual Ask Strawberry Matcha layer.",
         ],
       },
       {

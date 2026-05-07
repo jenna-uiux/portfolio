@@ -652,8 +652,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             first: true,
-            kicker: "01",
-            title: "Ask Strawberry Matcha",
+            title: "1. Ask Strawberry Matcha",
             body: "Strawberry Matcha answers based on your actual case status and preparation progress, and updates your case as you chat. You can ask questions anytime to your personalized immigration AI assistant.",
           },
           {
@@ -665,8 +664,7 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
-            kicker: "02",
-            title: "Field Translator",
+            title: "2. Field Translator",
             body: "Upload your USCIS form PDF. The system reads the actual fields in your edition, cross-references your data, and tells you exactly what to enter.",
           },
           { kind: "fieldTranslator" },
@@ -679,8 +677,7 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
-            kicker: "03",
-            title: "Timeline Guidance",
+            title: "3. Timeline Guidance",
             body: "Each milestone shows where you are, what the step means, and what usually happens next — so the long wait stops feeling like a black box.",
           },
           {

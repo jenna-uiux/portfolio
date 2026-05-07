@@ -8,6 +8,7 @@ import type {
 import { AgenticConsole } from "./AgenticConsole";
 import { EdgeCaseExplorer } from "./EdgeCaseExplorer";
 import { FieldTranslatorDemo } from "./FieldTranslatorDemo";
+import { PivotComparison } from "./PivotComparison";
 import { ChallengeStoryBeats } from "./ChallengeStoryBeats";
 import { Chart } from "./FiniCharts";
 import { EnergyAdaptiveDemo } from "./EnergyAdaptiveDemo";
@@ -302,6 +303,10 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "fieldTranslator") {
     return <FieldTranslatorDemo />;
+  }
+
+  if (block.kind === "pivotComparison") {
+    return <PivotComparison items={block.items} />;
   }
 
   if (block.kind === "numberedList") {

@@ -194,7 +194,14 @@ export type CaseContentBlock =
       kind: "prose";
       body: string;
     }
-  | { kind: "fieldTranslator" };
+  | { kind: "fieldTranslator" }
+  | {
+      kind: "pivotComparison";
+      items: [
+        { label: string; title: string; body: string },
+        { label: string; title: string; body: string },
+      ];
+    };
 
 export type CaseSection = {
   id: string;
@@ -722,7 +729,7 @@ export const projects: CaseStudy[] = [
             body: "I researched how immigration attorneys actually handle marriage-based cases, then redesigned the system around that workflow.",
           },
           {
-            kind: "comparison",
+            kind: "pivotComparison",
             items: [
               {
                 label: "V1 problem",
@@ -737,7 +744,7 @@ export const projects: CaseStudy[] = [
             ],
           },
           {
-            kind: "comparison",
+            kind: "pivotComparison",
             items: [
               {
                 label: "V1 problem",

@@ -654,7 +654,7 @@ export const projects: CaseStudy[] = [
             first: true,
             kicker: "01",
             title: "Ask Strawberry Matcha",
-            body: "A contextual explain layer. Tap any document, field, or milestone to get an answer specific to your case — not a generic FAQ entry.",
+            body: "Strawberry Matcha answers based on your actual case status and preparation progress, and updates your case as you chat. You can ask questions anytime to your personalized immigration AI assistant.",
           },
           {
             kind: "mediaPlaceholder",

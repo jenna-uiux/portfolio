@@ -604,7 +604,7 @@ export const projects: CaseStudy[] = [
         id: "problem",
         title: "The Problem",
         eyebrow: "Filing alone is harder than it should be.",
-        body: "Applying for a marriage-based green card sounds simple. Fill out forms, upload documents, wait. The reality is messier.\n\nThe information exists, just scattered across USCIS pages, Reddit threads, and lawyer blogs from years ago. Forms keep changing editions, so guides that worked last year point to fields that no longer exist.",
+        body: "Applying for a marriage-based green card sounds simple. Fill out forms, upload documents, wait. The reality is messier. The information exists, just scattered across USCIS pages, Reddit threads, and lawyer blogs from years ago. Forms keep changing editions, so guides that worked last year point to fields that no longer exist.",
         contentBlocks: [
           {
             kind: "numberedList",

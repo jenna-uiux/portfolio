@@ -1,0 +1,176 @@
+.wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.wrap.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.helper {
+  position: absolute;
+  top: 7vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-sans), "Instrument Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(248, 241, 226, 0.5);
+  text-align: center;
+}
+
+.helper em {
+  font-style: italic;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(248, 241, 226, 0.7);
+}
+
+/* ─── Hotspot ─────────────────────────────────────────────────────── */
+
+.hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: #f8f1e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.6s cubic-bezier(0.22, 0.6, 0.18, 1);
+}
+
+.hotspot:focus-visible {
+  outline: 2px solid rgba(248, 241, 226, 0.7);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
+.hotspot:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* dot */
+.dot {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #f8f1e2;
+  filter: drop-shadow(0 0 8px rgba(255, 235, 200, 0.7))
+    drop-shadow(0 0 22px rgba(255, 200, 140, 0.45));
+}
+
+.dot::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: rgba(255, 235, 200, 0.6);
+  filter: blur(4px);
+  z-index: -1;
+}
+
+/* ripple ring */
+.ring {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid rgba(248, 241, 226, 0.55);
+  animation: ripple 3.6s cubic-bezier(0.22, 0.6, 0.18, 1) infinite;
+  pointer-events: none;
+}
+
+.ring2 {
+  animation-delay: 1.2s;
+  border-color: rgba(248, 241, 226, 0.4);
+}
+
+.ring3 {
+  animation-delay: 2.4s;
+  border-color: rgba(248, 241, 226, 0.25);
+}
+
+@keyframes ripple {
+  0% {
+    width: 11px;
+    height: 11px;
+    opacity: 0.85;
+  }
+  100% {
+    width: 86px;
+    height: 86px;
+    opacity: 0;
+  }
+}
+
+/* Hover title — sits below .labelAlways with ~4px clear gap */
+.label {
+  position: absolute;
+  /* ~10px below hotspot + tag line (~12–14px) + ~4px air */
+  top: calc(100% + 38px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform-origin: top center;
+}
+
+.hotspot:hover .label,
+.hotspot:focus-visible .label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(2px);
+}
+
+/* always-visible faint label, fades stronger on hover */
+.labelAlways {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-sans), "Instrument Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(248, 241, 226, 0.55);
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  transition: color 0.6s ease;
+}
+
+.hotspot:hover .labelAlways,
+.hotspot:focus-visible .labelAlways {
+  color: rgba(248, 241, 226, 0.95);
+}
+
+.tagBig {
+  margin-top: 0;
+  font-family: var(--font-sans), "Instrument Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(248, 241, 226, 0.85);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+}

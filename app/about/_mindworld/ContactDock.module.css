@@ -1,0 +1,54 @@
+.wrap {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(18px, 3vh, 28px);
+  transform: translateX(-50%);
+  z-index: 45;
+  display: flex;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  font-family: var(--font-sans), "Instrument Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(250, 250, 250, 0.9);
+  background: rgba(6, 10, 15, 0.38);
+  border: 1px solid rgba(250, 250, 250, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: rgba(6, 10, 15, 0.52);
+  border-color: rgba(250, 250, 250, 0.28);
+  color: #fafafa;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.icon {
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .wrap {
+    bottom: clamp(14px, 2.5vh, 22px);
+  }
+  .btn {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+}

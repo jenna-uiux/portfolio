@@ -1,0 +1,93 @@
+.list {
+  position: relative;
+  z-index: 12;
+  padding: clamp(96px, 14vh, 140px) 24px clamp(64px, 12vh, 96px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: #f4ecdb;
+  font-family: var(--font-sans), "Instrument Sans", sans-serif;
+  min-height: 100svh;
+}
+
+.heading {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(244, 236, 219, 0.55);
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+.card {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  border-radius: 22px;
+  overflow: hidden;
+  color: inherit;
+  font-family: inherit;
+}
+
+.thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-size: cover;
+  background-position: center;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 35%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+.cardBody {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 16px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #f4ecdb;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(244, 236, 219, 0.7);
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.desc {
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(244, 236, 219, 0.8);
+}

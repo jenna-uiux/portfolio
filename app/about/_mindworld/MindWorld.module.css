@@ -1,0 +1,449 @@
+/* ------------------------------------------------------------------ *
+ * Root container — full viewport, no scroll within experience.
+ * Footer still appears below because root is just min-height: 100svh.
+ * ------------------------------------------------------------------ */
+
+.root {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  background: #060a0f;
+  color: #eef2f6;
+  overflow: hidden;
+  isolation: isolate;
+  font-family: var(--font-sans), "Instrument Sans", sans-serif;
+  font-feature-settings: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+.root *::selection {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+/* ------------------------------------------------------------------ *
+ * World shell — fixed full-bleed ocean map and atmospheric layers.
+ * All layers are decorative (aria-hidden) and pointer-events: none.
+ * ------------------------------------------------------------------ */
+
+.world {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mapWrap {
+  position: absolute;
+  inset: 0;
+  /* sits behind dim overlay; the actual hero img lives here so we
+     can transform-origin the zoom from a hotspot's coordinates */
+  will-change: transform;
+  transform-origin: 50% 50%;
+}
+
+.map {
+  position: absolute;
+  /* slightly larger than viewport so cursor parallax has room */
+  inset: -6%;
+  background-image: url("/images/about/hero.png");
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Very soft tint — mostly transparent so the painted world stays vivid.
+   Top + bottom carry a faint vignette so nav and footer text stay legible. */
+.mapTint {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.16) 92%),
+    linear-gradient(
+      180deg,
+      rgba(6, 10, 15, 0.06) 0%,
+      rgba(6, 10, 15, 0.035) 12%,
+      rgba(6, 10, 15, 0.018) 24%,
+      rgba(6, 10, 15, 0.008) 34%,
+      rgba(6, 10, 15, 0) 44%,
+      rgba(6, 10, 15, 0) 76%,
+      rgba(6, 10, 15, 0.18) 100%
+    );
+  mix-blend-mode: multiply;
+  /* Slightly stronger than before so map labels read, still brighter than the original dark grade */
+  opacity: 0.92;
+}
+
+/* ----- Sea fog ----- */
+
+.fog {
+  position: absolute;
+  inset: -25%;
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  filter: blur(60px);
+  will-change: transform, opacity;
+}
+
+.fogBlob {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 248, 232, 0.85) 0%, rgba(255, 248, 232, 0) 65%);
+  will-change: transform, opacity;
+}
+
+.fogBlob1 {
+  width: 80vw;
+  height: 60vh;
+  top: 8%;
+  left: -15%;
+}
+
+.fogBlob2 {
+  width: 70vw;
+  height: 55vh;
+  bottom: 4%;
+  right: -12%;
+  background: radial-gradient(circle, rgba(220, 232, 240, 0.8) 0%, rgba(220, 232, 240, 0) 65%);
+}
+
+.fogBlob3 {
+  width: 55vw;
+  height: 45vh;
+  top: 38%;
+  left: 28%;
+  background: radial-gradient(circle, rgba(255, 232, 200, 0.7) 0%, rgba(255, 232, 200, 0) 70%);
+}
+
+/* ----- Drifting clouds + cast shadows (PNG-based) ----- */
+
+.cloudLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cloudGroup {
+  position: absolute;
+  left: 0;
+  width: clamp(360px, 34vw, 600px);
+  aspect-ratio: 1024 / 819;
+  will-change: transform;
+}
+
+.cloudImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* PNGs have black bg + white cloud — screen blend keeps only the bright wisps */
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  filter: blur(0.5px);
+}
+
+/* Cloud-shaped dark patch — same PNG as luminance mask.
+   Primland-style aerial: sun ~top-right → shadow sits slightly down-left of the
+   cloud (small offset), not a full “drop” far below the sprite. */
+.cloudShadow {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: rgba(0, 0, 0, 0.52);
+  mask-mode: luminance;
+  -webkit-mask-mode: luminance;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+  mask-position: center;
+  -webkit-mask-position: center;
+  filter: blur(12px);
+  /* % are of this element’s own box — keep offset modest like ~10–18% of cloud size */
+  transform: translate(-10%, 14%) scale(1.05, 0.58);
+  transform-origin: 62% 28%;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+.cloud1 {
+  top: 6%;
+  animation: cloudDriftRight 170s linear infinite;
+}
+
+.cloud2 {
+  top: 22%;
+  animation: cloudDriftLeft 220s linear infinite;
+  animation-delay: -110s;
+  width: clamp(320px, 30vw, 540px);
+  opacity: 0.95;
+}
+
+.cloud3 {
+  top: 40%;
+  animation: cloudDriftRight 195s linear infinite;
+  animation-delay: -140s;
+  width: clamp(300px, 28vw, 500px);
+  opacity: 0.85;
+}
+
+@keyframes cloudDriftRight {
+  from { transform: translate3d(-42vw, 0, 0); }
+  to   { transform: translate3d(142vw, 0, 0); }
+}
+
+@keyframes cloudDriftLeft {
+  from { transform: translate3d(142vw, 0, 0); }
+  to   { transform: translate3d(-42vw, 0, 0); }
+}
+
+/* ----- Water shimmer ----- */
+
+.shimmer {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  background-image:
+    radial-gradient(circle at 20% 35%, rgba(255, 255, 255, 0.95) 0.7px, transparent 1.4px),
+    radial-gradient(circle at 65% 70%, rgba(255, 255, 255, 0.8) 0.6px, transparent 1.3px),
+    radial-gradient(circle at 80% 22%, rgba(255, 255, 255, 0.8) 0.6px, transparent 1.3px);
+  background-size: 220px 220px, 280px 280px, 340px 340px;
+  will-change: background-position;
+}
+
+/* ----- Particles ----- */
+
+.particles {
+  position: absolute;
+  inset: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(255, 248, 232, 0.7);
+  filter: blur(0.4px);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* ----- Vignette: long, soft top fade (no hard “seam” under the nav) ----- */
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6, 10, 15, 0.48) 0%,
+      rgba(6, 10, 15, 0.36) 4%,
+      rgba(6, 10, 15, 0.26) 9%,
+      rgba(6, 10, 15, 0.17) 15%,
+      rgba(6, 10, 15, 0.1) 21%,
+      rgba(6, 10, 15, 0.055) 27%,
+      rgba(6, 10, 15, 0.028) 33%,
+      rgba(6, 10, 15, 0.012) 39%,
+      rgba(6, 10, 15, 0) 46%,
+      rgba(6, 10, 15, 0) 78%,
+      rgba(6, 10, 15, 0.2) 100%
+    ),
+    radial-gradient(
+      ellipse 120% 85% at 50% 48%,
+      rgba(0, 0, 0, 0) 52%,
+      rgba(0, 0, 0, 0.28) 100%
+    );
+}
+
+/* ------------------------------------------------------------------ *
+ * Dark overlay used during zoom transition.
+ * ------------------------------------------------------------------ */
+
+.dim {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ *
+ * Map intro hint — brief dark scrim + helper text shown the first
+ * time the user reaches the map. Pointer-events stay disabled so
+ * hotspots remain immediately interactive.
+ * ------------------------------------------------------------------ */
+
+.mapIntro {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(24px, 5vw, 56px);
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  color: rgba(248, 241, 226, 0.92);
+  font-family: var(--font-sans), "Instrument Sans", sans-serif;
+}
+
+.mapIntroVisible {
+  opacity: 1;
+}
+
+.mapIntroInner {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transform: translateY(8px);
+  transition: transform 0.9s ease;
+}
+
+.mapIntroVisible .mapIntroInner {
+  transform: translateY(0);
+}
+
+.mapIntroTitle {
+  margin: 0;
+  font-size: clamp(18px, 2.1vw, 26px);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #f8f1e2;
+  opacity: 0.85;
+}
+
+/* ── Tap demo: hotspot dot + ripples + tapping hand ─────────────────── */
+
+.tapDemo {
+  position: relative;
+  width: 104px;
+  height: 104px;
+  margin-top: clamp(10px, 1.6vw, 16px);
+  color: rgba(248, 241, 226, 0.92);
+}
+
+.mapIntroHint {
+  margin: 6px 0 0;
+  max-width: 48ch;
+  font-size: clamp(13px, 1.05vw, 15px);
+  font-weight: 300;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: rgba(248, 241, 226, 0.68);
+  opacity: 0.9;
+}
+
+.tapDot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f8f1e2;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 8px rgba(255, 235, 200, 0.7))
+    drop-shadow(0 0 22px rgba(255, 200, 140, 0.45));
+}
+
+.tapRing {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(248, 241, 226, 0.6);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: tapRipple 1.8s cubic-bezier(0.22, 0.6, 0.18, 1) infinite;
+}
+
+.tapRing2 {
+  animation-delay: 0.9s;
+  border-color: rgba(248, 241, 226, 0.4);
+}
+
+@keyframes tapRipple {
+  0% {
+    width: 10px;
+    height: 10px;
+    opacity: 0.85;
+  }
+  100% {
+    width: 64px;
+    height: 64px;
+    opacity: 0;
+  }
+}
+
+.tapHand {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 32px;
+  height: 32px;
+  /* Sit slightly to the lower-right of the dot, like a cursor about to click */
+  transform: translate(-6%, 6%);
+  transform-origin: 50% 0%;
+  animation: tapHand 1.8s cubic-bezier(0.22, 0.6, 0.18, 1) infinite;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+}
+
+@keyframes tapHand {
+  0%,
+  100% {
+    transform: translate(-6%, 6%) scale(1);
+  }
+  35% {
+    transform: translate(-6%, 14%) scale(0.94);
+  }
+  55% {
+    transform: translate(-6%, 14%) scale(0.94);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapIntro,
+  .mapIntroInner {
+    transition: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Content layer — sits above the world shell.
+ * ------------------------------------------------------------------ */
+
+.content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  min-height: 100svh;
+}
+
+/* Reduced motion: still readable, just static */
+@media (prefers-reduced-motion: reduce) {
+  .fogBlob,
+  .cloudGroup,
+  .shimmer,
+  .particle,
+  .map {
+    animation: none !important;
+    transition: none !important;
+  }
+}

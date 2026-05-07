@@ -75,7 +75,7 @@ export function Hero({ visible, onExplore }: Props) {
         </p>
 
         <h1 ref={setItem as never} className={s.headline}>
-          I'm an AI Product Designer.
+          I&apos;m an AI Product Designer.
         </h1>
 
         <p ref={setItem as never} className={s.subcopy}>

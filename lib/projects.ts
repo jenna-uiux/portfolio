@@ -179,7 +179,17 @@ export type CaseContentBlock =
       alt: string;
       objectFit?: "cover" | "contain";
     }
-  | { kind: "edgeCaseExplorer" };
+  | { kind: "edgeCaseExplorer" }
+  | {
+      kind: "numberedList";
+      items: string[];
+      intro?: string;
+    }
+  | {
+      kind: "annotation";
+      label: string;
+      body: string;
+    };
 
 export type CaseSection = {
   id: string;
@@ -590,22 +600,29 @@ export const projects: CaseStudy[] = [
         id: "problem",
         title: "The Problem",
         eyebrow: "Filing alone is harder than it should be.",
-        body: "Applying for a marriage-based green card sounds simple. Fill out forms, upload documents, wait. The reality is messier.\n\nThe information exists, just scattered across USCIS pages, Reddit threads, and lawyer blogs from years ago. Forms keep changing editions, so guides that worked last year point to fields that no longer exist.\n\nThree questions keep coming back:",
-        bullets: [
-          "**What does my case actually need?**",
-          "**How do I fill this field on this version of the form?**",
-          "**Did I miss something important?**",
-        ],
+        body: "Applying for a marriage-based green card sounds simple. Fill out forms, upload documents, wait. The reality is messier.\n\nThe information exists, just scattered across USCIS pages, Reddit threads, and lawyer blogs from years ago. Forms keep changing editions, so guides that worked last year point to fields that no longer exist.",
         contentBlocks: [
           {
-            kind: "callout",
-            title: "Insight",
+            kind: "numberedList",
+            intro: "Three questions keep coming back:",
+            items: [
+              "What does my case actually need?",
+              "How do I fill this field on this version of the form?",
+              "Did I miss something important?",
+            ],
+          },
+          {
+            kind: "annotation",
+            label: "Insight",
             body:
-              "Information about immigration is everywhere. What's missing is **information about your case**.",
+              "Information about immigration is everywhere. What's missing is ==information about your case==.",
+          },
+          {
+            kind: "callout",
+            body:
+              "That gap is what a lawyer fills. They look at your situation, decide what applies, and walk you through every form field knowing your facts. I wanted to see if an AI agent could do the same translation work.",
           },
         ],
-        pull:
-          "That gap is what a lawyer fills. I wanted to see if an AI agent could do the same translation work.",
       },
       {
         id: "solution",

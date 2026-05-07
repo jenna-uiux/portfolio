@@ -22,7 +22,7 @@ type RichTextProps = {
   text: string;
 };
 
-const RICH_TEXT_TOKEN = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g;
+const RICH_TEXT_TOKEN = /(\*\*[^*]+\*\*|==[^=]+==|\[[^\]]+\]\([^)]+\))/g;
 
 export function RichText({ text }: RichTextProps) {
   const parts = text.split(RICH_TEXT_TOKEN).filter((p) => p.length > 0);
@@ -35,6 +35,21 @@ export function RichText({ text }: RichTextProps) {
             <strong key={i} className="font-medium text-ink">
               {part.slice(2, -2)}
             </strong>
+          );
+        }
+        if (part.startsWith("==") && part.endsWith("==")) {
+          return (
+            <mark
+              key={i}
+              className="bg-transparent font-medium text-ink"
+              style={{
+                backgroundImage:
+                  "linear-gradient(transparent 60%, var(--accent-soft) 60%)",
+                padding: "0 2px",
+              }}
+            >
+              {part.slice(2, -2)}
+            </mark>
           );
         }
         const linkMatch = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(part);
@@ -282,6 +297,46 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "edgeCaseExplorer") {
     return <EdgeCaseExplorer />;
+  }
+
+  if (block.kind === "numberedList") {
+    return (
+      <div>
+        {block.intro ? (
+          <p className="t-body">
+            <RichText text={block.intro} />
+          </p>
+        ) : null}
+        <ol
+          className={[
+            "w-full max-w-none divide-y hairline border-y hairline",
+            block.intro ? "mt-5" : "",
+          ].join(" ")}
+        >
+          {block.items.map((item, i) => (
+            <li key={i} className="flex items-baseline gap-6 py-4">
+              <span className="t-mono shrink-0 tabular-nums">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="t-h4 font-normal text-ink">
+                <RichText text={item} />
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    );
+  }
+
+  if (block.kind === "annotation") {
+    return (
+      <div className="flex flex-col gap-4 border-t hairline pt-8 md:flex-row md:items-start md:gap-10">
+        <p className="t-eyebrow shrink-0 md:pt-3 md:w-[120px]">{block.label}</p>
+        <p className="max-w-[34ch] text-[clamp(1.35rem,2.4vw,1.75rem)] font-light leading-[1.35] tracking-[-0.015em] text-ink">
+          <RichText text={block.body} />
+        </p>
+      </div>
+    );
   }
 
   if (block.kind === "image") {

@@ -193,7 +193,8 @@ export type CaseContentBlock =
   | {
       kind: "prose";
       body: string;
-    };
+    }
+  | { kind: "fieldTranslator" };
 
 export type CaseSection = {
   id: string;
@@ -668,21 +669,7 @@ export const projects: CaseStudy[] = [
             title: "Field Translator",
             body: "Upload your USCIS form PDF. The system reads the actual fields in your edition, cross-references your data, and tells you exactly what to enter.",
           },
-          {
-            kind: "comparison",
-            items: [
-              {
-                label: "User input",
-                title: "서울특별시 강남구 테헤란로 123 101동 202호",
-                body: "Free-form Korean address as the applicant naturally writes it.",
-              },
-              {
-                label: "USCIS form output",
-                title: "Structured form fields",
-                body: "Street Number: **123**\n\nStreet Name: **Teheran-ro**\n\nApt/Unit: **Dong 101, Ho 202**\n\nCity: **Gangnam-gu**\n\nState: **Seoul**",
-              },
-            ],
-          },
+          { kind: "fieldTranslator" },
           {
             kind: "mediaPlaceholder",
             filename: "feature_field-translator.mp4",

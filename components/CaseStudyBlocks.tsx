@@ -7,6 +7,7 @@ import type {
 } from "@/lib/projects";
 import { AgenticConsole } from "./AgenticConsole";
 import { EdgeCaseExplorer } from "./EdgeCaseExplorer";
+import { FieldTranslatorDemo } from "./FieldTranslatorDemo";
 import { ChallengeStoryBeats } from "./ChallengeStoryBeats";
 import { Chart } from "./FiniCharts";
 import { EnergyAdaptiveDemo } from "./EnergyAdaptiveDemo";
@@ -297,6 +298,10 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "edgeCaseExplorer") {
     return <EdgeCaseExplorer />;
+  }
+
+  if (block.kind === "fieldTranslator") {
+    return <FieldTranslatorDemo />;
   }
 
   if (block.kind === "numberedList") {

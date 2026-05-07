@@ -270,11 +270,11 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
         }}
       >
         {block.kicker ? (
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-            <span className="t-eyebrow inline-flex shrink-0 rounded-full border border-[color:var(--accent-orange)] px-2.5 py-0.5">
+          <div>
+            <span className="t-eyebrow inline-flex rounded-full border border-[color:var(--accent-orange)] px-2.5 py-0.5">
               {block.kicker}
             </span>
-            <h3 className="min-w-0 t-h3">{block.title}</h3>
+            <h3 className="mt-3 t-h3">{block.title}</h3>
           </div>
         ) : (
           <h3 className="t-h3">{block.title}</h3>

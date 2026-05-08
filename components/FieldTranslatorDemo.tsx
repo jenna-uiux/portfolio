@@ -15,8 +15,8 @@ type Token = {
 };
 
 const TOKENS: Token[] = [
-  { id: "city", ko: "서울특별시", label: "City", value: "Seoul" },
-  { id: "state", ko: "강남구", label: "State", value: "Gangnam-gu" },
+  { id: "province", ko: "서울특별시", label: "Province", value: "Seoul" },
+  { id: "city", ko: "강남구", label: "City or Town", value: "Gangnam-gu" },
   { id: "street", ko: "테헤란로", label: "Street Name", value: "Teheran-ro" },
   { id: "number", ko: "123", label: "Street Number", value: "123" },
   { id: "apt", ko: "101동 202호", label: "Apt / Unit", value: "Dong 101, Ho 202" },

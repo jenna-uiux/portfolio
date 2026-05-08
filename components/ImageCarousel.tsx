@@ -60,7 +60,8 @@ export function ImageCarousel({ images, ratio = "16/9", caption }: Props) {
   }, [images.length]);
 
   const goTo = (index: number) => {
-    const slide = slideRefs.current[index];
+    const clamped = Math.max(0, Math.min(images.length - 1, index));
+    const slide = slideRefs.current[clamped];
     if (!slide) return;
     slide.scrollIntoView({
       behavior: "smooth",
@@ -69,38 +70,54 @@ export function ImageCarousel({ images, ratio = "16/9", caption }: Props) {
     });
   };
 
+  const atStart = active === 0;
+  const atEnd = active === images.length - 1;
+
   return (
     <figure>
-      <div
-        ref={trackRef}
-        className="relative flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth rounded-2xl bg-black/[0.02] ring-1 ring-black/10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        aria-roledescription="carousel"
-        aria-label={caption ?? "Image carousel"}
-      >
-        {images.map((image, i) => (
-          <div
-            key={image.src}
-            ref={(el) => {
-              slideRefs.current[i] = el;
-            }}
-            className={[
-              "relative w-full shrink-0 snap-start",
-              ratioClass[ratio],
-            ].join(" ")}
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`${i + 1} of ${images.length}`}
-          >
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 70vw, 100vw"
-              priority={i === 0}
-            />
-          </div>
-        ))}
+      <div className="relative">
+        <div
+          ref={trackRef}
+          className="relative flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth rounded-2xl bg-black/[0.02] ring-1 ring-black/10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          aria-roledescription="carousel"
+          aria-label={caption ?? "Image carousel"}
+        >
+          {images.map((image, i) => (
+            <div
+              key={image.src}
+              ref={(el) => {
+                slideRefs.current[i] = el;
+              }}
+              className={[
+                "relative w-full shrink-0 snap-start",
+                ratioClass[ratio],
+              ].join(" ")}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${images.length}`}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 70vw, 100vw"
+                priority={i === 0}
+              />
+            </div>
+          ))}
+        </div>
+
+        <CarouselArrow
+          direction="prev"
+          onClick={() => goTo(active - 1)}
+          disabled={atStart}
+        />
+        <CarouselArrow
+          direction="next"
+          onClick={() => goTo(active + 1)}
+          disabled={atEnd}
+        />
       </div>
 
       <div className="mt-4 flex items-center justify-center gap-2">
@@ -129,5 +146,50 @@ export function ImageCarousel({ images, ratio = "16/9", caption }: Props) {
         <figcaption className="mt-3 text-center t-mono">{caption}</figcaption>
       ) : null}
     </figure>
+  );
+}
+
+function CarouselArrow({
+  direction,
+  onClick,
+  disabled,
+}: {
+  direction: "prev" | "next";
+  onClick: () => void;
+  disabled: boolean;
+}) {
+  const isPrev = direction === "prev";
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={isPrev ? "Previous slide" : "Next slide"}
+      className={[
+        "absolute top-1/2 -translate-y-1/2",
+        isPrev ? "left-3 md:left-4" : "right-3 md:right-4",
+        "z-10 grid h-10 w-10 place-items-center rounded-full bg-white text-ink shadow-[0_1px_0_rgba(0,0,0,0.04),0_8px_22px_-12px_rgba(0,0,0,0.35)] ring-1 ring-black/10 transition-all duration-200",
+        "hover:scale-105 hover:shadow-[0_1px_0_rgba(0,0,0,0.04),0_12px_28px_-12px_rgba(0,0,0,0.45)]",
+        "disabled:pointer-events-none disabled:opacity-0",
+      ].join(" ")}
+    >
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        aria-hidden
+        className={isPrev ? "" : "rotate-180"}
+      >
+        <path
+          d="M9 2 L4 7 L9 12"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+      </svg>
+    </button>
   );
 }

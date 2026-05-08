@@ -780,12 +780,12 @@ export const projects: CaseStudy[] = [
             steps: [
               {
                 num: "01",
-                name: "Define concept and research to train the AI",
+                name: "Define concept and Research to train the AI",
                 note: "Mapped how immigration lawyers actually walk a couple through CR1 / F2A.",
               },
               {
                 num: "02",
-                name: "Design system architecture",
+                name: "Design System Architecture",
                 note: "Used Cursor's plan mode to map out the full system as a diagram, so I could see how every piece fit before writing code.",
               },
               {

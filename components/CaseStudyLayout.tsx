@@ -100,10 +100,20 @@ export function CaseStudyLayout({ project }: Props) {
             <CoverMedia cover={project.cover} ratio={project.cover.ratio ?? "16/9"} />
           </div>
 
-          <dl className="mt-10 grid w-full grid-cols-3 items-start gap-x-6 border-t hairline pt-8 sm:gap-x-8 md:gap-x-10 [grid-template-columns:repeat(3,minmax(0,1fr))]">
+          <dl
+            className={[
+              "mt-10 grid w-full items-start gap-x-6 border-t hairline pt-8 sm:gap-x-8 md:gap-x-10",
+              project.timeline
+                ? "grid-cols-2 [grid-template-columns:repeat(2,minmax(0,1fr))] md:grid-cols-4 md:[grid-template-columns:repeat(4,minmax(0,1fr))] gap-y-8 md:gap-y-0"
+                : "grid-cols-3 [grid-template-columns:repeat(3,minmax(0,1fr))]",
+            ].join(" ")}
+          >
             <Meta label="Role" value={project.role} />
             <Meta label="Tools" value={project.tools.join(", ")} />
             <Meta label="Focus" value={project.focus.join(", ")} />
+            {project.timeline ? (
+              <Meta label="Timeline" value={project.timeline} />
+            ) : null}
           </dl>
 
           <div className="mt-12">

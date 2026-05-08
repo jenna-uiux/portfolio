@@ -18,6 +18,8 @@ import { InsightFlipCards } from "./InsightFlipCards";
 import { ImageSlot } from "./ImageSlot";
 import { MediaImage } from "./MediaImage";
 import { MediaVideo } from "./MediaVideo";
+import { ProcessRail } from "./ProcessRail";
+import { StatDots } from "./StatDots";
 import { TimelineStepper } from "./TimelineStepper";
 
 type RichTextProps = {
@@ -237,6 +239,8 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
         description={block.description}
         ratio={block.ratio ?? "16/9"}
         mediaType={block.mediaType ?? "image"}
+        sourceCaption={block.sourceCaption}
+        captionLabel={block.captionLabel}
       />
     );
   }
@@ -307,6 +311,54 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "pivotComparison") {
     return <PivotComparison items={block.items} />;
+  }
+
+  if (block.kind === "statDots") {
+    return (
+      <StatDots
+        filled={block.filled}
+        total={block.total}
+        headline={block.headline}
+        subtext={block.subtext}
+      />
+    );
+  }
+
+  if (block.kind === "processRail") {
+    return <ProcessRail steps={block.steps} image={block.image} />;
+  }
+
+  if (block.kind === "bulletList") {
+    return (
+      <div>
+        {block.intro ? (
+          <p className="t-body">
+            <RichText text={block.intro} />
+          </p>
+        ) : null}
+        <ul
+          className={[
+            "max-w-[60ch] space-y-1.5",
+            block.intro ? "mt-3" : "",
+          ].join(" ")}
+        >
+          {block.items.map((item, i) => (
+            <li key={i} className="flex items-baseline gap-3 t-body-sm">
+              <span
+                aria-hidden
+                className="shrink-0 select-none font-medium leading-none"
+                style={{ color: "var(--accent)" }}
+              >
+                ·
+              </span>
+              <span>
+                <RichText text={item} />
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   }
 
   if (block.kind === "numberedList") {
@@ -595,27 +647,41 @@ function MediaPlaceholder({
   description,
   ratio = "16/9",
   mediaType,
+  sourceCaption,
+  captionLabel,
 }: {
   filename: string;
   description: string;
   ratio: ImageRatio;
   mediaType: "image" | "video";
+  sourceCaption?: string;
+  captionLabel?: string;
 }) {
   return (
-    <div
-      className={[
-        "relative w-full overflow-hidden rounded-lg border border-dashed border-ink/18 bg-white/40",
-        ratioClass[ratio],
-      ].join(" ")}
-    >
-      <div aria-hidden className="absolute inset-0 grain opacity-20" />
-      <div className="absolute left-4 top-4 t-mono">
-        Future {mediaType}
+    <div>
+      <div
+        className={[
+          "relative w-full overflow-hidden rounded-lg border border-dashed border-ink/18 bg-white/40",
+          ratioClass[ratio],
+        ].join(" ")}
+      >
+        <div aria-hidden className="absolute inset-0 grain opacity-20" />
+        <div
+          className="absolute left-4 top-4 t-mono"
+          style={
+            captionLabel ? { color: "var(--accent)" } : undefined
+          }
+        >
+          {captionLabel ?? `Future ${mediaType}`}
+        </div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
+          <p className="max-w-[34ch] t-caption">{description}</p>
+          <p className="mt-3 t-mono">{filename}</p>
+        </div>
       </div>
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
-        <p className="max-w-[34ch] t-caption">{description}</p>
-        <p className="mt-3 t-mono">{filename}</p>
-      </div>
+      {sourceCaption ? (
+        <p className="mt-3 t-mono">{sourceCaption}</p>
+      ) : null}
     </div>
   );
 }

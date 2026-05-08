@@ -108,6 +108,10 @@ export type CaseContentBlock =
       description: string;
       mediaType?: "image" | "video";
       ratio?: ImageRatio;
+      /** Small mono uppercase line rendered below the placeholder. */
+      sourceCaption?: string;
+      /** Replaces the default "Future image/video" badge in the corner (e.g. "Before" / "After"). */
+      captionLabel?: string;
     }
   | {
       kind: "takeawayCards";
@@ -201,6 +205,24 @@ export type CaseContentBlock =
         { label: string; title: string; body: string },
         { label: string; title: string; body: string },
       ];
+    }
+  | {
+      kind: "statDots";
+      filled: number;
+      total: number;
+      /** Headline copy. Use `==text==` to highlight a key phrase in the page accent. */
+      headline: string;
+      subtext?: string;
+    }
+  | {
+      kind: "processRail";
+      steps: { num: string; name: string }[];
+      image: { filename: string; description: string; src?: string };
+    }
+  | {
+      kind: "bulletList";
+      intro?: string;
+      items: string[];
     };
 
 export type CaseSection = {
@@ -230,6 +252,8 @@ export type CaseStudy = {
   tools: string[];
   focus: string[];
   team?: string;
+  /** Optional 4th meta column rendered next to Role/Tools/Focus when present. */
+  timeline?: string;
   year: string;
   cover: ImagePlaceholder;
   featured: boolean;
@@ -578,22 +602,15 @@ export const projects: CaseStudy[] = [
   {
     slug: "strawberry-matcha",
     title: "Strawberry Matcha",
-    tagline: "AI agent for marriage-based green card applicants.",
+    tagline:
+      "AI agent for marriage-based green card applicants (CR1 or F2A) filing without a lawyer.",
     summary:
-      "A case-aware assistant that infers what each applicant actually needs and translates their real data into form-ready values.",
+      "A legal-trained AI agent for couples filing their CR1 or F2A green card alone. It learns your case through conversation and walks you through every form, field by field.",
     category: "AI UX / Legal workflow",
     role: "AI UX Designer · Solo project",
-    tools: [
-      "Cursor",
-      "Claude API",
-      "Supabase",
-      "Figma",
-    ],
-    focus: [
-      "Conversational AI",
-      "Multi-agent system design",
-      "Decision-support UX",
-    ],
+    tools: ["Cursor", "Claude API", "Supabase", "Figma"],
+    focus: ["Conversational AI", "Decision-support UX"],
+    timeline: "3 weeks · v0 → v1",
     year: "2026",
     cover: {
       filename: "strawberry-matcha_hero.mp4",
@@ -605,62 +622,94 @@ export const projects: CaseStudy[] = [
       {
         id: "overview",
         title: "Overview",
-        eyebrow: "Case-aware clarity, not generic legal advice",
-        body: "Strawberry Matcha is an AI agent for people filing their own marriage-based green card. Most guidance online is about immigration in general. The product goal here is the opposite. Guidance about **your** case, grounded in the situation you actually have.",
+        eyebrow: "An AI agent for couples filing their green card alone.",
+        body: "Strawberry Matcha is for people going through the CR1 or F2A green card process without a lawyer. You talk to it like you'd talk to someone who knows the process. As you chat, it asks follow-up questions, picks up details about your case, and gets more useful the more you use it.",
       },
       {
         id: "problem",
         title: "The Problem",
-        eyebrow: "Filing alone is harder than it should be.",
-        body: "Applying for a marriage-based green card sounds simple. Fill out forms, upload documents, wait. The reality is messier. The information exists, just scattered across USCIS pages, Reddit threads, and lawyer blogs from years ago. Forms keep changing editions, so guides that worked last year point to fields that no longer exist.",
+        eyebrow: "Filing alone leads to mistakes. General AI makes it worse.",
+        body: "",
         contentBlocks: [
           {
-            kind: "numberedList",
-            intro: "Three questions keep coming back:",
-            items: [
-              "What does my case actually need?",
-              "How do I fill this field on this version of the form?",
-              "Did I miss something important?",
-            ],
+            kind: "subheading",
+            first: true,
+            title: "Hiring an immigration lawyer costs thousands.",
+            body: "Marriage-based green card lawyers charge $2,000 to $8,000+, on top of USCIS fees that already run over $1,700. So many couples file on their own, piecing the process together from USCIS pages, Reddit threads, and lawyer blogs.",
           },
           {
-            kind: "annotation",
-            label: "Insight",
-            body:
-              "Information about immigration is everywhere. What's missing is ==information about your case==.",
+            kind: "subheading",
+            title: "But filing alone leads to a lot of mistakes.",
           },
           {
-            kind: "prose",
-            body:
-              "That gap is what a lawyer fills. They look at your situation, decide what applies, and walk you through every form field knowing your facts.",
+            kind: "statDots",
+            filled: 1,
+            total: 5,
+            headline:
+              "==1 in 4== marriage-based applicants gets a Request for Evidence.",
+            subtext:
+              "Most of them for missing documents and filing errors. The kind of mistakes that happen without someone to ask the right questions first.",
+          },
+          {
+            kind: "mediaPlaceholder",
+            filename: "article_citizenpath.png",
+            description:
+              "\u201CMost RFEs result from missing documents or incomplete evidence, not eligibility problems.\u201D",
+            mediaType: "image",
+            ratio: "16/9",
+            sourceCaption:
+              "Source — CitizenPath, USCIS Request for Evidence Guide",
+          },
+          {
+            kind: "subheading",
+            title:
+              "So people turn to ChatGPT and Claude. But those weren't built for this.",
+            body: "General-purpose AI tools aren't trained on legal workflows. They sound confident, but they hallucinate. They miss steps. They give advice that fits a generic case, not yours. For something as high-stakes as an immigration filing, that's not safe enough.",
           },
         ],
       },
       {
         id: "solution",
         title: "Solution",
-        eyebrow: "A case translation engine.",
-        body: "Strawberry Matcha doesn't ask the user to figure out what they need. It infers what they need from their situation, then translates their real data into form-ready values.",
-        mediaAfterBody: [
+        eyebrow:
+          "A legal-trained AI agent that learns your case through conversation.",
+        body: "",
+        contentBlocks: [
           {
-            kind: "image",
-            filename: "solution_overview.png",
-            description: "Product overview — case translation engine",
-            ratio: "16/9",
+            kind: "v2Items",
+            items: [
+              {
+                number: "01",
+                title: "Built around how immigration lawyers actually work.",
+                body: "Strawberry Matcha follows the legal workflow, asks the right questions in the right order, and stays grounded in your specific case.",
+              },
+              {
+                number: "02",
+                title: "It learns as you chat.",
+                body: "Instead of asking you to fill out a long form upfront, it starts with a short intake and keeps learning as you chat. It asks follow-up questions when it needs more context. It suggests what to ask when you're not sure. The more you talk to it, the more it knows.",
+              },
+              {
+                number: "03",
+                title:
+                  "And it walks you through every form, field by field.",
+                body: "When you upload a USCIS form, Strawberry Matcha checks each field against your case. It points out what's missing, what looks off, and how to fix it before you submit.",
+              },
+            ],
           },
         ],
       },
       {
         id: "features",
         title: "Key Features",
-        eyebrow: "Three features. Each replaces a moment of confusion.",
+        eyebrow: "Three features. Each closes a gap that filing alone creates.",
         body: "",
         contentBlocks: [
           {
             kind: "subheading",
             first: true,
-            title: "1. Ask Strawberry Matcha",
-            body: "Strawberry Matcha answers based on your actual case status and preparation progress, and updates your case as you chat. You can ask questions anytime to your personalized immigration AI assistant.",
+            title:
+              "1. Ask Strawberry Matcha, a conversation that knows your case.",
+            body: "You can ask anything, anytime. Strawberry Matcha answers based on your actual case status and preparation progress, and updates your case as you chat.",
           },
           {
             kind: "mediaPlaceholder",
@@ -671,8 +720,13 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
-            title: "2. Field Translator",
-            body: "Upload your USCIS form PDF. The system reads the actual fields in your edition, cross-references your data, and tells you exactly what to enter.",
+            title:
+              "2. Field Translator, fills the gap between your real life and the form.",
+            body: "Upload your USCIS form PDF (any edition). The system reads the actual fields, cross-references your case data, and tells you what to enter in each one.",
+          },
+          {
+            kind: "prose",
+            body: "This includes the trickiest part: format conversion. A Korean address gets reshaped into US form structure. A Korean name gets matched to passport romanization. The values come out form-ready.",
           },
           { kind: "fieldTranslator" },
           {
@@ -684,8 +738,9 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
-            title: "3. Timeline Guidance",
-            body: "Each milestone shows where you are, what the step means, and what usually happens next — so the long wait stops feeling like a black box.",
+            title:
+              "3. Timeline guidance, so you know where you are and what's next.",
+            body: "Each milestone shows where you are in the process, what the step actually means, and what usually happens next.",
           },
           {
             kind: "mediaPlaceholder",
@@ -699,120 +754,107 @@ export const projects: CaseStudy[] = [
       {
         id: "process",
         title: "How I Built It",
-        eyebrow: "Three versions in three weeks.",
-        body: "Each version surfaced what was wrong with the version before it.",
+        eyebrow: "From concept to crafted product in five steps.",
+        body: "",
         contentBlocks: [
           {
             kind: "subheading",
             first: true,
-            kicker: "v1",
-            title: "Product validation",
-            body: "Wrote a one-page PRD with ChatGPT, locked in colors and fonts, then used Cursor's Plan Mode to generate the first build in about three hours. Goal was speed, not quality. I needed something real to react to.",
+            title: "Design and build process.",
+            body: "Curious how this came together? I followed five steps:",
           },
           {
-            kind: "mediaPlaceholder",
-            filename: "v1_architecture.png",
-            description: "V1 system architecture",
-            mediaType: "image",
-            ratio: "16/9",
+            kind: "processRail",
+            steps: [
+              {
+                num: "01",
+                name: "Define concept and research to train the AI",
+              },
+              { num: "02", name: "Design system architecture" },
+              { num: "03", name: "Fast validation" },
+              { num: "04", name: "Iterations" },
+              { num: "05", name: "Craft refinement" },
+            ],
+            image: {
+              filename: "process_overview.png",
+              description: "Process diagram or system architecture",
+            },
           },
           {
             kind: "subheading",
-            kicker: "pivot",
-            title: "It was a generic to-do app.",
-            body: "Lawyers don't hand you a checklist. They understand your situation first, then guide your full process. I needed to stop building checklist software and start building a case-aware assistant.",
+            title: "Design decisions during iterations.",
           },
           {
             kind: "subheading",
-            kicker: "v2",
-            title: "Closer to the real idea",
-            body: "I researched how immigration attorneys actually handle marriage-based cases, then redesigned the system around that workflow.",
+            kicker: "Decision 01",
+            title: "Reducing cognitive overload in chat.",
+            body: "The first version dumped everything into one big paragraph. Users couldn't tell what mattered most, and didn't know what to ask next. The AI was answering well, but the answers weren't usable.",
           },
           {
-            kind: "pivotComparison",
+            kind: "bulletList",
+            intro: "I split each response into two visual layers:",
             items: [
-              {
-                label: "V1 problem",
-                title: "Static checklist",
-                body: "Seeded the same items for every user, regardless of their case.",
-              },
-              {
-                label: "V2 decision",
-                title: "Dynamic document list",
-                body: "Onboarding feeds a Case Strategist agent that generates the document list dynamically from the user's situation.",
-              },
+              "**Personal acknowledgment** in serif type, warmer and conversational",
+              "**Information delivery** in sans-serif, clearer for scanning",
             ],
           },
           {
-            kind: "pivotComparison",
-            items: [
-              {
-                label: "V1 problem",
-                title: "Generic chat",
-                body: "Felt disconnected from the user's actual case data.",
-              },
-              {
-                label: "V2 decision",
-                title: "Case-aware prompts",
-                body: "Every agent call ships the user's case data inside the system prompt, so answers are anchored to their facts.",
-              },
-            ],
+            kind: "prose",
+            body: "I also added **suggested follow-ups** at the end of each response, so users wouldn't be stuck wondering what to ask next. The chat now nudges them toward the next useful question instead of leaving them to figure it out alone.",
           },
           {
             kind: "mediaPlaceholder",
-            filename: "v2_architecture.png",
-            description: "V2 event-driven architecture",
+            filename: "v0_chat-before.png",
+            description: "Single block of text — hard to scan, no clear next step.",
             mediaType: "image",
             ratio: "16/9",
+            captionLabel: "Before",
           },
           {
             kind: "mediaPlaceholder",
-            filename: "v2_onboarding.png",
-            description: "V2 four-screen onboarding",
+            filename: "v1_chat-after.png",
+            description:
+              "Layered response with personal acknowledgment, information, and suggested follow-ups.",
             mediaType: "image",
             ratio: "16/9",
+            captionLabel: "After",
           },
           {
             kind: "subheading",
-            kicker: "v3",
-            title: "Improving the conversation",
-            body: "The system worked. The conversation didn't. Legal explanations got long fast, and users often didn't know what to ask next.\n\nI ran a quality review (High / Medium / Low priority) and redesigned the response format around two anchors: **what's missing** and **what's next**.",
+            kicker: "Decision 02",
+            title: "Onboarding as the foundation of trust.",
+            body: "The original onboarding was too short. Without enough context about the user's case, the AI was filling in the gaps by guessing, and the hallucinations broke trust fast.\n\nI researched how immigration lawyers actually intake their clients. The questions they ask up front aren't paperwork. They're how the lawyer learns the case before giving any advice. I rebuilt onboarding around those same questions, so the AI starts with enough context to be accurate from the first message.",
           },
           {
             kind: "mediaPlaceholder",
-            filename: "v3_conversation.mp4",
-            description: "V3 conversation redesign",
-            mediaType: "video",
+            filename: "v1_onboarding.png",
+            description: "Onboarding flow, modeled after lawyer intake.",
+            mediaType: "image",
             ratio: "16/9",
           },
         ],
       },
       {
         id: "takeaway",
-        title: "Takeaway",
-        eyebrow: "From interface design to system design.",
-        body: "This project moved me past designing only the screens. Most of the work happened in the system underneath.",
+        title: "Takeaways",
+        eyebrow: "What I took away from designing an AI agent.",
+        body: "",
         contentBlocks: [
           {
-            kind: "takeawayCards",
-            cards: [
-              {
-                title: "Agent workflows",
-                body: "Designed multi-agent architecture using Cursor Plan Mode. Defined how events route between agents and how state propagates back to the UI.",
-              },
-              {
-                title: "LLM integration",
-                body: "Connected Supabase Edge Functions with the Claude API for structured outputs. Treated system prompts and JSON schemas as part of the design surface.",
-              },
-              {
-                title: "Personalized context",
-                body: "Designed onboarding as the entry point for case context. Every downstream agent call ships with case-specific data.",
-              },
-              {
-                title: "Decision-support UX",
-                body: "Translated a complex legal workflow into a calm, structured interaction model. Replaced chat-first interfaces with contextual explanations tied to UI elements.",
-              },
-            ],
+            kind: "subheading",
+            first: true,
+            title: "Designing an AI agent is designing how it thinks.",
+            body: "Most of the work happened underneath the screens. Prompts, follow-up logic, what the AI asks versus what it answers, what it stores about the user. The visible UI was the smallest part.",
+          },
+          {
+            kind: "subheading",
+            title: "Onboarding is data acquisition, not a signup.",
+            body: "How well an AI agent performs depends on what it knows going in. Designing onboarding well is designing the AI's first impression of the user, and everything downstream flows from there.",
+          },
+          {
+            kind: "subheading",
+            title: "Conversational UX is about pacing, not just tone.",
+            body: "Users filing alone don't need more information. They need information at the right moment, in a shape they can act on, with a clear next step. That's a design problem, not a content problem.",
           },
         ],
       },

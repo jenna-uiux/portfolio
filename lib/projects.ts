@@ -786,12 +786,12 @@ export const projects: CaseStudy[] = [
               {
                 num: "02",
                 name: "Design system architecture",
-                note: "Sketched the data model, prompt structure, and how case state would update over time.",
+                note: "Used Cursor's plan mode to map out the full system as a diagram, so I could see how every piece fit before writing code.",
               },
               {
                 num: "03",
                 name: "Fast validation",
-                note: "Built a thin slice end-to-end and tested it with applicants in the middle of filing.",
+                note: "Used Cursor to spin up a working prototype quickly, so I could test the idea with real applicants before investing more.",
               },
               {
                 num: "04",
@@ -801,7 +801,7 @@ export const projects: CaseStudy[] = [
               {
                 num: "05",
                 name: "Craft refinement",
-                note: "Tightened tone, pacing, and the visual hierarchy of every answer.",
+                note: "Polished the UI in Figma, tightening tone, pacing, and visual hierarchy across the whole product.",
               },
             ],
           },

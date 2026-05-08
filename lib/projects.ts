@@ -145,6 +145,8 @@ export type CaseContentBlock =
       title: string;
       body?: string;
       first?: boolean;
+      /** Keeps local subheading spacing tight when parent content rhythm already provides separation. */
+      compact?: boolean;
       /** Small version label in a pill (e.g. v2), Apple-style doc header */
       kicker?: string;
     }
@@ -640,6 +642,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             title: "But filing alone leads to a lot of mistakes.",
+            compact: true,
           },
           {
             kind: "statDots",
@@ -664,6 +667,7 @@ export const projects: CaseStudy[] = [
             kind: "subheading",
             title:
               "So people turn to ChatGPT and Claude. But those weren't built for this.",
+            compact: true,
             body: "General-purpose AI tools aren't trained on legal workflows. They sound confident, but they hallucinate. They miss steps. They give advice that fits a generic case, not yours. For something as high-stakes as an immigration filing, that's not safe enough.",
           },
         ],
@@ -722,6 +726,7 @@ export const projects: CaseStudy[] = [
             kind: "subheading",
             title:
               "2. Field Translator, fills the gap between your real life and the form.",
+            compact: true,
             body: "Upload your USCIS form PDF (any edition). The system reads the actual fields, cross-references your case data, and tells you what to enter in each one.",
           },
           {
@@ -740,6 +745,7 @@ export const projects: CaseStudy[] = [
             kind: "subheading",
             title:
               "3. Timeline guidance, so you know where you are and what's next.",
+            compact: true,
             body: "Each milestone shows where you are in the process, what the step actually means, and what usually happens next.",
           },
           {
@@ -783,11 +789,13 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             title: "Design decisions during iterations.",
+            compact: true,
           },
           {
             kind: "subheading",
             kicker: "Decision 01",
             title: "Reducing cognitive overload in chat.",
+            compact: true,
             body: "The first version dumped everything into one big paragraph. Users couldn't tell what mattered most, and didn't know what to ask next. The AI was answering well, but the answers weren't usable.",
           },
           {
@@ -823,6 +831,7 @@ export const projects: CaseStudy[] = [
             kind: "subheading",
             kicker: "Decision 02",
             title: "Onboarding as the foundation of trust.",
+            compact: true,
             body: "The original onboarding was too short. Without enough context about the user's case, the AI was filling in the gaps by guessing, and the hallucinations broke trust fast.\n\nI researched how immigration lawyers actually intake their clients. The questions they ask up front aren't paperwork. They're how the lawyer learns the case before giving any advice. I rebuilt onboarding around those same questions, so the AI starts with enough context to be accurate from the first message.",
           },
           {
@@ -841,20 +850,21 @@ export const projects: CaseStudy[] = [
         body: "",
         contentBlocks: [
           {
-            kind: "subheading",
-            first: true,
-            title: "Designing an AI agent is designing how it thinks.",
-            body: "Most of the work happened underneath the screens. Prompts, follow-up logic, what the AI asks versus what it answers, what it stores about the user. The visible UI was the smallest part.",
-          },
-          {
-            kind: "subheading",
-            title: "Onboarding is data acquisition, not a signup.",
-            body: "How well an AI agent performs depends on what it knows going in. Designing onboarding well is designing the AI's first impression of the user, and everything downstream flows from there.",
-          },
-          {
-            kind: "subheading",
-            title: "Conversational UX is about pacing, not just tone.",
-            body: "Users filing alone don't need more information. They need information at the right moment, in a shape they can act on, with a clear next step. That's a design problem, not a content problem.",
+            kind: "takeawayCards",
+            cards: [
+              {
+                title: "Designing an AI agent is designing how it thinks.",
+                body: "Most of the work happened underneath the screens. Prompts, follow-up logic, what the AI asks versus what it answers, what it stores about the user. The visible UI was the smallest part.",
+              },
+              {
+                title: "Onboarding is data acquisition, not a signup.",
+                body: "How well an AI agent performs depends on what it knows going in. Designing onboarding well is designing the AI's first impression of the user, and everything downstream flows from there.",
+              },
+              {
+                title: "Conversational UX is about pacing, not just tone.",
+                body: "Users filing alone don't need more information. They need information at the right moment, in a shape they can act on, with a clear next step. That's a design problem, not a content problem.",
+              },
+            ],
           },
         ],
       },

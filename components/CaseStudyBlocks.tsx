@@ -269,7 +269,9 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
     return (
       <div
         style={{
-          marginTop: block.first
+          marginTop: block.compact
+            ? 0
+            : block.first
             ? "var(--rhythm-lg)"
             : "var(--rhythm-xl)",
         }}

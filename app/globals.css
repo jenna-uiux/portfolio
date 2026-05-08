@@ -202,6 +202,10 @@
   .section-rhythm > * + * {
     margin-top: var(--rhythm-lg);
   }
+  /* Strawberry Matcha uses more short editorial beats, so keep intra-section rhythm tighter. */
+  .section-rhythm-matcha > * + * {
+    margin-top: clamp(32px, 4vw, 52px);
+  }
   /* Case study: major content blocks (e.g. Fini Design & Build — v1 / UT / v2 / edge) */
   .section-rhythm-loose > * + * {
     margin-top: clamp(72px, 7vw, 112px);

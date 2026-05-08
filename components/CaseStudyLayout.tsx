@@ -130,6 +130,8 @@ export function CaseStudyLayout({ project }: Props) {
               const contentBlockRhythm =
                 project.slug === "fini" && s.id === "design-build"
                   ? "section-rhythm-loose"
+                  : project.slug === "strawberry-matcha"
+                    ? "section-rhythm-matcha"
                   : "section-rhythm";
               return (
               <section

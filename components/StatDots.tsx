@@ -24,7 +24,6 @@ export function StatDots({ filled, total, headline, subtext }: Props) {
   const trailing = match
     ? [match[1], match[3]].join(" ").replace(/\s+/g, " ").trim()
     : headline.trim();
-  const hasHero = Boolean(hero);
   const sr = headline.replace(/==/g, "");
 
   useGSAP(
@@ -68,19 +67,19 @@ export function StatDots({ filled, total, headline, subtext }: Props) {
       tl.to("[data-dot]", {
         scale: 1,
         autoAlpha: 1,
-        duration: 0.4,
-        stagger: 0.08,
+        duration: 0.32,
+        stagger: 0.06,
       })
         .to(
           "[data-dot-fill]",
-          { autoAlpha: 1, duration: 0.45 },
-          "+=0.18"
+          { autoAlpha: 1, duration: 0.32 },
+          "+=0.08"
         )
         .to(
           "[data-dot-fill]",
           {
-            scale: 1.18,
-            duration: 0.22,
+            scale: 1.08,
+            duration: 0.18,
             yoyo: true,
             repeat: 1,
             ease: "power1.inOut",
@@ -107,71 +106,73 @@ export function StatDots({ filled, total, headline, subtext }: Props) {
   );
 
   return (
-    <div ref={root} className="border-t hairline pt-10">
-      <div
-        className="flex items-center gap-3 md:gap-4"
-        aria-hidden="true"
-      >
-        {Array.from({ length: total }, (_, i) => {
-          const isFilled = i < filled;
-          return (
-            <span
-              key={i}
-              data-dot
-              className="relative block h-12 w-12 rounded-full md:h-14 md:w-14"
-              style={{ background: "var(--accent-soft)" }}
-            >
-              {isFilled ? (
+    <aside
+      ref={root}
+      className="rounded-2xl border border-ink/10 bg-white/35 px-5 py-5 md:px-7 md:py-6"
+      aria-label={sr}
+    >
+      <div className="grid gap-x-8 gap-y-5 md:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)] md:items-center">
+        <div>
+          <p className="t-eyebrow-mut">Filing risk signal</p>
+          <div className="mt-4 flex items-center gap-2.5" aria-hidden="true">
+            {Array.from({ length: total }, (_, i) => {
+              const isFilled = i < filled;
+              return (
                 <span
-                  data-dot-fill
-                  className="absolute inset-0 rounded-full"
-                  style={{ background: "var(--accent)" }}
-                />
-              ) : null}
-            </span>
-          );
-        })}
-      </div>
-
-      {hasHero ? (
-        <div className="mt-10 grid items-end gap-x-10 gap-y-5 md:grid-cols-[auto_1fr]">
-          <div
-            data-hero
-            className="font-light leading-[0.88] tracking-[-0.045em] text-[clamp(64px,10vw,128px)]"
-            style={{ color: "var(--accent)" }}
-          >
-            {hero}
+                  key={i}
+                  data-dot
+                  className="relative block h-5 w-5 rounded-full md:h-6 md:w-6"
+                  style={{ background: "var(--accent-soft)" }}
+                >
+                  {isFilled ? (
+                    <span
+                      data-dot-fill
+                      className="absolute inset-0 rounded-full"
+                      style={{ background: "var(--accent)" }}
+                    />
+                  ) : null}
+                </span>
+              );
+            })}
           </div>
-          {trailing ? (
-            <p
-              data-trailing
-              className="max-w-[34ch] text-[clamp(17px,1.7vw,21px)] font-light leading-[1.4] text-ink"
-            >
+        </div>
+
+        <div className="min-w-0">
+          {hero ? (
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+              <div
+                data-hero
+                className="font-light leading-none tracking-[-0.045em] text-[clamp(44px,6vw,72px)]"
+                style={{ color: "var(--accent)" }}
+              >
+                {hero}
+              </div>
+              {trailing ? (
+                <p
+                  data-trailing
+                  className="max-w-[30ch] text-[16px] font-light leading-[1.45] text-ink md:text-[18px]"
+                >
+                  <RichText text={trailing} />
+                </p>
+              ) : null}
+            </div>
+          ) : (
+            <p data-trailing className="max-w-[40ch] t-h4">
               <RichText text={trailing} />
+            </p>
+          )}
+
+          {subtext ? (
+            <p data-subtext className="mt-4 max-w-[48ch] t-body-sm">
+              <RichText text={subtext} />
             </p>
           ) : null}
         </div>
-      ) : (
-        <p
-          data-trailing
-          className="mt-10 max-w-[40ch] text-[clamp(20px,2vw,28px)] font-light leading-[1.35] text-ink"
-        >
-          <RichText text={trailing} />
-        </p>
-      )}
-
-      {subtext ? (
-        <p
-          data-subtext
-          className="mt-7 max-w-[52ch] t-body-sm"
-        >
-          <RichText text={subtext} />
-        </p>
-      ) : null}
+      </div>
 
       <span className="sr-only">
         {filled} out of {total}. {sr}
       </span>
-    </div>
+    </aside>
   );
 }

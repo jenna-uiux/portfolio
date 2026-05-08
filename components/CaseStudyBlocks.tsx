@@ -269,16 +269,15 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
   }
 
   if (block.kind === "subheading") {
+    const topMargin = block.kicker
+      ? "var(--rhythm-xl)"
+      : block.compact
+        ? 0
+        : block.first
+          ? "var(--rhythm-lg)"
+          : "var(--rhythm-xl)";
     return (
-      <div
-        style={{
-          marginTop: block.compact
-            ? 0
-            : block.first
-            ? "var(--rhythm-lg)"
-            : "var(--rhythm-xl)",
-        }}
-      >
+      <div style={{ marginTop: topMargin }}>
         {block.kicker ? (
           <div>
             <span className="t-eyebrow inline-flex rounded-full border border-[color:var(--accent-orange)] px-2.5 py-0.5">

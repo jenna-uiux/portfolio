@@ -516,7 +516,9 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
     <div className="grid gap-x-10 gap-y-8 border-t hairline pt-8 md:grid-cols-3">
       {block.cards.map((card) => (
         <article key={card.title}>
-          <p className="t-eyebrow-mut tracking-[0.03em]">{card.title}</p>
+          <p className="max-w-[28ch] text-[15px] font-medium leading-[1.4] tracking-normal text-ink normal-case">
+            {card.title}
+          </p>
           {card.body.split("\n\n").map((para, j) => (
             <p
               key={j}

@@ -640,7 +640,7 @@ export const projects: CaseStudy[] = [
     year: "2026",
     cover: {
       filename: "strawberry-matcha_hero.mp4",
-      description: "Strawberry Matcha — hero demo",
+      description: "Strawberry Matcha hero demo",
       ratio: "16/9",
     },
     featured: true,
@@ -656,7 +656,7 @@ export const projects: CaseStudy[] = [
         id: "problem",
         title: "User problem",
         eyebrow:
-          "Filing alone leads to mistakes — and general AI makes it worse.",
+          "Filing alone leads to mistakes. General AI makes it worse.",
         body: "Most couples filing for a marriage-based green card don't have a lawyer. They piece the process together from USCIS pages, Reddit threads, and lawyer blogs from years ago. Three forces collide.",
         contentBlocks: [
           {
@@ -670,9 +670,9 @@ export const projects: CaseStudy[] = [
               {
                 number: "02",
                 title: "DIY filing produces costly mistakes.",
-                body: "==1 in 4== marriage-based applicants gets a Request for Evidence — most of them for missing documents and filing errors. The kind of mistakes that happen without someone to ask the right questions first.",
+                body: "==1 in 4== marriage-based applicants gets a Request for Evidence, most of them for missing documents and filing errors. The kind of mistakes that happen without someone to ask the right questions first.",
                 sourceCaption:
-                  "Source — CitizenPath, USCIS Request for Evidence Guide",
+                  "Source: CitizenPath, USCIS Request for Evidence Guide",
               },
               {
                 number: "03",
@@ -692,7 +692,7 @@ export const projects: CaseStudy[] = [
         title: "Solution",
         eyebrow:
           "A legal-trained AI agent that learns your case through conversation.",
-        body: "Three pillars hold it together — each one a deliberate counter to the way filing alone usually breaks down.",
+        body: "Three pillars hold it together. Each one is a deliberate counter to the way filing alone usually breaks down.",
         contentBlocks: [
           {
             kind: "pillarGrid",
@@ -732,7 +732,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "annotatedCallout",
             label: "My goal",
-            body: "Make immigration questions feel like talking to someone who already knows your case — not searching a forum.",
+            body: "Make immigration questions feel like talking to someone who already knows your case, not searching a forum.",
           },
           {
             kind: "mediaPlaceholder",
@@ -744,7 +744,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             title: "Field Translator, fills the gap between your real life and the form.",
-            body: "The applicant uploads a USCIS form PDF (any edition). The system reads the actual fields, cross-references the case data, and tells the user what to enter in each one — including the trickiest part: format conversion. A Korean address gets reshaped into US form structure. A Korean name gets matched to passport romanization. The values come out form-ready.",
+            body: "The applicant uploads a USCIS form PDF (any edition). The system reads the actual fields, cross-references the case data, and tells the user what to enter in each one, including the trickiest part: format conversion. A Korean address gets reshaped into US form structure. A Korean name gets matched to passport romanization. The values come out form-ready.",
           },
           { kind: "fieldTranslator" },
           {
@@ -757,7 +757,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             title: "Timeline guidance, so you know where you are and what's next.",
-            body: "Each milestone shows where the applicant is in the process, what the step actually means, and what usually happens next — so the case never feels like a black box.",
+            body: "Each milestone shows where the applicant is in the process, what the step actually means, and what usually happens next, so the case never feels like a black box.",
           },
           {
             kind: "mediaPlaceholder",
@@ -772,7 +772,7 @@ export const projects: CaseStudy[] = [
         id: "process",
         title: "Design process",
         eyebrow:
-          "From concept to crafted product in five steps — and two design decisions that defined the shape of it.",
+          "From concept to crafted product in five steps, plus two design decisions that defined the shape of it.",
         body: "",
         contentBlocks: [
           {
@@ -814,7 +814,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "annotatedCallout",
             label: "User insight",
-            body: "Users were getting good answers but couldn't act on them — they couldn't tell what mattered most, and didn't know what to ask next.",
+            body: "Users were getting good answers but couldn't act on them. They couldn't tell what mattered most, and didn't know what to ask next.",
           },
           {
             kind: "prose",
@@ -853,14 +853,14 @@ export const projects: CaseStudy[] = [
                 cons: ["More design and prompt work."],
               },
             ],
-            finalPickLabel: "Final pick — Option 03",
+            finalPickLabel: "Final pick: Option 03",
             finalPickBody:
               "Two-layer voice keeps the chat warm but makes the answer scannable, and the suggested follow-ups stop users from getting stuck on what to ask next.",
           },
           {
             kind: "mediaPlaceholder",
             filename: "v0_chat-before.png",
-            description: "Single block of text — hard to scan, no clear next step.",
+            description: "Single block of text. Hard to scan, no clear next step.",
             mediaType: "image",
             ratio: "16/9",
             captionLabel: "Before",
@@ -887,7 +887,7 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "prose",
-            body: "The original onboarding was too short. Without enough context about the user's case, the AI was filling gaps by guessing, and the hallucinations broke trust fast.\n\nI studied how immigration lawyers actually intake their clients. The questions they ask up front aren't paperwork — they're how the lawyer learns the case before giving any advice. I rebuilt onboarding around those same questions, so the AI starts with enough context to be accurate from the first message.",
+            body: "The original onboarding was too short. Without enough context about the user's case, the AI was filling gaps by guessing, and the hallucinations broke trust fast.\n\nI studied how immigration lawyers actually intake their clients. The questions they ask up front aren't paperwork. They're how the lawyer learns the case before giving any advice. I rebuilt onboarding around those same questions, so the AI starts with enough context to be accurate from the first message.",
           },
           {
             kind: "mediaPlaceholder",

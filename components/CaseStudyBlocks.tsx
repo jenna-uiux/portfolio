@@ -24,6 +24,7 @@ import { AnnotatedCallout } from "./AnnotatedCallout";
 import { ProblemStatementCallout } from "./ProblemStatementCallout";
 import { NumberedTimeline } from "./NumberedTimeline";
 import { ExplorationCards } from "./ExplorationCards";
+import { ImageCarousel } from "./ImageCarousel";
 
 type RichTextProps = {
   text: string;
@@ -346,6 +347,16 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
         options={block.options}
         finalPickLabel={block.finalPickLabel}
         finalPickBody={block.finalPickBody}
+      />
+    );
+  }
+
+  if (block.kind === "imageCarousel") {
+    return (
+      <ImageCarousel
+        images={block.images}
+        ratio={block.ratio}
+        caption={block.caption}
       />
     );
   }

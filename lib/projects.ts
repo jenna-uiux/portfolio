@@ -249,6 +249,12 @@ export type CaseContentBlock =
       }[];
       finalPickLabel?: string;
       finalPickBody?: string;
+    }
+  | {
+      kind: "imageCarousel";
+      images: { src: string; alt: string }[];
+      ratio?: ImageRatio;
+      caption?: string;
     };
 
 export type CaseSection = {
@@ -890,11 +896,51 @@ export const projects: CaseStudy[] = [
             body: "The original onboarding was too short. Without enough context about the user's case, the AI was filling gaps by guessing, and the hallucinations broke trust fast.\n\nI studied how immigration lawyers actually intake their clients. The questions they ask up front aren't paperwork. They're how the lawyer learns the case before giving any advice. I rebuilt onboarding around those same questions, so the AI starts with enough context to be accurate from the first message.",
           },
           {
-            kind: "mediaPlaceholder",
-            filename: "v1_onboarding.png",
-            description: "Onboarding flow, modeled after lawyer intake.",
-            mediaType: "image",
+            kind: "imageCarousel",
             ratio: "16/9",
+            caption: "Onboarding flow, modeled after lawyer intake.",
+            images: [
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/1.jpg",
+                alt: "Step 1 — Welcome screen: Let's set up your immigration case.",
+              },
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/2.jpg",
+                alt: "Step 2 of 7 — Who are you in this case? (beneficiary, petitioner, helping someone else)",
+              },
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/3.jpg",
+                alt: "Step 3 of 7 — What type of relationship-based case is this? (marriage-based, family-based, not sure yet)",
+              },
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/4.jpg",
+                alt: "Step 4 of 9 — A few details about your case (U.S. citizen vs green card holder petitioner).",
+              },
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/5.jpg",
+                alt: "Step 5 of 9 — Where is the beneficiary living right now? (inside vs outside the United States)",
+              },
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/6.jpg",
+                alt: "Step 6 of 10 — What is the beneficiary's current immigration status?",
+              },
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/7.jpg",
+                alt: "Step 7 of 10 — About the petitioner: legal name, citizenship, address, income, household size.",
+              },
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/8.jpg",
+                alt: "Step 8 of 10 — About the beneficiary: legal name, country of birth, current address, prior denials, criminal record.",
+              },
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/9.jpg",
+                alt: "Step 9 of 10 — Marriage details: date, country, prior marriages.",
+              },
+              {
+                src: "/images/strawberryMatcha/designDecision/onboarding/10.jpg",
+                alt: "Step 10 of 10 — Review your case setup before creating the case file.",
+              },
+            ],
           },
         ],
       },

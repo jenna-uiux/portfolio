@@ -18,9 +18,12 @@ import { InsightFlipCards } from "./InsightFlipCards";
 import { ImageSlot } from "./ImageSlot";
 import { MediaImage } from "./MediaImage";
 import { MediaVideo } from "./MediaVideo";
-import { ProcessRail } from "./ProcessRail";
-import { StatDots } from "./StatDots";
 import { TimelineStepper } from "./TimelineStepper";
+import { PillarGrid } from "./PillarGrid";
+import { AnnotatedCallout } from "./AnnotatedCallout";
+import { ProblemStatementCallout } from "./ProblemStatementCallout";
+import { NumberedTimeline } from "./NumberedTimeline";
+import { ExplorationCards } from "./ExplorationCards";
 
 type RichTextProps = {
   text: string;
@@ -315,19 +318,37 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
     return <PivotComparison items={block.items} />;
   }
 
-  if (block.kind === "statDots") {
+  if (block.kind === "pillarGrid") {
+    return <PillarGrid pillars={block.pillars} />;
+  }
+
+  if (block.kind === "annotatedCallout") {
     return (
-      <StatDots
-        filled={block.filled}
-        total={block.total}
-        headline={block.headline}
-        subtext={block.subtext}
+      <AnnotatedCallout
+        label={block.label}
+        body={block.body}
+        tone={block.tone}
       />
     );
   }
 
-  if (block.kind === "processRail") {
-    return <ProcessRail steps={block.steps} image={block.image} />;
+  if (block.kind === "problemStatement") {
+    return <ProblemStatementCallout body={block.body} />;
+  }
+
+  if (block.kind === "numberedTimeline") {
+    return <NumberedTimeline steps={block.steps} />;
+  }
+
+  if (block.kind === "explorationCards") {
+    return (
+      <ExplorationCards
+        intro={block.intro}
+        options={block.options}
+        finalPickLabel={block.finalPickLabel}
+        finalPickBody={block.finalPickBody}
+      />
+    );
   }
 
   if (block.kind === "bulletList") {
@@ -663,22 +684,31 @@ function MediaPlaceholder({
     <div>
       <div
         className={[
-          "relative w-full overflow-hidden rounded-lg border border-dashed border-ink/18 bg-white/40",
+          "relative w-full overflow-hidden rounded-2xl bg-white ring-1 ring-ink/8 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]",
           ratioClass[ratio],
         ].join(" ")}
       >
-        <div aria-hidden className="absolute inset-0 grain opacity-20" />
-        <div
-          className="absolute left-4 top-4 t-mono"
-          style={
-            captionLabel ? { color: "var(--accent)" } : undefined
-          }
-        >
-          {captionLabel ?? `Future ${mediaType}`}
-        </div>
+        <div aria-hidden className="absolute inset-0 grain opacity-15" />
+        {captionLabel ? (
+          <span
+            className="absolute left-4 top-4 inline-flex items-center rounded-full px-2.5 py-0.5 t-mono"
+            style={{
+              background: "var(--accent-soft)",
+              color: "var(--accent)",
+            }}
+          >
+            {captionLabel}
+          </span>
+        ) : (
+          <span className="absolute left-4 top-4 t-mono text-ink/45">
+            {`Demo ${mediaType}`}
+          </span>
+        )}
+        <span className="absolute right-4 top-4 t-mono text-ink/35">
+          {filename}
+        </span>
         <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
-          <p className="max-w-[34ch] t-caption">{description}</p>
-          <p className="mt-3 t-mono">{filename}</p>
+          <p className="max-w-[34ch] t-caption text-ink/55">{description}</p>
         </div>
       </div>
       {sourceCaption ? (

@@ -52,7 +52,7 @@ export function ExplorationCards({
           <article
             key={opt.number}
             data-reveal
-            className="flex h-full flex-col rounded-2xl bg-white px-6 py-6 ring-1 ring-ink/8 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]"
+            className="flex h-full flex-col rounded-2xl bg-white px-6 py-6 ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]"
           >
             <span
               className="t-mono tabular-nums"

@@ -685,7 +685,7 @@ function MediaPlaceholder({
     <div>
       <div
         className={[
-          "relative w-full overflow-hidden rounded-2xl bg-white ring-1 ring-ink/8 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]",
+          "relative w-full overflow-hidden rounded-2xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]",
           ratioClass[ratio],
         ].join(" ")}
       >

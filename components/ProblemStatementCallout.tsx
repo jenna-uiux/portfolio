@@ -20,7 +20,14 @@ export function ProblemStatementCallout({ body }: Props) {
       </p>
       <blockquote
         data-reveal
-        className="mt-5 max-w-[34ch] font-light leading-[1.1] tracking-[-0.04em] text-ink text-[clamp(1.6rem,3.6vw,2.8rem)]"
+        className="mt-5 max-w-[34ch] text-ink"
+        style={{
+          fontFamily: '"Instrument Serif", serif',
+          fontWeight: 400,
+          fontSize: "clamp(28px, 3.4vw, 36px)",
+          lineHeight: 1.2,
+          letterSpacing: "-0.01em",
+        }}
       >
         <RichText text={body} />
       </blockquote>

@@ -20,7 +20,7 @@ export function ProblemStatementCallout({ body }: Props) {
       </p>
       <blockquote
         data-reveal
-        className="mt-5 text-ink"
+        className="mt-5 max-w-[80%] text-ink"
         style={{
           fontFamily: '"Instrument Serif", serif',
           fontWeight: 400,

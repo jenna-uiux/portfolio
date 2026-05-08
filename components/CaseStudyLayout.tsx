@@ -148,7 +148,9 @@ export function CaseStudyLayout({ project }: Props) {
 
                   {s.eyebrow ? (
                     project.slug === "strawberry-matcha" ? (
-                      <h2 className="mt-3 max-w-[26ch] t-h2">{s.eyebrow}</h2>
+                      <h2 className="mt-3 max-w-[28ch] t-h2-tight">
+                        {s.eyebrow}
+                      </h2>
                     ) : (
                       <h3 className="mt-3 t-h3">{s.eyebrow}</h3>
                     )

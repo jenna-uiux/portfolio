@@ -648,13 +648,15 @@ export const projects: CaseStudy[] = [
       {
         id: "context",
         title: "Context",
-        eyebrow: "Context",
-        body: "Strawberry Matcha is for couples going through the CR1 or F2A marriage-based green card process without a lawyer. The applicant talks to it the way they would talk to someone who already knows the process. As they chat, it asks follow-up questions, picks up details about the case, and gets more useful the more it's used.",
+        eyebrow:
+          "An AI agent for couples filing their marriage-based green card alone.",
+        body: "Strawberry Matcha is for people going through the CR1 or F2A green card process without a lawyer. The applicant talks to it the way they would talk to someone who already knows the process. As they chat, it asks follow-up questions, picks up details about the case, and gets more useful the more it's used.",
       },
       {
         id: "problem",
         title: "User problem",
-        eyebrow: "User problem",
+        eyebrow:
+          "Filing alone leads to mistakes — and general AI makes it worse.",
         body: "Most couples filing for a marriage-based green card don't have a lawyer. They piece the process together from USCIS pages, Reddit threads, and lawyer blogs from years ago. Three forces collide.",
         contentBlocks: [
           {
@@ -688,8 +690,9 @@ export const projects: CaseStudy[] = [
       {
         id: "solution",
         title: "Solution",
-        eyebrow: "Solution",
-        body: "A legal-trained AI agent that learns your case through conversation. Three pillars hold it together.",
+        eyebrow:
+          "A legal-trained AI agent that learns your case through conversation.",
+        body: "Three pillars hold it together — each one a deliberate counter to the way filing alone usually breaks down.",
         contentBlocks: [
           {
             kind: "pillarGrid",
@@ -716,8 +719,9 @@ export const projects: CaseStudy[] = [
       {
         id: "features",
         title: "Key features",
-        eyebrow: "Key features",
-        body: "Three features that close the gap between filing alone and working with a lawyer.",
+        eyebrow:
+          "Three features that close the gap between filing alone and having a lawyer.",
+        body: "",
         contentBlocks: [
           {
             kind: "subheading",
@@ -767,8 +771,9 @@ export const projects: CaseStudy[] = [
       {
         id: "process",
         title: "Design process",
-        eyebrow: "Design process",
-        body: "From concept to crafted product in five steps, plus the two design decisions that mattered most.",
+        eyebrow:
+          "From concept to crafted product in five steps — and two design decisions that defined the shape of it.",
+        body: "",
         contentBlocks: [
           {
             kind: "numberedTimeline",
@@ -896,8 +901,9 @@ export const projects: CaseStudy[] = [
       {
         id: "reflection",
         title: "Reflection",
-        eyebrow: "Reflection",
-        body: "What I took away from designing an AI agent for a high-stakes legal workflow.",
+        eyebrow:
+          "What I took away from designing an AI agent for a high-stakes legal workflow.",
+        body: "",
         contentBlocks: [
           {
             kind: "takeawayCards",

@@ -121,6 +121,13 @@
     letter-spacing: -0.02em;
     color: var(--text);
   }
+  .t-h2-tight {
+    font-size: clamp(26px, 2.4vw, 36px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.018em;
+    color: var(--text);
+  }
   .t-h3 {
     font-size: 24px;
     font-weight: 500;

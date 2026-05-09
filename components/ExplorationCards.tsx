@@ -212,7 +212,7 @@ export function ExplorationCards({
             );
           })() : null}
           {finalPickBody ? (
-            <p className="max-w-[48ch] t-body">
+            <p className="t-body">
               <RichText text={finalPickBody} />
             </p>
           ) : null}

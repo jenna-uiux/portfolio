@@ -23,9 +23,29 @@ export function MindWorld() {
   const dimRef = useRef<HTMLDivElement | null>(null);
   const soundRef = useRef<SoundToggleHandle | null>(null);
 
+  // Preload island background images so we don't mount a blank (black) scene
+  // on slow networks (e.g. Vercel cold start + large JPGs).
+  const preloadImage = useCallback((src: string) => {
+    return new Promise<void>((resolve) => {
+      const img = new Image();
+      img.decoding = "async";
+      img.onload = async () => {
+        try {
+          await img.decode?.();
+        } catch {
+          // noop
+        }
+        resolve();
+      };
+      img.onerror = () => resolve();
+      img.src = src;
+    });
+  }, []);
+
   const [phase, setPhase] = useState<Phase>("hero");
   const [activeKey, setActiveKey] = useState<IslandKey | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [worldReady, setWorldReady] = useState(false);
   const [mapIntro, setMapIntro] = useState(false);
   const mapIntroShownRef = useRef(false);
 
@@ -37,6 +57,37 @@ export function MindWorld() {
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
+
+  // About entry: preload main textures so the world fades in instead of showing a blank/black frame.
+  useEffect(() => {
+    let cancelled = false;
+
+    const sources = [
+      "/images/about/hero.png",
+      "/images/about/cloud/cloud_1.png",
+      "/images/about/cloud/cloud_2.png",
+      "/images/about/cloud/cloud_3.png",
+    ];
+
+    const run = async () => {
+      try {
+        await Promise.all(sources.map((src) => preloadImage(src)));
+      } finally {
+        if (!cancelled) setWorldReady(true);
+      }
+    };
+
+    const t = window.setTimeout(() => {
+      if (!cancelled) setWorldReady(true);
+    }, 7000);
+
+    void run();
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(t);
+    };
+  }, [preloadImage]);
 
   // ── Atmospheric layer animations + cursor parallax
   useGSAP(
@@ -199,15 +250,20 @@ export function MindWorld() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Start preloading immediately; we'll only mount IslandScene after it's ready.
+    const islandImageReady = preloadImage(island.image);
+
     setPhase("zooming");
 
     if (reduce) {
       // Soft crossfade only — no zoom, no pan
       gsap.timeline({
         onComplete: () => {
-          setActiveKey(key);
-          setPhase("island");
-          gsap.delayedCall(0.4, () => gsap.set(dim, { opacity: 0 }));
+          islandImageReady.then(() => {
+            setActiveKey(key);
+            setPhase("island");
+            gsap.delayedCall(0.4, () => gsap.set(dim, { opacity: 0 }));
+          });
         },
       }).to(dim, { opacity: 1, duration: 0.5, ease: "power2.in" });
       return;
@@ -217,8 +273,10 @@ export function MindWorld() {
     const tl = gsap.timeline({
       defaults: { ease: "power3.inOut" },
       onComplete: () => {
-        setActiveKey(key);
-        setPhase("island");
+        islandImageReady.then(() => {
+          setActiveKey(key);
+          setPhase("island");
+        });
         // reset map for next time once scene is on top
         gsap.delayedCall(0.6, () => {
           gsap.set(mapWrap, {
@@ -268,7 +326,12 @@ export function MindWorld() {
   return (
     <div ref={rootRef} className={s.root} aria-label="Mind World">
       {/* World shell — fixed atmospheric stack */}
-      <div className={s.world} aria-hidden="true">
+      <div
+        className={[s.world, worldReady ? s.worldVisible : ""]
+          .filter(Boolean)
+          .join(" ")}
+        aria-hidden="true"
+      >
         <div ref={mapWrapRef} className={s.mapWrap}>
           <div className={s.map} />
           <div className={s.mapTint} />

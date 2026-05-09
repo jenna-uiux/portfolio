@@ -11,7 +11,6 @@ type Props = {
 };
 
 export function CaseStudyTeaser({ project, index }: Props) {
-  const number = String(index + 1).padStart(2, "0");
   return (
     <section
       id={index === 0 ? "work" : `work-${project.slug}`}
@@ -22,50 +21,50 @@ export function CaseStudyTeaser({ project, index }: Props) {
         <Link
           href={`/work/${project.slug}`}
           aria-label={`Open ${project.title} case study`}
+          data-cursor="read"
           className="group block"
         >
-          <div className="flex items-baseline justify-between gap-6 pb-6">
-            <div className="flex items-baseline gap-4">
-              <span className="font-sans text-[12px] font-medium uppercase tracking-[0.18em] text-ink/45">
-                {number}
-              </span>
-              <h2
-                id={`teaser-${project.slug}`}
-                className="text-[clamp(1.6rem,2.6vw,2.6rem)] font-light tracking-[-0.035em] leading-[1.1] transition-colors group-hover:text-brown"
+          <div className="mb-5 flex flex-wrap items-center gap-3">
+            <h3
+              id={`teaser-${project.slug}`}
+              className="text-[16px] font-normal tracking-[-0.005em] text-ink/80"
+            >
+              {project.title}
+            </h3>
+            {project.tags?.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-ink/15 bg-ink/[0.03] px-2.5 py-0.5 font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-ink/65"
               >
-                {project.title}
-              </h2>
-            </div>
-            <span className="hidden font-sans text-[12px] font-medium uppercase tracking-[0.16em] text-ink/45 md:block">
-              {project.category} · {project.year}
-            </span>
+                {tag}
+              </span>
+            ))}
           </div>
 
-          <div className="grid gap-6 md:grid-cols-12 md:items-end md:pb-6">
-            <p className="max-w-[58ch] whitespace-pre-line text-[16px] font-light leading-[1.65] text-ink/80 md:col-span-9">
-              {project.summary}
-            </p>
-            <div className="flex items-center justify-end gap-2 text-[14px] md:col-span-3">
-              <span className="underline-grow font-light text-ink/80 group-hover:text-brown transition-colors">
-                Read case study
-              </span>
-              <span
-                aria-hidden
-                className="transition-transform group-hover:translate-x-1"
-              >
-                →
-              </span>
-            </div>
-          </div>
+          <p className="mb-8 max-w-[80%] whitespace-pre-line t-h2-tight text-ink md:mb-10">
+            {project.summary}
+          </p>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-12%" }}
             transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1] }}
-            className="transition-transform duration-500 group-hover:-translate-y-1"
+            className="relative overflow-hidden rounded-lg"
           >
-            <CoverMedia cover={project.cover} ratio="21/9" />
+            <div className="transition-transform duration-700 ease-out group-hover:scale-[1.025]">
+              <CoverMedia cover={project.cover} ratio="21/9" />
+            </div>
+
+            <div
+              aria-hidden
+              className="pointer-events-none absolute bottom-5 left-6 flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.18em] text-white opacity-0 transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100 translate-y-3 [text-shadow:0_1px_12px_rgba(0,0,0,0.45)]"
+            >
+              <span>Read case study</span>
+              <span className="transition-transform duration-500 ease-out group-hover:translate-x-1">
+                →
+              </span>
+            </div>
           </motion.div>
         </Link>
       </div>

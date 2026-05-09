@@ -378,25 +378,47 @@ export function BinaryInterfaceHero({
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     mount.appendChild(renderer.domElement);
 
-    const createBinaryTexture = (char: string) => {
-      const canvas = document.createElement("canvas");
+    const drawBinaryGlyph = (canvas: HTMLCanvasElement, char: string) => {
       canvas.width = 96;
       canvas.height = 96;
       const ctx = canvas.getContext("2d");
       if (!ctx) throw new Error("2D context unavailable");
+      ctx.clearRect(0, 0, 96, 96);
       ctx.fillStyle = "#111";
-      ctx.font = "300 64px Outfit, system-ui, sans-serif";
+      ctx.font = "300 44px 'IBM Plex Mono', ui-monospace, monospace";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(char, 48, 50);
+    };
+
+    const createBinaryTexture = (char: string) => {
+      const canvas = document.createElement("canvas");
+      drawBinaryGlyph(canvas, char);
       const tex = new THREE.CanvasTexture(canvas);
       tex.anisotropy = 4;
       tex.needsUpdate = true;
-      return tex;
+      return { tex, canvas };
     };
 
-    const tex0 = createBinaryTexture("0");
-    const tex1 = createBinaryTexture("1");
+    const { tex: tex0, canvas: canvas0 } = createBinaryTexture("0");
+    const { tex: tex1, canvas: canvas1 } = createBinaryTexture("1");
+
+    // Web fonts may not be available when the texture is first painted; once
+    // IBM Plex Mono loads, repaint the canvases and flag the textures dirty so
+    // every sprite picks up the correct glyphs.
+    if (typeof document !== "undefined" && document.fonts?.load) {
+      document.fonts
+        .load("300 44px 'IBM Plex Mono'")
+        .then(() => {
+          drawBinaryGlyph(canvas0, "0");
+          drawBinaryGlyph(canvas1, "1");
+          tex0.needsUpdate = true;
+          tex1.needsUpdate = true;
+        })
+        .catch(() => {
+          /* fall back to whatever monospace was painted */
+        });
+    }
 
     const group = new THREE.Group();
     scene.add(group);

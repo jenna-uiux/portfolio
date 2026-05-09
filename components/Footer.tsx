@@ -2,66 +2,90 @@ import { site } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="border-t hairline">
-      <div className="container-wide section-y grid gap-12 md:grid-cols-12">
-        <div className="md:col-span-7">
-          <p className="text-mono-kicker">Contact · 2026</p>
-          <h2 className="mt-4 text-[clamp(2rem,4vw,3.6rem)] font-extralight leading-[1] tracking-[-0.04em]">
-            Let&rsquo;s make
-            <br />
-            <span className="italic text-brown">something good.</span>
-          </h2>
-          <p className="mt-5 max-w-md text-[14px] font-light leading-[1.65] text-ink/70">
+    <footer className="relative">
+      <div className="container-ultra section-y">
+        <h2
+          style={{ fontFamily: "Outfit, sans-serif", fontWeight: 200 }}
+          className="text-[clamp(2rem,5vw,4.8rem)] leading-[1.04] tracking-[-0.04em] text-ink"
+        >
+          Let&rsquo;s make
+          <br />
+          <span
+            style={{ fontFamily: "Outfit, sans-serif", fontWeight: 200 }}
+            className="italic text-ink/90"
+          >
+            something good.
+          </span>
+        </h2>
+
+        <div className="mt-10 flex flex-col gap-3 md:mt-12">
+          <a
+            href={`mailto:${site.email}`}
+            data-cursor="visit"
+            style={{ fontFamily: "Outfit, sans-serif", fontWeight: 300 }}
+            className="group inline-flex max-w-max items-baseline gap-3 text-[clamp(18px,2vw,28px)] italic leading-[1.1] tracking-[-0.015em] text-ink"
+          >
+            <span className="underline-grow">{site.email}</span>
+            <span
+              aria-hidden
+              className="not-italic transition-transform duration-300 ease-out group-hover:translate-x-1.5"
+            >
+              →
+            </span>
+          </a>
+
+          <p
+            style={{ fontFamily: "Outfit, sans-serif", fontWeight: 300 }}
+            className="mt-2 max-w-md text-[13px] leading-[1.6] text-ink/55"
+          >
             {site.footer.tagline}
           </p>
         </div>
-
-        <div className="md:col-span-5 self-end">
-          <ul className="divide-y hairline border-y hairline text-[14px]">
-            <li className="flex items-center justify-between py-3">
-              <span className="font-sans text-[12px] font-medium uppercase tracking-[0.16em] text-ink/45">
-                Email
-              </span>
-              <a
-                href={`mailto:${site.email}`}
-                className="font-light underline-grow hover:text-brown transition-colors"
-              >
-                {site.email}
-              </a>
-            </li>
-            <li className="flex items-center justify-between py-3">
-              <span className="font-sans text-[12px] font-medium uppercase tracking-[0.16em] text-ink/45">
-                LinkedIn
-              </span>
-              <a
-                href={site.links.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="font-light underline-grow hover:text-brown transition-colors"
-              >
-                /in/jihyeon-jang
-              </a>
-            </li>
-            <li className="flex items-center justify-between py-3">
-              <span className="font-sans text-[12px] font-medium uppercase tracking-[0.16em] text-ink/45">
-                YouTube
-              </span>
-              <a
-                href={site.links.youtube}
-                target="_blank"
-                rel="noreferrer"
-                className="font-light underline-grow hover:text-brown transition-colors"
-              >
-                @Vibemaker
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
 
-      <div className="container-wide flex items-center justify-between pb-10 font-sans text-[12px] font-medium uppercase tracking-[0.16em] text-ink/45">
-        <span>{site.footer.copyright}</span>
-        <span>Jihyeon Jang · AI UX Designer</span>
+      <div className="border-t border-ink/10">
+        <div className="container-ultra flex flex-col gap-3 py-6 text-[12px] font-medium uppercase tracking-[0.16em] text-ink/45 md:flex-row md:items-center md:justify-between">
+          <span>
+            {site.footer.copyright}
+            <span className="mx-2 text-ink/25" aria-hidden>
+              ·
+            </span>
+            AI UX Designer
+          </span>
+
+          <nav aria-label="External links" className="flex items-center gap-6">
+            <a
+              href={site.links.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor="visit"
+              className="group inline-flex items-center gap-1.5 transition-colors hover:text-ink"
+            >
+              <span>LinkedIn</span>
+              <span
+                aria-hidden
+                className="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              >
+                ↗
+              </span>
+            </a>
+            <a
+              href={site.links.youtube}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor="visit"
+              className="group inline-flex items-center gap-1.5 transition-colors hover:text-ink"
+            >
+              <span>YouTube</span>
+              <span
+                aria-hidden
+                className="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              >
+                ↗
+              </span>
+            </a>
+          </nav>
+        </div>
       </div>
     </footer>
   );

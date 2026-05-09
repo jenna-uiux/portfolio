@@ -291,6 +291,8 @@ export type CaseStudy = {
   year: string;
   cover: ImagePlaceholder;
   featured: boolean;
+  /** Short labels shown on the home teaser (e.g. "Agentic Coding"). */
+  tags?: string[];
   externalLink?: { label: string; href: string };
   sections: CaseSection[];
 };
@@ -301,8 +303,9 @@ export const projects: CaseStudy[] = [
     title: "Fini",
     tagline: "Building Fini from 0 → 1",
     summary:
-      "Designed and built Fini, an adaptive productivity mobile app\nthat aligns daily tasks with a user's real-time bio-signals.",
+      "Designed and built Fini from 0 → 1,\n an Apple Health connected AI productivity app",
     category: "AI UX / Productivity",
+    tags: ["Agentic Coding"],
     role: "Design Engineer",
     tools: [
       "Cursor",
@@ -639,8 +642,9 @@ export const projects: CaseStudy[] = [
     tagline:
       "AI agent for marriage-based green card applicants (CR1 or F2A) filing without a lawyer.",
     summary:
-      "A legal-trained AI agent for couples filing their CR1 or F2A green card alone. It learns your case through conversation and walks you through every form, field by field.",
+      "Designed a conversational AI agent around a harder question:\nHow do you make AI safe enough for high-stakes legal workflows?",
     category: "AI UX / Legal workflow",
+    tags: ["Agentic Coding"],
     role: "AI UX Designer · Solo project",
     tools: ["Cursor", "Claude API", "Supabase", "Figma"],
     focus: ["Conversational AI", "Decision-support UX"],

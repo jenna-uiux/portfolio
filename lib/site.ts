@@ -16,7 +16,7 @@ export const site = {
   ] as const,
   footer: {
     tagline: "Always open to new ideas and collaborations (and good coffee).",
-    copyright: "© 2025 Jihyeon Jang",
+    copyright: "© 2026 Jihyeon Jang",
   },
 };
 

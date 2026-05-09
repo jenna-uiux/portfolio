@@ -3,6 +3,7 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { ConditionalFooter } from "@/components/ConditionalFooter";
+import { MagneticCursor } from "@/components/MagneticCursor";
 import { site } from "@/lib/site";
 
 const outfit = Outfit({
@@ -42,7 +43,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet"
         />
         <link rel="stylesheet" href="https://use.typekit.net/vlg1buw.css" />
@@ -57,6 +58,7 @@ export default function RootLayout({
         <Nav />
         <main id="main">{children}</main>
         <ConditionalFooter />
+        <MagneticCursor />
       </body>
     </html>
   );

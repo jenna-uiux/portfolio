@@ -56,7 +56,7 @@ export function Hero() {
         >
           <div className="text-center font-[300] text-ink">
             <motion.h1
-              className="text-[clamp(52px,7.2vw,92px)] leading-[1.02] tracking-[-0.035em]"
+              className="text-[clamp(36px,4.8vw,64px)] leading-[1.02] tracking-[-0.035em]"
               initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ delay: 0.22, duration: 1.05, ease: "easeOut" }}
@@ -65,13 +65,13 @@ export function Hero() {
             </motion.h1>
 
             <motion.p
-              className="mt-5 text-[clamp(52px,7.2vw,92px)] leading-[1.02] tracking-[-0.02em]"
+              className="mt-3 text-[clamp(36px,4.8vw,64px)] leading-[1.02] tracking-[-0.02em]"
               initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ delay: 0.95, duration: 0.9, ease: "easeOut" }}
             >
-              <span className="mr-0">what you</span>
-              <span className="relative inline-block h-[1.05em] min-w-[2.6em] overflow-hidden align-bottom">
+              <span className="mr-2">what you</span>
+              <span className="relative inline-block h-[1.05em] min-w-[2.2em] overflow-hidden align-bottom">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span
                     key={word}

@@ -243,6 +243,7 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
         description={block.description}
         ratio={block.ratio ?? "16/9"}
         mediaType={block.mediaType ?? "image"}
+        src={block.src}
         sourceCaption={block.sourceCaption}
         captionLabel={block.captionLabel}
       />
@@ -682,6 +683,7 @@ function MediaPlaceholder({
   description,
   ratio = "16/9",
   mediaType,
+  src,
   sourceCaption,
   captionLabel,
 }: {
@@ -689,9 +691,28 @@ function MediaPlaceholder({
   description: string;
   ratio: ImageRatio;
   mediaType: "image" | "video";
+  src?: string;
   sourceCaption?: string;
   captionLabel?: string;
 }) {
+  if (src && mediaType === "video") {
+    return (
+      <div>
+        <MediaVideo
+          src={src}
+          description={description}
+          ratio={ratio}
+          autoPlay
+          loop
+          muted
+          controls={false}
+          className="rounded-2xl border border-ink/10"
+        />
+        {sourceCaption ? <p className="mt-3 t-mono">{sourceCaption}</p> : null}
+      </div>
+    );
+  }
+
   return (
     <div>
       <div

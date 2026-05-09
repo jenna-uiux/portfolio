@@ -107,6 +107,8 @@ export type CaseContentBlock =
       filename: string;
       description: string;
       mediaType?: "image" | "video";
+      /** Optional public URL under `/public` (e.g. `/media/...`). If present, renders real media instead of a placeholder. */
+      src?: string;
       ratio?: ImageRatio;
       /** Small mono uppercase line rendered below the placeholder. */
       sourceCaption?: string;
@@ -648,6 +650,7 @@ export const projects: CaseStudy[] = [
       filename: "strawberry-matcha_hero.mp4",
       description: "Strawberry Matcha hero demo",
       ratio: "16/9",
+      videoSrc: "/media/strawberryMatcha/demo/demo_1.mp4",
     },
     featured: true,
     sections: [
@@ -742,10 +745,11 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "mediaPlaceholder",
-            filename: "feature_ask-sm.mp4",
+            filename: "demo_1.mp4",
             description: "Ask Strawberry Matcha demo",
             mediaType: "video",
             ratio: "16/9",
+            src: "/media/strawberryMatcha/demo/demo_1.mp4",
           },
           {
             kind: "subheading",

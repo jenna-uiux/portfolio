@@ -771,10 +771,11 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "mediaPlaceholder",
-            filename: "feature_timeline.png",
+            filename: "demo_3.mp4",
             description: "Timeline screen",
-            mediaType: "image",
+            mediaType: "video",
             ratio: "16/9",
+            src: "/media/strawberryMatcha/demo/demo_3.mp4",
           },
         ],
       },

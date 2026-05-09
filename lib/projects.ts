@@ -837,6 +837,12 @@ export const projects: CaseStudy[] = [
                   "Buries what matters most.",
                   "Users don't know what to ask next.",
                 ],
+                image: {
+                  filename: "conversationalAIUI/01.png",
+                  description:
+                    "Single response paragraph: a long block of text that buries the answer.",
+                  src: "/images/strawberryMatcha/designDecision/conversationalAIUI/01.png",
+                },
               },
               {
                 number: "02",
@@ -846,6 +852,12 @@ export const projects: CaseStudy[] = [
                   "Loses conversational warmth.",
                   "Overkill for short answers.",
                 ],
+                image: {
+                  filename: "conversationalAIUI/02.png",
+                  description:
+                    "Doc-style response with bold headers and bullet lists.",
+                  src: "/images/strawberryMatcha/designDecision/conversationalAIUI/02.png",
+                },
               },
               {
                 number: "03",
@@ -857,6 +869,12 @@ export const projects: CaseStudy[] = [
                   "Nudges the next question.",
                 ],
                 cons: ["More design and prompt work."],
+                image: {
+                  filename: "conversationalAIUI/03.png",
+                  description:
+                    "Two-layer response: serif acknowledgment, sans-serif body, suggested follow-up chips.",
+                  src: "/images/strawberryMatcha/designDecision/conversationalAIUI/03.png",
+                },
               },
             ],
             finalPickLabel: "Final pick: Option 03",

@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import { useRef, useState } from "react";
 import { RichText } from "./CaseStudyBlocks";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
@@ -25,6 +27,15 @@ export function ExplorationCards({
   finalPickBody,
 }: Props) {
   const ref = useScrollReveal<HTMLDivElement>({ stagger: 0.07 });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  const handleMove = (e: React.MouseEvent) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
 
   const cols =
     options.length === 2
@@ -32,6 +43,9 @@ export function ExplorationCards({
       : options.length >= 3
       ? "md:grid-cols-3"
       : "md:grid-cols-1";
+
+  const hoveredImage =
+    hovered !== null ? options[hovered]?.image : undefined;
 
   return (
     <div ref={ref} className="exploration-cards">
@@ -42,17 +56,26 @@ export function ExplorationCards({
       ) : null}
 
       <div
+        ref={containerRef}
+        onMouseMove={handleMove}
         className={[
-          "grid grid-cols-1 gap-x-6 gap-y-6",
+          "relative grid grid-cols-1 gap-x-6 gap-y-6",
           cols,
           intro ? "mt-6" : "",
         ].join(" ")}
       >
-        {options.map((opt) => (
+        {options.map((opt, i) => (
           <article
             key={opt.number}
             data-reveal
-            className="flex h-full flex-col rounded-2xl bg-white px-6 py-6 ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]"
+            onMouseEnter={() => opt.image && setHovered(i)}
+            onMouseLeave={() => setHovered((cur) => (cur === i ? null : cur))}
+            className={[
+              "flex h-full flex-col rounded-2xl bg-white px-6 py-6 ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)] transition-all duration-200",
+              opt.image
+                ? "cursor-pointer hover:-translate-y-0.5 hover:ring-black/15"
+                : "",
+            ].join(" ")}
           >
             <span
               className="t-mono tabular-nums"
@@ -101,6 +124,33 @@ export function ExplorationCards({
             </ul>
           </article>
         ))}
+
+        {hoveredImage?.src ? (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute z-30 hidden md:block"
+            style={{
+              left: pos.x,
+              top: pos.y,
+              transform: "translate(20px, 20px)",
+            }}
+          >
+            <div
+              className="overflow-hidden rounded-xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_24px_48px_-20px_rgba(0,0,0,0.35)] transition-opacity duration-150"
+              style={{ width: 360 }}
+            >
+              <div className="relative aspect-[4/3] w-full bg-black/[0.02]">
+                <Image
+                  src={hoveredImage.src}
+                  alt={hoveredImage.description}
+                  fill
+                  className="object-cover"
+                  sizes="360px"
+                />
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
 
       {finalPickLabel || finalPickBody ? (

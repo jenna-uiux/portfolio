@@ -10,7 +10,12 @@ type Props = {
 };
 
 export function NumberedTimeline({ steps }: Props) {
-  const ref = useScrollReveal<HTMLOListElement>({ stagger: 0.06 });
+  const ref = useScrollReveal<HTMLOListElement>({
+    stagger: 0.12,
+    yOffset: 12,
+    duration: 0.5,
+    start: "top 80%",
+  });
 
   return (
     <ol
@@ -29,7 +34,9 @@ export function NumberedTimeline({ steps }: Props) {
           >
             {step.num}
           </span>
-          <p className="t-h4 font-normal text-ink">{step.name}</p>
+          <p className="t-h4 whitespace-pre-line font-normal text-ink">
+            {step.name}
+          </p>
           {step.note ? (
             <p className="col-start-2 max-w-[48ch] t-body-sm md:col-start-3">
               <RichText text={step.note} />

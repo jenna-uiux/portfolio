@@ -696,6 +696,9 @@ function MediaPlaceholder({
   captionLabel?: string;
 }) {
   if (src && mediaType === "video") {
+    const objectFit: "cover" | "contain" = src.includes("/media/strawberryMatcha/")
+      ? "contain"
+      : "cover";
     return (
       <div>
         <MediaVideo
@@ -706,6 +709,7 @@ function MediaPlaceholder({
           loop
           muted
           controls={false}
+          objectFit={objectFit}
           className="rounded-2xl border border-ink/10"
         />
         {sourceCaption ? <p className="mt-3 t-mono">{sourceCaption}</p> : null}

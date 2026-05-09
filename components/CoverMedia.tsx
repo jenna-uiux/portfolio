@@ -16,6 +16,11 @@ export function CoverMedia({ cover, ratio, compact, className }: Props) {
   const r = ratio ?? cover.ratio ?? "16/9";
 
   if (cover.videoSrc) {
+    const objectFit: "cover" | "contain" = cover.videoSrc.includes(
+      "/media/strawberryMatcha/"
+    )
+      ? "contain"
+      : "cover";
     return (
       <MediaVideo
         src={cover.videoSrc}
@@ -24,6 +29,7 @@ export function CoverMedia({ cover, ratio, compact, className }: Props) {
         autoPlay
         loop
         controls={false}
+        objectFit={objectFit}
         className={[
           compact ? "rounded-md" : "rounded-lg",
           "border border-ink/10",

@@ -46,6 +46,7 @@ export function ExplorationCards({
 
   const hoveredImage =
     hovered !== null ? options[hovered]?.image : undefined;
+  const isLastCard = hovered === options.length - 1;
 
   return (
     <div ref={ref} className="exploration-cards">
@@ -132,20 +133,22 @@ export function ExplorationCards({
             style={{
               left: pos.x,
               top: pos.y,
-              transform: "translate(16px, calc(-100% - 12px))",
+              transform: isLastCard
+                ? "translate(calc(-100% - 16px), calc(-100% - 12px))"
+                : "translate(16px, calc(-100% - 12px))",
             }}
           >
             <div
               className="overflow-hidden rounded-xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_24px_48px_-20px_rgba(0,0,0,0.35)]"
-              style={{ width: 360 }}
+              style={{ width: 260 }}
             >
               <Image
                 src={hoveredImage.src}
                 alt={hoveredImage.description}
-                width={360}
+                width={260}
                 height={0}
                 style={{ width: "100%", height: "auto", display: "block" }}
-                sizes="360px"
+                sizes="260px"
               />
             </div>
           </div>

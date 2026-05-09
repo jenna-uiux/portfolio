@@ -650,7 +650,7 @@ export const projects: CaseStudy[] = [
       filename: "strawberry-matcha_hero.mp4",
       description: "Strawberry Matcha hero demo",
       ratio: "16/9",
-      videoSrc: "/media/strawberryMatcha/demo/demo_1.mp4",
+      videoSrc: "/media/strawberryMatcha/demo/demo_01.mp4",
     },
     featured: true,
     sections: [
@@ -745,11 +745,11 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "mediaPlaceholder",
-            filename: "demo_1.mp4",
+            filename: "demo_01.mp4",
             description: "Ask Strawberry Matcha demo",
             mediaType: "video",
             ratio: "16/9",
-            src: "/media/strawberryMatcha/demo/demo_1.mp4",
+            src: "/media/strawberryMatcha/demo/demo_01.mp4",
           },
           {
             kind: "subheading",
@@ -771,11 +771,11 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "mediaPlaceholder",
-            filename: "demo_3.mp4",
+            filename: "demo_03.mp4",
             description: "Timeline screen",
             mediaType: "video",
             ratio: "16/9",
-            src: "/media/strawberryMatcha/demo/demo_3.mp4",
+            src: "/media/strawberryMatcha/demo/demo_03.mp4",
           },
         ],
       },

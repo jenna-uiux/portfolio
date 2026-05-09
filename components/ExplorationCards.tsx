@@ -65,66 +65,102 @@ export function ExplorationCards({
           intro ? "mt-6" : "",
         ].join(" ")}
       >
-        {options.map((opt, i) => (
-          <article
-            key={opt.number}
-            data-reveal
-            onMouseEnter={() => opt.image && setHovered(i)}
-            onMouseLeave={() => setHovered((cur) => (cur === i ? null : cur))}
-            className={[
-              "flex h-full flex-col rounded-2xl bg-white px-6 py-6 ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)] transition-all duration-200",
-              opt.image
-                ? "cursor-pointer hover:-translate-y-0.5 hover:ring-black/15"
-                : "",
-            ].join(" ")}
-          >
-            <span
-              className="t-mono tabular-nums"
-              style={{ color: "var(--accent)" }}
+        {options.map((opt, i) => {
+          const isHovered = hovered === i;
+          return (
+            <article
+              key={opt.number}
+              data-reveal
+              onMouseEnter={() => opt.image && setHovered(i)}
+              onMouseLeave={() => setHovered((cur) => (cur === i ? null : cur))}
+              className={[
+                "group flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)] transition-all duration-200",
+                opt.image
+                  ? "cursor-pointer hover:-translate-y-0.5 hover:ring-black/20"
+                  : "",
+              ].join(" ")}
             >
-              {opt.number}
-            </span>
-            <h5 className="mt-3 max-w-[24ch] text-[17px] font-medium leading-[1.35] tracking-[-0.005em] text-ink">
-              <RichText text={opt.title} />
-            </h5>
+              {/* thumbnail strip hint */}
+              {opt.image?.src ? (
+                <div className="relative h-[72px] w-full shrink-0 overflow-hidden">
+                  <Image
+                    src={opt.image.src}
+                    alt=""
+                    fill
+                    className={[
+                      "object-cover object-top transition-all duration-300",
+                      isHovered ? "opacity-100 scale-[1.02]" : "opacity-40",
+                    ].join(" ")}
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    aria-hidden
+                  />
+                  {/* "hover to preview" label */}
+                  <span
+                    className={[
+                      "absolute bottom-2 right-2 rounded-full px-2 py-0.5 t-mono transition-opacity duration-200",
+                      isHovered ? "opacity-0" : "opacity-100",
+                    ].join(" ")}
+                    style={{
+                      background: "rgba(255,255,255,0.82)",
+                      backdropFilter: "blur(4px)",
+                      color: "rgba(23,23,23,0.55)",
+                    }}
+                  >
+                    Hover to preview
+                  </span>
+                </div>
+              ) : null}
 
-            <ul className="mt-5 space-y-2">
-              {opt.pros.map((p, i) => (
-                <li
-                  key={`p-${i}`}
-                  className="flex items-baseline gap-3 t-body-sm"
+              <div className="flex flex-1 flex-col px-6 py-5">
+                <span
+                  className="t-mono tabular-nums"
+                  style={{ color: "var(--accent)" }}
                 >
-                  <span
-                    aria-hidden
-                    className="t-mono shrink-0 select-none leading-none"
-                    style={{ color: "var(--accent)" }}
-                  >
-                    +
-                  </span>
-                  <span>
-                    <RichText text={p} />
-                  </span>
-                </li>
-              ))}
-              {opt.cons.map((c, i) => (
-                <li
-                  key={`c-${i}`}
-                  className="flex items-baseline gap-3 t-body-sm text-ink/70"
-                >
-                  <span
-                    aria-hidden
-                    className="t-mono shrink-0 select-none leading-none text-ink/40"
-                  >
-                    −
-                  </span>
-                  <span>
-                    <RichText text={c} />
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
+                  {opt.number}
+                </span>
+                <h5 className="mt-3 text-[17px] font-medium leading-[1.35] tracking-[-0.005em] text-ink">
+                  <RichText text={opt.title} />
+                </h5>
+
+                <ul className="mt-5 space-y-2">
+                  {opt.pros.map((p, pi) => (
+                    <li
+                      key={`p-${pi}`}
+                      className="flex items-baseline gap-3 t-body-sm"
+                    >
+                      <span
+                        aria-hidden
+                        className="t-mono shrink-0 select-none leading-none"
+                        style={{ color: "var(--accent)" }}
+                      >
+                        +
+                      </span>
+                      <span>
+                        <RichText text={p} />
+                      </span>
+                    </li>
+                  ))}
+                  {opt.cons.map((c, ci) => (
+                    <li
+                      key={`c-${ci}`}
+                      className="flex items-baseline gap-3 t-body-sm text-ink/70"
+                    >
+                      <span
+                        aria-hidden
+                        className="t-mono shrink-0 select-none leading-none text-ink/40"
+                      >
+                        −
+                      </span>
+                      <span>
+                        <RichText text={c} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          );
+        })}
 
         {hoveredImage?.src ? (
           <div

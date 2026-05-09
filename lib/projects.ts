@@ -882,21 +882,9 @@ export const projects: CaseStudy[] = [
               "Two-layer voice keeps the chat warm but makes the answer scannable, and the suggested follow-ups stop users from getting stuck on what to ask next.",
           },
           {
-            kind: "mediaPlaceholder",
-            filename: "v0_chat-before.png",
-            description: "Single block of text. Hard to scan, no clear next step.",
-            mediaType: "image",
-            ratio: "16/9",
-            captionLabel: "Before",
-          },
-          {
-            kind: "mediaPlaceholder",
-            filename: "v1_chat-after.png",
-            description:
-              "Layered response with personal acknowledgment, information, and suggested follow-ups.",
-            mediaType: "image",
-            ratio: "16/9",
-            captionLabel: "After",
+            kind: "image",
+            src: "/images/strawberryMatcha/designDecision/conversationalAIUI/03.png",
+            alt: "Final design: two-layer voice response with serif acknowledgment, sans-serif info, and suggested follow-up chips.",
           },
           {
             kind: "subheading",

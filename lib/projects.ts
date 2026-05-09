@@ -786,7 +786,7 @@ export const projects: CaseStudy[] = [
             steps: [
               {
                 num: "01",
-                name: "Define concept and Research to train the AI",
+                name: "Define concept\n& Research to train the AI",
                 note: "Mapped how immigration lawyers actually walk a couple through CR1 / F2A.",
               },
               {

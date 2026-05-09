@@ -194,17 +194,17 @@ export function ExplorationCards({
       {finalPickLabel || finalPickBody ? (
         <div
           data-reveal
-          className="mt-8 max-w-[80%] border-t hairline pt-6"
+          className="mt-8 max-w-[80%] flex flex-col gap-3 border-t hairline pt-6 md:flex-row md:items-baseline md:gap-10"
         >
           {finalPickLabel ? (() => {
             const colonIdx = finalPickLabel.indexOf(":");
             const prefix = colonIdx !== -1 ? finalPickLabel.slice(0, colonIdx + 1) : finalPickLabel;
             const suffix = colonIdx !== -1 ? finalPickLabel.slice(colonIdx + 1).trim() : null;
             return (
-              <div>
+              <div className="shrink-0 md:w-[160px]">
                 <p className="t-eyebrow">{prefix}</p>
                 {suffix ? (
-                  <p className="mt-1 text-[clamp(22px,2.2vw,30px)] font-medium leading-[1.2] tracking-[-0.02em] text-ink">
+                  <p className="mt-1 text-[clamp(20px,1.8vw,26px)] font-medium leading-[1.2] tracking-[-0.02em] text-ink">
                     {suffix}
                   </p>
                 ) : null}
@@ -212,7 +212,7 @@ export function ExplorationCards({
             );
           })() : null}
           {finalPickBody ? (
-            <p className="mt-4 t-body">
+            <p className="max-w-[48ch] t-body">
               <RichText text={finalPickBody} />
             </p>
           ) : null}

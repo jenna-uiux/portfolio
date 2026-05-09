@@ -132,22 +132,21 @@ export function ExplorationCards({
             style={{
               left: pos.x,
               top: pos.y,
-              transform: "translate(20px, 20px)",
+              transform: "translate(16px, calc(-100% - 12px))",
             }}
           >
             <div
-              className="overflow-hidden rounded-xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_24px_48px_-20px_rgba(0,0,0,0.35)] transition-opacity duration-150"
+              className="overflow-hidden rounded-xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_24px_48px_-20px_rgba(0,0,0,0.35)]"
               style={{ width: 360 }}
             >
-              <div className="relative aspect-[4/3] w-full bg-black/[0.02]">
-                <Image
-                  src={hoveredImage.src}
-                  alt={hoveredImage.description}
-                  fill
-                  className="object-cover"
-                  sizes="360px"
-                />
-              </div>
+              <Image
+                src={hoveredImage.src}
+                alt={hoveredImage.description}
+                width={360}
+                height={0}
+                style={{ width: "100%", height: "auto", display: "block" }}
+                sizes="360px"
+              />
             </div>
           </div>
         ) : null}

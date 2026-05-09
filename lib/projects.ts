@@ -883,7 +883,7 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "image",
-            src: "/images/strawberryMatcha/designDecision/conversationalAIUI/03.png",
+            src: "/images/strawberryMatcha/designDecision/conversationalAIUI/final.jpg",
             alt: "Final design: two-layer voice response with serif acknowledgment, sans-serif info, and suggested follow-up chips.",
           },
           {

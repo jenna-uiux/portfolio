@@ -763,10 +763,11 @@ export const projects: CaseStudy[] = [
           { kind: "fieldTranslator" },
           {
             kind: "mediaPlaceholder",
-            filename: "feature_field-translator.mp4",
+            filename: "demo_02.mp4",
             description: "Field Translator walkthrough",
             mediaType: "video",
             ratio: "16/9",
+            src: "/media/strawberryMatcha/demo/demo_02.mp4",
           },
           {
             kind: "subheading",

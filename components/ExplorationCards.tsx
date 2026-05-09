@@ -176,15 +176,15 @@ export function ExplorationCards({
           >
             <div
               className="overflow-hidden rounded-xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_24px_48px_-20px_rgba(0,0,0,0.35)]"
-              style={{ width: 260 }}
+              style={{ width: 380 }}
             >
               <Image
                 src={hoveredImage.src}
                 alt={hoveredImage.description}
-                width={260}
+                width={380}
                 height={0}
                 style={{ width: "100%", height: "auto", display: "block" }}
-                sizes="260px"
+                sizes="380px"
               />
             </div>
           </div>

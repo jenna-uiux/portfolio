@@ -14,6 +14,7 @@ function resolveMediaUrl(url: string) {
 const ratioClass: Record<ImageRatio, string> = {
   "16/9": "aspect-[16/9]",
   "21/9": "aspect-[21/9]",
+  "4/3": "aspect-[4/3]",
   "4/5": "aspect-[4/5]",
   "1/1": "aspect-square",
   "3/2": "aspect-[3/2]",

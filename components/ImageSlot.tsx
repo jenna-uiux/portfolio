@@ -1,8 +1,9 @@
-type Ratio = "16/9" | "21/9" | "4/5" | "1/1" | "3/2";
+type Ratio = "16/9" | "21/9" | "4/3" | "4/5" | "1/1" | "3/2";
 
 const ratioClass: Record<Ratio, string> = {
   "16/9": "aspect-[16/9]",
   "21/9": "aspect-[21/9]",
+  "4/3": "aspect-[4/3]",
   "4/5": "aspect-[4/5]",
   "1/1": "aspect-square",
   "3/2": "aspect-[3/2]",
@@ -11,6 +12,7 @@ const ratioClass: Record<Ratio, string> = {
 const ratioLabel: Record<Ratio, string> = {
   "16/9": "16:9",
   "21/9": "21:9",
+  "4/3": "4:3",
   "4/5": "4:5",
   "1/1": "1:1",
   "3/2": "3:2",

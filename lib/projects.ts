@@ -1,4 +1,4 @@
-export type ImageRatio = "16/9" | "4/5" | "1/1" | "3/2" | "21/9";
+export type ImageRatio = "16/9" | "4/3" | "4/5" | "1/1" | "3/2" | "21/9";
 
 export type ImagePlaceholder = {
   filename: string;
@@ -649,7 +649,7 @@ export const projects: CaseStudy[] = [
     cover: {
       filename: "strawberry-matcha_hero.mp4",
       description: "Strawberry Matcha hero demo",
-      ratio: "16/9",
+      ratio: "4/3",
       videoSrc: "/media/strawberryMatcha/demo/demo_1.mp4",
     },
     featured: true,
@@ -748,7 +748,7 @@ export const projects: CaseStudy[] = [
             filename: "demo_1.mp4",
             description: "Ask Strawberry Matcha demo",
             mediaType: "video",
-            ratio: "16/9",
+            ratio: "4/3",
             src: "/media/strawberryMatcha/demo/demo_1.mp4",
           },
           {
@@ -774,7 +774,7 @@ export const projects: CaseStudy[] = [
             filename: "demo_3.mp4",
             description: "Timeline screen",
             mediaType: "video",
-            ratio: "16/9",
+            ratio: "4/3",
             src: "/media/strawberryMatcha/demo/demo_3.mp4",
           },
         ],

@@ -3,6 +3,8 @@
 import { useState } from "react";
 
 import type { ImageRatio } from "@/lib/projects";
+import { isYouTubeMediaUrl, parseYouTubeId } from "@/lib/youtube";
+import { YouTubeEmbed } from "./YouTubeEmbed";
 
 function resolveMediaUrl(url: string) {
   const base = process.env.NEXT_PUBLIC_MEDIA_CDN_BASE;
@@ -46,9 +48,10 @@ export function MediaVideo({
   objectFit = "cover",
 }: Props) {
   const [errored, setErrored] = useState(false);
-  const effectiveMuted = autoPlay ? true : (muted ?? false);
   const resolvedSrc = resolveMediaUrl(src);
   const resolvedPoster = poster ? resolveMediaUrl(poster) : undefined;
+  const youTubeId =
+    isYouTubeMediaUrl(src) ? parseYouTubeId(src) : null;
 
   return (
     <div
@@ -59,13 +62,30 @@ export function MediaVideo({
         className,
       ].join(" ")}
     >
-      {errored ? (
+      {youTubeId && !errored ? (
+        <YouTubeEmbed
+          videoId={youTubeId}
+          title={description}
+          autoPlay={autoPlay}
+          loop={loop}
+          controls={controls}
+        />
+      ) : errored ? (
         <>
           <div aria-hidden className="absolute inset-0 grain opacity-20" />
           <div className="absolute left-4 top-4 t-mono">Drop video here</div>
           <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
             <p className="max-w-[34ch] t-caption">{description}</p>
             <p className="mt-3 max-w-[44ch] break-all t-mono">{resolvedSrc}</p>
+          </div>
+        </>
+      ) : youTubeId === null && isYouTubeMediaUrl(src) ? (
+        <>
+          <div aria-hidden className="absolute inset-0 grain opacity-20" />
+          <div className="absolute left-4 top-4 t-mono">Invalid YouTube URL</div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
+            <p className="max-w-[34ch] t-caption">{description}</p>
+            <p className="mt-3 max-w-[44ch] break-all t-mono">{src}</p>
           </div>
         </>
       ) : (
@@ -81,7 +101,7 @@ export function MediaVideo({
           preload={autoPlay ? "auto" : "metadata"}
           autoPlay={autoPlay}
           loop={loop}
-          muted={effectiveMuted}
+          muted={autoPlay ? true : (muted ?? false)}
           aria-label={description}
           onError={() => setErrored(true)}
         >

@@ -86,7 +86,12 @@ export type CaseContentBlock =
       items: {
         label: string;
         title: string;
-        body: string;
+        body?: string;
+        /** Optional bullet list rendered below the title (used by Fini's contrast grid). */
+        examples?: string[];
+        /** Optional verdict line rendered at the bottom (e.g. "Completed on schedule"). */
+        verdict?: string;
+        verdictTone?: "done" | "fail";
       }[];
     }
   | {
@@ -172,6 +177,8 @@ export type CaseContentBlock =
         number: string;
         title: string;
         body: string;
+        /** Optional small accent caption rendered above the title (e.g. "ANSWERS INSIGHT 03"). */
+        label?: string;
         /** Public URL under `/public`, e.g. `/media/fini/.../clip.mp4` */
         videoSrc?: string;
         videoPlaceholder?: boolean;
@@ -179,6 +186,21 @@ export type CaseContentBlock =
         imageSrc?: string;
         imageAlt?: string;
         hasConsole?: boolean;
+      }[];
+    }
+  | {
+      kind: "researchMeta";
+      items: { value: string; label: string }[];
+    }
+  | {
+      kind: "evidenceInsights";
+      insights: {
+        number: string;
+        title: string;
+        body: string;
+        evidenceQuote?: string;
+        evidenceSource?: string;
+        footer?: string;
       }[];
     }
   | {
@@ -301,7 +323,8 @@ export const projects: CaseStudy[] = [
   {
     slug: "fini",
     title: "Fini",
-    tagline: "Building Fini from 0 → 1",
+    tagline:
+      "An accountability companion for the plans no one else is waiting on.",
     summary:
       "Designed and built Fini from 0 → 1,\n an Apple Health connected AI productivity app",
     category: "AI UX / Productivity",
@@ -323,17 +346,18 @@ export const projects: CaseStudy[] = [
     year: "2026",
     cover: {
       filename: "finiDemo.mp4",
-      description: "Fini hero — phone in hand with planner UI",
+      description: "Fini hero, phone in hand with planner UI",
       ratio: "16/9",
-      videoSrc: "/media/fini/thumbnail/finiDemo.mp4",
+      videoSrc: "https://youtu.be/BvTwxPZjxEs",
     },
     featured: true,
     sections: [
       {
         id: "overview",
         title: "Overview",
-        eyebrow: "The AI energy-aware productivity companion",
-        body: "I designed and built Fini, an adaptive productivity mobile app that aligns daily tasks with a user's real-time energy levels. Moving beyond static mockups, I architected a full system from 0 to 1 that translates raw bio-signals into a responsive interface.\n\nFrom defining the systems architecture to refining human-centered interactions with Cursor and SwiftUI, my focus was on creating a seamless, evidence-based relationship between the user and AI.",
+        eyebrow:
+          "Personal plans deserve the same accountability as everything else on your calendar.",
+        body: "Fini is an accountability companion for the plans you make to yourself. The portfolio you keep meaning to update. The skill you wanted to learn. The plans no one else is waiting on.",
         mediaHeading: "Product Highlights",
         media: [
           {
@@ -377,7 +401,7 @@ export const projects: CaseStudy[] = [
             kind: "image",
             filename: "highlight-watch.png",
             description:
-              "Next step on Apple Watch — glanceable, focused forward motion",
+              "Next step on Apple Watch, glanceable, focused forward motion",
             src: "/images/fini/figma-highlights/highlight-watch.png",
             ratio: "16/9",
             finiHighlight: {
@@ -390,71 +414,113 @@ export const projects: CaseStudy[] = [
         ],
       },
       {
-        id: "challenge",
-        title: "The Challenge",
-        body: "",
+        id: "problem",
+        title: "The Problem",
+        eyebrow:
+          "The plans that shape who you become are always the first to break.",
+        body: "Look at the plans you finished this week. Then look at the ones you didn't. The pattern isn't random. The plans that finished were the ones with external accountability. The 10am meeting. The deadline your manager set.\n\nBut the plans that fell through had no deadlines, **even though they were the ones that actually grow you.**",
         contentBlocks: [
           {
-            kind: "storyBeats",
-            beats: [
+            kind: "comparison",
+            items: [
               {
-                highlight: "Plans for personal growth were the hardest to finish...",
-                body: "If you live by a schedule, you know how it goes. Plans for work and school are non-negotiable, but self-initiated plans always seem to fall through.",
+                label: "PLANS THAT FINISHED",
+                title: "External accountability",
+                examples: [
+                  "Team standup",
+                  "Client deadline",
+                  "Wednesday class",
+                  "Doctor's appointment",
+                ],
+                verdict: "Completed on schedule",
+                verdictTone: "done",
+              },
+              {
+                label: "PLANS THAT DIDN'T",
+                title: "Internal accountability",
+                examples: [
+                  "Update portfolio",
+                  "Study Swift",
+                  "Side project",
+                  "Daily writing",
+                ],
+                verdict: "Postponed indefinitely",
+                verdictTone: "fail",
               },
             ],
-          },
-        ],
-        media: [
-          {
-            kind: "image",
-            filename: "challenge.png",
-            description:
-              "Planner and sticky notes with crossed-out personal goals, crumpled paper — rigid self-initiated plans versus real motivation",
-            src: "/media/fini/challenge/challenge.png",
-            ratio: "16/9",
-            objectFit: "cover",
           },
         ],
       },
       {
         id: "research",
         title: "Research",
-        eyebrow: "When and why do productivity crashes occur?",
-        body: "To identify the **hidden triggers** behind productivity crashes, I conducted a diary study tracking the real-time interplay between energy levels, emotional states, and task execution.",
+        eyebrow:
+          "Why does this keep happening, even to people who genuinely want to grow?",
+        body: "I ran a 6-day diary study to see what people actually do when they're alone with their own goals.",
         contentBlocks: [
           {
-            kind: "insightCards",
-            cards: [
+            kind: "researchMeta",
+            items: [
+              { value: "3", label: "Participants" },
+              { value: "6", label: "Days each" },
+              { value: "2×", label: "Daily check-ins" },
+              { value: "5", label: "Patterns found" },
+            ],
+          },
+          {
+            kind: "subheading",
+            compact: true,
+            title: "",
+            body: "Each participant logged energy, mood, intended tasks, and what they actually finished, twice a day. Three findings reframed the entire problem.",
+          },
+          {
+            kind: "evidenceInsights",
+            insights: [
               {
-                title: "**Energy is the Hidden Variable**",
-                body: "We abandon our plans when our 'battery' is low, regardless of how much time we have left.",
+                number: "01",
+                title:
+                  "The accountability gap is **real**, and it's binary.",
+                body: "On the same day, with the same available time, participants completed nearly 100% of externally driven tasks (meetings, classes, deadlines) while postponing self-initiated tasks again and again.",
+                evidenceQuote:
+                  "Structured, externally driven tasks were consistently completed. Self-initiated tasks were frequently postponed. Users rely heavily on external accountability to maintain consistency.",
+                evidenceSource: "Diary Study · Behavioral Pattern A",
+                footer:
+                  "The pattern is **structural**. Every work commitment lives inside a system of reminders, calendars, and witnesses. Self-promises live alone.",
               },
               {
-                title: "**The Burden of Large Tasks**",
-                body: "While micro-tasks feel doable, vaguely defined 'big goals' are the first to be skipped.",
+                number: "02",
+                title: "Starting is the hard part.",
+                body: "Once participants began a task, momentum sustained itself. The breakdown happened at the activation threshold. Vague tasks (\"study,\" \"work on portfolio\") collapsed first because there was no concrete first step to execute.",
+                evidenceQuote:
+                  "The hardest step is starting. Once started, users sustain momentum easily. Vague task descriptions led to avoidance and procrastination.",
+                evidenceSource: "Diary Study · Behavioral Patterns 3 & 5",
               },
               {
-                title: "**The Guilt Spiral**",
-                body: "Unfinished plans leave a 'guilt debt.' This emotional burden creates a cycle of demotivation that affects the next day's productivity.",
+                number: "03",
+                title: "Capacity is **measurable**. Intention isn't.",
+                body: "The most consequential finding: participants abandoned plans when their **biological capacity** ran out, regardless of how much time they had left. Poor sleep, low recovery, and accumulated fatigue predicted abandonment more reliably than mood, motivation, or schedule density.",
+                evidenceQuote:
+                  "Recovery quality depended on sleep quality and emotional stability. Anxiety, stress, and sleep deprivation caused procrastination even when energy levels felt high. Users consistently overestimated their daily capacity, leading to over-scheduling and task fatigue.",
+                evidenceSource: "Diary Study · Insights A, B, D",
+                footer:
+                  "People plan with their **aspirations**. They execute with their **biology**. Biology is the half of that equation already being measured every minute, by the device on their wrist.",
               },
             ],
           },
-        ],
-        media: [
         ],
       },
       {
         id: "system-architecture",
         title: "Systems Architecture",
-        eyebrow: "Let’s see the Big Picture",
-        body: "Before diving into development with Cursor, I mapped out the systems architecture to ensure a **seamless experience.**\n\nThis architecture is what **transforms raw energy data into adaptive schedules.** To create a truly energy-aware planner, I designed an engine that turns biological signals like sleep and HRV into a fluid planning surface.\n\n[[MEDIA_AFTER_BODY]]",
+        eyebrow: "Let's see the Big Picture!",
+        body: "Fini does two things. It gives self-initiated plans **external accountability**. It anchors every plan to the **biological capacity** your body actually has today. Before writing a line of SwiftUI, I mapped how those two promises had to flow through one shared engine.\n\n[[MEDIA_AFTER_BODY]]\n\nAt the heart of that engine is a single number: how much your body can actually carry today.",
         mediaAfterBody: [
           {
             kind: "video",
             filename: "system-layer.mp4",
             description:
-              "System architecture — signals, inference, and planning surface",
-            src: "/media/fini/system-architecture/system-layer.mp4",
+              "System architecture, signals, inference, and planning surface",
+            src: "https://youtu.be/XDqWAexK94A",
             ratio: "16/9",
             autoPlay: true,
             loop: true,
@@ -463,28 +529,71 @@ export const projects: CaseStudy[] = [
             objectFit: "contain",
           },
         ],
-        bullets: [],
         contentBlocks: [
           {
             kind: "logicDemo",
-            title: "The Logic: Quantifying Energy",
-            body: "I developed a logic that calculates a personalized energy score by analyzing sleep quality, heart rate variability, and activity levels.",
+            title: "The Logic: Quantifying Capacity",
+            body: "Sleep, HRV, and Activity flow into a single function. The output is a personalized energy score that tells the plan what your body can actually carry today.",
+          },
+          {
+            kind: "annotatedCallout",
+            label: "DESIGN PRINCIPLE",
+            body: "The plan follows the body's lead.",
           },
         ],
-        media: [],
       },
       {
-        id: "design-build",
-        title: "Design & Build",
-        eyebrow: "",
-        body: "Fini was designed as a working planning behavior system rather than a static interface prototype. The design evolved through rapid iteration, real-world testing, and continuous refinement.",
+        id: "product",
+        title: "The Product",
+        eyebrow: "Three behaviors. One companion.",
+        body: "Each behavior maps directly to a research finding. Every screen earned its place in the diary study.",
+        contentBlocks: [
+          {
+            kind: "v2Items",
+            items: [
+              {
+                number: "01",
+                label: "ANSWERS INSIGHT 03",
+                title: "Reads what your body can actually do today.",
+                body: "Fini pulls sleep, HRV, and resting heart rate from Apple Health and computes a daily capacity score. On a low-capacity day, the plan adapts: a 90-minute deep work block becomes a 15-minute review. The day still moves forward.",
+                imageSrc:
+                  "/images/fini/figma-highlights/highlight-energy.png",
+                imageAlt:
+                  "Capacity-aware planner adapts task scope to today's energy",
+              },
+              {
+                number: "02",
+                label: "ANSWERS INSIGHT 02",
+                title: "Lowers the activation barrier to nearly zero.",
+                body: "Manual task entry is a tax on people who are already depleted. Speak what's in your head; Fini parses, prioritizes, and breaks vague intentions into concrete first steps. 15 minutes of planning becomes 30 seconds of speaking.",
+                videoSrc: "https://youtu.be/polxGcvmrB4",
+              },
+              {
+                number: "03",
+                label: "ANSWERS INSIGHT 01",
+                title: "Becomes the witness your self-promises don't have.",
+                body: "Work has Slack, calendar invites, colleagues asking where things stand. Self-initiated work has none of that. Fini surfaces the next step on your wrist in the moments you'd otherwise drift, the way a calendar invite makes a meeting visible.",
+                imageSrc:
+                  "/images/fini/figma-highlights/highlight-watch.png",
+                imageAlt:
+                  "Apple Watch surfaces the next concrete step at the right moment",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "build-iterate",
+        title: "Build & Iterate",
+        eyebrow: "From hypothesis to working system in 24 hours.",
+        body: "Static mockups can't reveal whether a behavioral system actually works. With a clear PRD and the architecture mapped, I shipped a functional V1 in a day and put it in front of users.",
         contentBlocks: [
           {
             kind: "subheading",
             first: true,
-            kicker: "v1",
-            title: "Fast Validation with Agentic Coding",
-            body: "I didn't wait for a finished UI to test my hypothesis. By providing Cursor with a clear **PRD and System Architecture**, I bypassed static mockups and built a functional V1 in just 24 hours. This allowed me to conduct immediate QA and User Testing with a real system, moving beyond the limitations of \"Figma-only\" testing.",
+            kicker: "approach",
+            title: "24-hour validation loop",
+            body: "I designed in Cursor with the inference layer wired live, so user testing could run on real bio-data the next morning.",
           },
           {
             kind: "timelineStepper",
@@ -517,20 +626,15 @@ export const projects: CaseStudy[] = [
               {
                 time: "Hour 24",
                 label: "V1 Complete",
-                body: "A fully functional prototype, ready for the first real user test. Not polished, but real.",
+                body: "A fully functional prototype, ready for the first real user test. Rough, but real.",
               },
             ],
           },
           {
-            kind: "image",
-            src: "/media/fini/design-build/v1.jpg",
-            alt: "Fini V1 app screenshot",
-            objectFit: "cover",
-          },
-          {
             kind: "subheading",
-            title: "The Reality Check from UT & QA",
-            body: "To validate the system, I conducted a **User Test** to observe behavioral patterns and a **technical Quality Assurance** to stress-test the data flow. These sessions revealed 4 gaps:",
+            kicker: "v1",
+            title: "What broke under real use",
+            body: "User testing surfaced four gaps no Figma file would have caught.",
           },
           {
             kind: "flipCards",
@@ -538,26 +642,34 @@ export const projects: CaseStudy[] = [
               {
                 label: "UX",
                 title: "Cognitive Overload",
-                front: "The act of manual task entry (categorizing, typing, and assigning energy weights) became a \"second job\" for users who were already biologically depleted.",
-                back: "\"I'm already exhausted. Having to type out my tasks and decide on energy levels feels like more work. I wish it could just hear my state and suggest the plan for me.\"",
+                front:
+                  "The act of manual task entry (categorizing, typing, and assigning energy weights) became a \"second job\" for users who were already biologically depleted.",
+                back:
+                  "\"I'm already exhausted. Having to type out my tasks and decide on energy levels feels like more work. I wish it could just hear my state and suggest the plan for me.\"",
               },
               {
-                label: "App Concept",
+                label: "Concept",
                 title: "The \"Starting\" Friction",
-                front: "Users didn't just need a more flexible schedule; they were paralyzed by the sheer effort of \"starting\" while in a low-energy state. The initial focus on postponement was a secondary need.",
-                back: "\"Flexible deadlines are great, but I'm so drained that I don't even know where to begin. I just need the system to pick one small thing I can actually handle right now.\"",
+                front:
+                  "Users were paralyzed by the sheer effort of starting while in a low-energy state. Flexible scheduling was a secondary need.",
+                back:
+                  "\"Flexible deadlines are great, but I'm so drained I don't even know where to begin. I just need the system to pick one small thing I can actually handle right now.\"",
               },
               {
                 label: "UI",
                 title: "Invisible Systems are Untrustworthy",
-                front: "While the backend was processing complex bio-signals, the static UI didn't communicate this activity. This \"black box\" approach led to skepticism about the AI's logic.",
-                back: "\"It says it's connected to my Watch, but I don't see any of my data on the screen. How do I know if this plan is actually based on my recovery or just random suggestions?\"",
+                front:
+                  "While the backend was processing complex bio-signals, the static UI didn't communicate this activity. The black-box approach led to skepticism about the AI's logic.",
+                back:
+                  "\"It says it's connected to my Watch, but I don't see any of my data on the screen. How do I know if this plan is actually based on my recovery or just random suggestions?\"",
               },
               {
-                label: "Dev",
+                label: "Performance",
                 title: "Logic Lag & Latency",
-                front: "Technical audits revealed inefficient asynchronous calls and an unoptimized inference engine, resulting in data loading latencies of 0.8s to 1.2s.",
-                back: "This delay was projected to decrease user trust scores by 40% and increase immediate drop-off rates by approximately 25%, as users equate latency with system unreliability.",
+                front:
+                  "Technical audits revealed inefficient asynchronous calls and an unoptimized inference engine, resulting in data loading latencies of 0.8s to 1.2s.",
+                back:
+                  "Projected to drop trust scores by 40% and lift drop-off by ~25%, since users equate latency with system unreliability.",
                 backLabel: "Engineering Impact",
               },
             ],
@@ -565,8 +677,8 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             kicker: "v2",
-            title: "The Refined System",
-            body: "I redesigned the system to be more empathetic and transparent:",
+            title: "Each gap, addressed",
+            body: "Every change traces back to a specific user-testing finding.",
           },
           {
             kind: "v2Items",
@@ -575,26 +687,26 @@ export const projects: CaseStudy[] = [
                 number: "01",
                 title: "Voice Task Entry",
                 body: "To eliminate the cognitive load of manual entry, I implemented Voice Capture. An Edge Function parses natural language into categorized, energy-weighted tasks, removing the friction of planning.",
-                videoSrc: "/media/fini/design-build/voiceTaskEntry.mp4",
+                videoSrc: "https://youtu.be/polxGcvmrB4",
               },
               {
                 number: "02",
                 title: "Making It Easier to Start",
-                body: "I designed Energy-Matched Breakdown to make starting easier. Instead of large, overwhelming tasks, the system breaks them into small, doable steps based on real-time energy, **so users can take the first step, even on low-energy days.**",
-                videoSrc: "/media/fini/design-build/proactiveAtomization.mp4",
+                body: "Energy-Matched Breakdown turns large, overwhelming tasks into small, doable steps based on real-time energy, **so users can take the first step, even on low-energy days.**",
+                videoSrc: "https://youtu.be/gVS543_K-bs",
               },
               {
                 number: "03",
                 title: "Making the system visible",
-                body: "I redesigned the Hero Section to surface raw bio-data (HRV, Stress, Sleep). I realized that if the system's \"thinking\" is invisible, it's untrustworthy. Prioritizing which data to show became a key UX challenge.",
+                body: "I redesigned the Hero Section to surface raw bio-data (HRV, Stress, Sleep). When the system's reasoning is visible, the AI feels trustworthy. Choosing what to surface became the central UX decision.",
                 imageSrc: "/media/fini/design-build/visualTrust.jpg?v=2",
                 imageAlt:
-                  "Making the system visible — before static UI vs after data-driven interface with bio-signals",
+                  "Making the system visible: before static UI vs after data-driven interface with bio-signals",
               },
               {
                 number: "04",
                 title: "Optimizing the Bio-Inference Model",
-                body: "The initial energy model was skewed by workout data, leading to inaccurate scheduling. To fix this, I directed Cursor to re-engineer the data ingestion layer, specifically by prioritizing Resting Heart Rate for biological accuracy and implementing query caching to minimize system latency.",
+                body: "The initial energy model was skewed by workout data, leading to inaccurate scheduling. I directed Cursor to re-engineer the data ingestion layer, prioritizing Resting Heart Rate for biological accuracy and adding query caching to cut system latency.",
                 hasConsole: true,
               },
             ],
@@ -602,33 +714,37 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             kicker: "v∞",
-            title: "Solving the Edge Cases",
-            body: "After ensuring basic stability, **I focus on the 'what-ifs.'** I designed the user experience to handle unpredictable real-world data so Fini never leaves the user hanging. It is built to continuously evolve and stay one step ahead of reality.",
+            title: "Solving the edge cases",
+            body: "User testing keeps running. Each edge case ships back into the model and the UI.",
           },
           { kind: "edgeCaseExplorer" },
         ],
-        blocks: [],
-        media: [],
       },
       {
         id: "impact-vision",
         title: "Impact & Vision",
-        body: "",
+        eyebrow: "Help people keep promises to themselves.",
+        body: "Through structure that adapts to how their body actually works, and accountability that finally exists for the plans no one else is waiting on.",
         contentBlocks: [
+          {
+            kind: "annotatedCallout",
+            label: "REFLECTION",
+            body: "Designing while shipping changed what I treat as 'done.' When the inference layer broke on a Tuesday-morning user, I fixed it the same hour because I'd also written the SwiftUI view it broke. Of the five patterns the diary study surfaced, three made V1 and two are waiting for the next sprint. That triage is the design engineer's job: weighing the user's evidence against the system's constraints, and shipping the version where they meet.",
+          },
           {
             kind: "takeawayCards",
             cards: [
               {
                 title: "What I gained",
-                body: "I learned Agentic Coding by doing. CLI, design tokens, version control, things I'd never heard of before this project. I documented everything as I went.\n\n[View my note →](https://docs.google.com/document/d/12PMD79Cqjkw8ChC-CLue5E5lhuJFyfU7k8Eio9iWtCo/edit?usp=sharing)",
+                body: "Merging design and engineering into one person collapsed the iteration loop from days to hours. The design got better because the engineering kept pushing back.\n\n[View my note →](https://docs.google.com/document/d/12PMD79Cqjkw8ChC-CLue5E5lhuJFyfU7k8Eio9iWtCo/edit?usp=sharing)",
               },
               {
                 title: "Recognition",
-                body: "Fini was selected for the Academy of Art University 2026 Spring Show.\n\n[View Spring Show page →](https://2026springshow.academyart.edu/student/jihyeon-jang/)",
+                body: "Selected for the Academy of Art University 2026 Spring Show.\n\n[View Spring Show page →](https://2026springshow.academyart.edu/student/jihyeon-jang/)",
               },
               {
                 title: "What's next",
-                body: "Fini is heading to the App Store. The goal is **500 users** in the first month and a **4.5+** star rating.",
+                body: "App Store launch. Goal: **500 users** and a **4.5★** rating in month one.",
               },
             ],
           },
@@ -654,7 +770,7 @@ export const projects: CaseStudy[] = [
       filename: "strawberry-matcha_hero.mp4",
       description: "Strawberry Matcha hero demo",
       ratio: "16/9",
-      videoSrc: "/media/strawberryMatcha/demo/demo_01.mp4",
+      videoSrc: "https://youtu.be/xYQwGtphHus",
     },
     featured: true,
     sections: [
@@ -753,7 +869,7 @@ export const projects: CaseStudy[] = [
             description: "Ask Strawberry Matcha demo",
             mediaType: "video",
             ratio: "16/9",
-            src: "/media/strawberryMatcha/demo/demo_01.mp4",
+            src: "https://youtu.be/xYQwGtphHus",
           },
           {
             kind: "subheading",
@@ -767,7 +883,7 @@ export const projects: CaseStudy[] = [
             description: "Field Translator walkthrough",
             mediaType: "video",
             ratio: "16/9",
-            src: "/media/strawberryMatcha/demo/demo_02.mp4",
+            src: "https://youtu.be/UpcUNjCdrGE",
           },
           {
             kind: "subheading",
@@ -780,7 +896,7 @@ export const projects: CaseStudy[] = [
             description: "Timeline screen",
             mediaType: "video",
             ratio: "16/9",
-            src: "/media/strawberryMatcha/demo/demo_03.mp4",
+            src: "https://youtu.be/HdhcB66vtPU",
           },
         ],
       },

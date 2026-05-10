@@ -1,11 +1,13 @@
 "use client";
 
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { useInView } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-
-gsap.registerPlugin(useGSAP);
 
 const INPUTS = [
   {
@@ -44,24 +46,9 @@ function CircularProgress({
   size?: number;
   stroke?: number;
 }) {
-  const circleRef = useRef<SVGCircleElement>(null);
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   const dash = c * (1 - clamp(value, 0, 100) / 100);
-
-  useGSAP(
-    () => {
-      const el = circleRef.current;
-      if (!el) return;
-      gsap.to(el, {
-        strokeDashoffset: dash,
-        duration: 1.05,
-        ease: "power3.out",
-        overwrite: "auto",
-      });
-    },
-    { dependencies: [dash, size, stroke] }
-  );
 
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
@@ -73,8 +60,7 @@ function CircularProgress({
         strokeWidth={stroke}
         fill="none"
       />
-      <circle
-        ref={circleRef}
+      <motion.circle
         cx={size / 2}
         cy={size / 2}
         r={r}
@@ -83,7 +69,9 @@ function CircularProgress({
         strokeLinecap="round"
         fill="none"
         strokeDasharray={c}
-        strokeDashoffset={c}
+        initial={{ strokeDashoffset: c }}
+        animate={{ strokeDashoffset: dash }}
+        transition={{ duration: 1.1, ease: [0.2, 0.8, 0.2, 1] }}
         transform={`rotate(-90 ${size / 2} ${size / 2})`}
       />
     </svg>
@@ -119,35 +107,22 @@ type InputCardProps = {
 };
 
 function InputCard({ label, value, unit, detail, active }: InputCardProps) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      const el = wrapRef.current;
-      if (!el) return;
-      gsap.killTweensOf(el);
-      if (active) {
-        gsap.to(el, {
-          boxShadow:
-            "0 0 0 10px rgba(253, 140, 55, 0.12), 0 12px 40px rgba(253, 140, 55, 0.08)",
-          repeat: -1,
-          yoyo: true,
-          duration: 0.75,
-          ease: "sine.inOut",
-        });
-      } else {
-        gsap.to(el, {
-          boxShadow: "0 0 0 rgba(253,140,55,0)",
-          duration: 0.35,
-          ease: "power2.out",
-        });
-      }
-    },
-    { dependencies: [active], scope: wrapRef }
-  );
-
   return (
-    <div ref={wrapRef} className="rounded-2xl will-change-transform">
+    <motion.div
+      animate={
+        active
+          ? {
+              boxShadow: [
+                "0 0 0 rgba(253,140,55,0)",
+                "0 0 0 8px rgba(253,140,55,0.10)",
+                "0 0 0 rgba(253,140,55,0)",
+              ],
+            }
+          : { boxShadow: "0 0 0 rgba(253,140,55,0)" }
+      }
+      transition={{ duration: 0.9, repeat: active ? Infinity : 0, ease: "easeInOut" }}
+      className="rounded-2xl"
+    >
       <GlassPanel className="px-4 py-3.5">
         <div className="t-mono">{label}</div>
         <div className="mt-1.5 flex items-baseline gap-1">
@@ -156,60 +131,39 @@ function InputCard({ label, value, unit, detail, active }: InputCardProps) {
         </div>
         <div className="mt-1 t-caption">{detail}</div>
       </GlassPanel>
-    </div>
+    </motion.div>
   );
 }
 
 function FunctionNode({ active }: { active: boolean }) {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      const ring = ringRef.current;
-      const root = rootRef.current;
-      if (!ring || !root) return;
-      gsap.killTweensOf([ring, root]);
-      if (active) {
-        gsap.to(ring, {
-          rotation: 360,
-          repeat: -1,
-          duration: 7,
-          ease: "none",
-        });
-        gsap.to(root, {
-          scale: 1.04,
-          repeat: -1,
-          yoyo: true,
-          duration: 0.9,
-          ease: "sine.inOut",
-        });
-      } else {
-        gsap.set(ring, { rotation: 0 });
-        gsap.to(root, { scale: 1, duration: 0.35, ease: "power2.out" });
-      }
-    },
-    { dependencies: [active], scope: rootRef }
-  );
-
   return (
-    <div
-      ref={rootRef}
-      className="relative grid h-[88px] w-[88px] place-items-center rounded-full border border-white/40 bg-white/55 backdrop-blur-md will-change-transform"
-      style={{ transformOrigin: "center center" }}
+    <motion.div
+      animate={
+        active
+          ? {
+              boxShadow: [
+                "0 0 0 rgba(253,140,55,0)",
+                "0 0 0 14px rgba(253,140,55,0.14)",
+                "0 0 0 rgba(253,140,55,0)",
+              ],
+            }
+          : { boxShadow: "0 0 0 rgba(253,140,55,0)" }
+      }
+      transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
+      className="relative grid h-[88px] w-[88px] place-items-center rounded-full border border-white/40 bg-white/55 backdrop-blur-md"
     >
       <div className="t-body font-medium text-ink/85">f(x)</div>
-      <div
-        ref={ringRef}
+      <motion.div
         aria-hidden
         className="pointer-events-none absolute inset-[-6px] rounded-full border border-dashed border-[color:var(--accent-orange)]/35"
-        style={{ transformOrigin: "center center" }}
+        animate={{ rotate: active ? 360 : 0 }}
+        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
       />
-    </div>
+    </motion.div>
   );
 }
 
-/** Horizontal dot traveling on a wire — GSAP repeat */
+/** A small pulse traveling along a horizontal wire. */
 function WirePulse({
   delay,
   active,
@@ -219,34 +173,27 @@ function WirePulse({
   active: boolean;
   reverse?: boolean;
 }) {
-  const dotRef = useRef<HTMLSpanElement>(null);
-
-  useGSAP(
-    () => {
-      const dot = dotRef.current;
-      if (!dot) return;
-      gsap.killTweensOf(dot);
-      if (!active) {
-        gsap.set(dot, { opacity: 0, left: reverse ? "100%" : "0%" });
-        return;
-      }
-      const end = reverse ? "0%" : "100%";
-      const start = reverse ? "100%" : "0%";
-      gsap.set(dot, { left: start, opacity: 0 });
-      const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.4, delay });
-      tl.to(dot, { opacity: 1, duration: 0.1, ease: "power1.out" })
-        .to(dot, { left: end, duration: 0.78, ease: "power2.inOut" }, "<0.02")
-        .to(dot, { opacity: 0, duration: 0.1, ease: "power1.in" }, ">-0.05");
-    },
-    { dependencies: [active, delay, reverse] }
-  );
-
   return (
-    <span
-      ref={dotRef}
+    <motion.span
+      key={`${active}-${delay}`}
       aria-hidden
       className="absolute top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-[color:var(--accent-orange)]"
-      style={{ left: reverse ? "100%" : "0%", opacity: 0 }}
+      initial={{ left: reverse ? "100%" : "0%", opacity: 0 }}
+      animate={
+        active
+          ? {
+              left: reverse ? ["100%", "0%"] : ["0%", "100%"],
+              opacity: [0, 1, 1, 0],
+            }
+          : { opacity: 0 }
+      }
+      transition={{
+        duration: 1.2,
+        delay,
+        repeat: Infinity,
+        ease: "easeInOut",
+        repeatDelay: 0.4,
+      }}
     />
   );
 }
@@ -255,43 +202,19 @@ type Phase = "idle" | "flowing" | "computing" | "result";
 
 export function EnergyLogicDemo() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const outputRef = useRef<HTMLDivElement>(null);
-  const introDone = useRef(false);
   const inView = useInView(rootRef, { amount: 0.4, margin: "-10% 0px" });
   const [phase, setPhase] = useState<Phase>("idle");
 
   const scoreTarget = 85;
+  const scoreMV = useMotionValue(0);
+  const score = useSpring(scoreMV, { stiffness: 220, damping: 28, mass: 0.6 });
   const [scoreText, setScoreText] = useState(0);
 
-  const scoreProxy = useRef({ v: 0 });
+  useEffect(() => {
+    const unsub = score.on("change", (v) => setScoreText(Math.round(v)));
+    return () => unsub();
+  }, [score]);
 
-  /* Intro: stagger cards + kicker */
-  useGSAP(
-    () => {
-      if (!inView || introDone.current) return;
-      introDone.current = true;
-      const reduced =
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduced) {
-        gsap.set([".energy-logic-card", ".energy-logic-kicker"], {
-          clearProps: "all",
-        });
-        return;
-      }
-      gsap.set(".energy-logic-card", { opacity: 0, x: -32 });
-      gsap.set(".energy-logic-kicker", { opacity: 0, y: -8 });
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.to(".energy-logic-kicker", { opacity: 1, y: 0, duration: 0.5 }, 0).to(
-        ".energy-logic-card",
-        { opacity: 1, x: 0, duration: 0.55, stagger: 0.12 },
-        0.08
-      );
-    },
-    { scope: rootRef, dependencies: [inView] }
-  );
-
-  /* Phase loop */
   useEffect(() => {
     if (!inView) return;
 
@@ -301,44 +224,13 @@ export function EnergyLogicDemo() {
     function runCycle() {
       if (cancelled) return;
       setPhase("idle");
-      scoreProxy.current.v = 0;
-      setScoreText(0);
+      scoreMV.set(0);
 
-      timers.push(
-        window.setTimeout(() => {
-          if (!cancelled) setPhase("flowing");
-        }, 380)
-      );
-      timers.push(
-        window.setTimeout(() => {
-          if (!cancelled) setPhase("computing");
-        }, 1350)
-      );
-      timers.push(
-        window.setTimeout(() => {
-          if (cancelled) return;
-          gsap.killTweensOf(scoreProxy.current);
-          scoreProxy.current.v = 0;
-          gsap.to(scoreProxy.current, {
-            v: scoreTarget,
-            duration: 1.15,
-            ease: "power2.out",
-            onUpdate: () => {
-              setScoreText(Math.round(scoreProxy.current.v));
-            },
-          });
-        }, 1380)
-      );
-      timers.push(
-        window.setTimeout(() => {
-          if (!cancelled) setPhase("result");
-        }, 2550)
-      );
-      timers.push(
-        window.setTimeout(() => {
-          if (!cancelled) runCycle();
-        }, 4200)
-      );
+      timers.push(window.setTimeout(() => { if (!cancelled) setPhase("flowing"); }, 350));
+      timers.push(window.setTimeout(() => { if (!cancelled) setPhase("computing"); }, 1300));
+      timers.push(window.setTimeout(() => { if (!cancelled) scoreMV.set(scoreTarget); }, 1350));
+      timers.push(window.setTimeout(() => { if (!cancelled) setPhase("result"); }, 2400));
+      timers.push(window.setTimeout(() => { if (!cancelled) runCycle(); }, 4000));
     }
 
     runCycle();
@@ -346,42 +238,12 @@ export function EnergyLogicDemo() {
     return () => {
       cancelled = true;
       timers.forEach((t) => window.clearTimeout(t));
-      const sp = scoreProxy.current;
-      gsap.killTweensOf(sp);
     };
-  }, [inView]);
+  }, [inView, scoreMV]);
 
   const isFlowing = phase === "flowing" || phase === "computing";
   const isComputing = phase === "computing";
   const showResult = phase === "result";
-
-  /* Output panel entrance when swapping work ↔ result */
-  useGSAP(
-    () => {
-      const panel = outputRef.current;
-      if (!panel) return;
-      const reduced =
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduced) {
-        gsap.set(panel, { clearProps: "all" });
-        return;
-      }
-      gsap.fromTo(
-        panel,
-        { opacity: 0, y: 14, scale: 0.96 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.55,
-          ease: "power3.out",
-          overwrite: "auto",
-        }
-      );
-    },
-    { scope: rootRef, dependencies: [showResult], revertOnUpdate: true }
-  );
 
   return (
     <div ref={rootRef} className="relative w-full">
@@ -389,15 +251,22 @@ export function EnergyLogicDemo() {
         <div aria-hidden className="absolute inset-0 grain rounded-3xl opacity-15" />
 
         <div className="relative mb-4 flex items-center">
-          <div className="energy-logic-kicker t-mono">
-            Inputs → f(x) → Energy Level
-          </div>
+          <div className="t-mono">Inputs → f(x) → Energy Level</div>
         </div>
 
         <div className="relative grid items-center gap-6 lg:grid-cols-[1fr_auto_1fr] lg:gap-8">
           <div className="relative space-y-3">
-            {INPUTS.map((input) => (
-              <div key={input.id} className="energy-logic-card">
+            {INPUTS.map((input, i) => (
+              <motion.div
+                key={input.id}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  duration: 0.45,
+                  delay: 0.06 * i,
+                  ease: [0.2, 0.8, 0.2, 1],
+                }}
+              >
                 <InputCard
                   label={input.label}
                   value={input.value}
@@ -405,7 +274,7 @@ export function EnergyLogicDemo() {
                   detail={input.detail}
                   active={isFlowing}
                 />
-              </div>
+              </motion.div>
             ))}
 
             <div className="pointer-events-none absolute inset-y-0 -right-14 hidden w-14 lg:block">
@@ -421,7 +290,7 @@ export function EnergyLogicDemo() {
                       transform: `rotate(${angle}deg)`,
                     }}
                   >
-                    <WirePulse delay={0.12 * i} active={isFlowing} />
+                    <WirePulse delay={0.15 * i} active={isFlowing} />
                   </div>
                 );
               })}
@@ -432,64 +301,79 @@ export function EnergyLogicDemo() {
             <FunctionNode active={isFlowing || isComputing} />
           </div>
 
-          <div className="relative min-h-[140px]">
+          <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 -left-8 hidden w-8 lg:block">
               <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-ink/15">
-                <WirePulse
-                  delay={0.2}
-                  active={isComputing || showResult}
-                  reverse={false}
-                />
+                <WirePulse delay={0.45} active={isComputing || showResult} />
               </div>
             </div>
 
-            <div ref={outputRef} key={showResult ? "result" : "work"}>
+            <AnimatePresence mode="popLayout">
               {showResult ? (
-                <GlassPanel className="px-5 py-5">
-                  <div className="flex items-center justify-between gap-5">
-                    <div>
-                      <div className="t-eyebrow-mut">Energy Level</div>
-                      <div className="mt-2 flex items-baseline gap-1.5">
-                        <span className="t-h2">{scoreTarget}</span>
-                        <span className="t-caption">/ 100</span>
+                <motion.div
+                  key="result"
+                  initial={{ opacity: 0, scale: 0.96, y: 8 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.55, ease: [0.2, 0.8, 0.2, 1] }}
+                >
+                  <GlassPanel className="px-5 py-5">
+                    <div className="flex items-center justify-between gap-5">
+                      <div>
+                        <div className="t-eyebrow-mut">Energy Level</div>
+                        <div className="mt-2 flex items-baseline gap-1.5">
+                          <span className="t-h2">{scoreTarget}</span>
+                          <span className="t-caption">/ 100</span>
+                        </div>
+                        <div className="mt-2 t-caption">
+                          Computed from sleep, HRV, and activity.
+                        </div>
                       </div>
-                      <div className="mt-2 t-caption">
-                        Computed from sleep, HRV, and activity.
+                      <div className="shrink-0">
+                        <CircularProgress value={scoreTarget} />
                       </div>
                     </div>
-                    <div className="shrink-0">
-                      <CircularProgress value={scoreTarget} />
-                    </div>
-                  </div>
-                </GlassPanel>
+                  </GlassPanel>
+                </motion.div>
               ) : (
-                <GlassPanel className="px-5 py-5">
-                  <div className="flex items-center justify-between gap-5">
-                    <div>
-                      <div className="t-eyebrow-mut">Energy Level</div>
-                      <div className="mt-2 flex items-baseline gap-1.5">
-                        <span className="t-h2 !text-ink/40">
-                          {isComputing ? scoreText : "—"}
-                        </span>
-                        <span className="t-caption">/ 100</span>
+                <motion.div
+                  key="placeholder"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <GlassPanel className="px-5 py-5">
+                    <div className="flex items-center justify-between gap-5">
+                      <div>
+                        <div className="t-eyebrow-mut">Energy Level</div>
+                        <div className="mt-2 flex items-baseline gap-1.5">
+                          <motion.span
+                            key={scoreText}
+                            initial={{ opacity: 0.5 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.15 }}
+                            className="t-h2 !text-ink/40"
+                          >
+                            {isComputing ? scoreText : "—"}
+                          </motion.span>
+                          <span className="t-caption">/ 100</span>
+                        </div>
+                        <div className="mt-2 t-caption">
+                          {phase === "idle"
+                            ? "Awaiting input signals…"
+                            : phase === "flowing"
+                              ? "Streaming raw signals into f(x)…"
+                              : "Computing energy level…"}
+                        </div>
                       </div>
-                      <div className="mt-2 t-caption">
-                        {phase === "idle"
-                          ? "Awaiting input signals…"
-                          : phase === "flowing"
-                            ? "Streaming raw signals into f(x)…"
-                            : "Computing energy level…"}
+                      <div className="shrink-0 opacity-50">
+                        <CircularProgress value={isComputing ? scoreText : 0} />
                       </div>
                     </div>
-                    <div className="shrink-0 opacity-50">
-                      <CircularProgress
-                        value={isComputing ? scoreText : 0}
-                      />
-                    </div>
-                  </div>
-                </GlassPanel>
+                  </GlassPanel>
+                </motion.div>
               )}
-            </div>
+            </AnimatePresence>
           </div>
         </div>
 

@@ -119,35 +119,38 @@ export function CaseStudyLayout({ project }: Props) {
           <div className="mt-12">
             {project.sections.map((s, i) => {
               const next = project.sections[i + 1];
-              const isFiniOverviewToChallenge =
+              const isFiniOverviewToProblem =
                 project.slug === "fini" &&
                 s.id === "overview" &&
-                next?.id === "challenge";
-              const isFiniChallengeAfterOverview =
+                next?.id === "problem";
+              const isFiniProblemAfterOverview =
                 project.slug === "fini" &&
-                s.id === "challenge" &&
+                s.id === "problem" &&
                 project.sections[i - 1]?.id === "overview";
               const contentBlockRhythm =
-                project.slug === "fini" && s.id === "design-build"
+                project.slug === "fini" &&
+                (s.id === "build-iterate" || s.id === "design-build")
                   ? "section-rhythm-loose"
                   : project.slug === "strawberry-matcha"
                     ? "section-rhythm-matcha"
                   : "section-rhythm";
+              const useSentenceHeadline =
+                project.slug === "strawberry-matcha" || project.slug === "fini";
               return (
               <section
                 key={s.id}
                 id={s.id}
                 className={[
                   "scroll-mt-24 section-padding",
-                  isFiniOverviewToChallenge ? "!pb-4" : "",
-                  isFiniChallengeAfterOverview ? "!pt-4" : "",
+                  isFiniOverviewToProblem ? "!pb-4" : "",
+                  isFiniProblemAfterOverview ? "!pt-4" : "",
                 ].join(" ")}
               >
                 <div>
                   <p className="t-eyebrow whitespace-nowrap">{s.title}</p>
 
                   {s.eyebrow ? (
-                    project.slug === "strawberry-matcha" ? (
+                    useSentenceHeadline ? (
                       <h2 className="mt-3 max-w-[80%] t-h2-tight">
                         {s.eyebrow}
                       </h2>
@@ -236,7 +239,8 @@ export function CaseStudyLayout({ project }: Props) {
                       {s.contentBlocks && s.contentBlocks.length > 0 ? (
                         <div
                           className={
-                            project.slug === "fini" && s.id === "research"
+                            project.slug === "fini" &&
+                            (s.id === "research" || s.id === "problem")
                               ? `mt-0 ${contentBlockRhythm}`
                               : s.body.trim()
                                 ? `mt-12 ${contentBlockRhythm}`
@@ -309,7 +313,8 @@ export function CaseStudyLayout({ project }: Props) {
                 {s.image || (s.media && s.media.length > 0) ? (
                   <div
                     className={
-                      project.slug === "fini" && s.id === "challenge"
+                      project.slug === "fini" &&
+                      (s.id === "problem" || s.id === "challenge")
                         ? "mt-3"
                         : "mt-12"
                     }

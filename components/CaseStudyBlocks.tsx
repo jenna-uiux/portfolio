@@ -25,6 +25,9 @@ import { ProblemStatementCallout } from "./ProblemStatementCallout";
 import { NumberedTimeline } from "./NumberedTimeline";
 import { ExplorationCards } from "./ExplorationCards";
 import { ImageCarousel } from "./ImageCarousel";
+import { ResearchMeta } from "./ResearchMeta";
+import { EvidenceInsights } from "./EvidenceInsights";
+import { ContrastGrid } from "./ContrastGrid";
 
 type RichTextProps = {
   text: string;
@@ -153,6 +156,14 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
   }
 
   if (block.kind === "comparison") {
+    const hasContrastShape = block.items.some(
+      (item) => item.examples?.length || item.verdict
+    );
+
+    if (hasContrastShape) {
+      return <ContrastGrid items={block.items} />;
+    }
+
     return (
       <div className="grid gap-x-12 gap-y-10 border-t hairline pt-8 md:grid-cols-2">
         {block.items.map((item, i) => (
@@ -168,9 +179,11 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
             <h3 className="mt-4 max-w-[18ch] t-h3">
               <RichText text={item.title} />
             </h3>
-            <p className="mt-4 max-w-[36ch] t-body-sm">
-              <RichText text={item.body} />
-            </p>
+            {item.body ? (
+              <p className="mt-4 max-w-[36ch] t-body-sm">
+                <RichText text={item.body} />
+              </p>
+            ) : null}
           </div>
         ))}
       </div>
@@ -321,6 +334,14 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "pillarGrid") {
     return <PillarGrid pillars={block.pillars} />;
+  }
+
+  if (block.kind === "researchMeta") {
+    return <ResearchMeta items={block.items} />;
+  }
+
+  if (block.kind === "evidenceInsights") {
+    return <EvidenceInsights insights={block.insights} />;
   }
 
   if (block.kind === "annotatedCallout") {
@@ -475,6 +496,9 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
                 {item.number}
               </span>
               <div className="min-w-0 flex-1">
+                {item.label ? (
+                  <p className={`${KICKER_ACCENT} mb-2`}>{item.label}</p>
+                ) : null}
                 <h4 className="t-h4">{item.title}</h4>
                 <p className="mt-2 t-body">
                   <RichText text={item.body} />

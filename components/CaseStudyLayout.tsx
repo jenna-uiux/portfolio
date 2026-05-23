@@ -12,6 +12,7 @@ import {
 import { FiniHighlightsScroll } from "./FiniHighlightsScroll";
 import { CoverMedia } from "./CoverMedia";
 import { ImageSlot } from "./ImageSlot";
+import { ThemeController } from "./ThemeController";
 
 type Props = {
   project: CaseStudy;
@@ -59,6 +60,7 @@ export function CaseStudyLayout({ project }: Props) {
 
   return (
     <div className="pt-28 pb-24" style={accentOverride}>
+      {project.theme === "dark" ? <ThemeController theme="dark" /> : null}
       <div className="container-ultra grid gap-12 md:grid-cols-12">
         <aside
           aria-label="Case study outline"
@@ -136,6 +138,28 @@ export function CaseStudyLayout({ project }: Props) {
                   : "section-rhythm";
               const useSentenceHeadline =
                 project.slug === "strawberry-matcha" || project.slug === "fini";
+              const isAeonContext =
+                project.slug === "aeon" && s.id === "context";
+              const isAeonBackground =
+                project.slug === "aeon" && s.id === "background";
+              const firstBlock = s.contentBlocks?.[0];
+              const aeonBackgroundPinsKicker =
+                isAeonBackground &&
+                firstBlock?.kind === "backgroundPinnedDeck" &&
+                Boolean(firstBlock.kicker?.trim());
+              const contentBlocksWrapperClass =
+                project.slug === "fini" &&
+                (s.id === "research" || s.id === "problem")
+                  ? `mt-0 ${contentBlockRhythm}`
+                  : s.body.trim()
+                    ? `mt-12 ${contentBlockRhythm}`
+                    : isAeonContext
+                      ? "mt-7 md:mt-9 lg:mt-11 section-rhythm section-rhythm-aeon-context"
+                      : isAeonBackground
+                        ? aeonBackgroundPinsKicker
+                          ? `mt-0 ${contentBlockRhythm}`
+                          : `mt-2 md:mt-3 ${contentBlockRhythm}`
+                        : `mt-6 ${contentBlockRhythm}`;
               return (
               <section
                 key={s.id}
@@ -147,13 +171,19 @@ export function CaseStudyLayout({ project }: Props) {
                 ].join(" ")}
               >
                 <div>
-                  <p className="t-eyebrow whitespace-nowrap">{s.title}</p>
+                  {!aeonBackgroundPinsKicker ? (
+                    <p className="t-eyebrow whitespace-nowrap">{s.title}</p>
+                  ) : null}
 
                   {s.eyebrow ? (
                     useSentenceHeadline ? (
                       <h2 className="mt-3 max-w-[80%] t-h2-tight">
                         {s.eyebrow}
                       </h2>
+                    ) : project.slug === "aeon" ? (
+                      <h3 className="mt-3 max-w-[95%] text-[36px] font-medium leading-[1.25] tracking-[-0.02em] text-ink">
+                        {s.eyebrow}
+                      </h3>
                     ) : (
                       <h3 className="mt-3 t-h3">{s.eyebrow}</h3>
                     )
@@ -237,16 +267,7 @@ export function CaseStudyLayout({ project }: Props) {
                       ) : null}
 
                       {s.contentBlocks && s.contentBlocks.length > 0 ? (
-                        <div
-                          className={
-                            project.slug === "fini" &&
-                            (s.id === "research" || s.id === "problem")
-                              ? `mt-0 ${contentBlockRhythm}`
-                              : s.body.trim()
-                                ? `mt-12 ${contentBlockRhythm}`
-                                : `mt-6 ${contentBlockRhythm}`
-                          }
-                        >
+                        <div className={contentBlocksWrapperClass}>
                           {s.contentBlocks.map((block, i) => (
                             <ContentBlockRenderer key={i} block={block} />
                           ))}

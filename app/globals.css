@@ -42,6 +42,79 @@
   }
 }
 
+/* AEON dark theme — opt-in via <html data-theme="dark">. Tokens flip,
+   Tailwind utilities (bg-bg, text-ink, border-line, etc.) pick this up
+   automatically because they're all CSS variables in tailwind.config.ts. */
+html[data-theme="dark"] {
+  --bg: #000000;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-solid: #0a0a0a;
+  --text: #f5f5f5;
+  --body: rgba(245, 245, 245, 0.72);
+  --muted: rgba(245, 245, 245, 0.55);
+  --border: rgba(245, 245, 245, 0.12);
+  --accent: #7cc2ff;
+  --accent-soft: rgba(124, 194, 255, 0.16);
+  --accent-orange: #7cc2ff;
+  --brown: #f5f5f5;
+  --clay: rgba(245, 245, 245, 0.7);
+  --eyebrow: #7cc2ff;
+  --shadow: 0 26px 80px rgba(0, 0, 0, 0.55);
+}
+
+html[data-theme="dark"] body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Dark-mode tuning for treatments that mix surface gradients. */
+html[data-theme="dark"] .editorial-panel {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(124, 194, 255, 0.12), transparent 30%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(124, 194, 255, 0.06));
+  border-color: rgba(245, 245, 245, 0.1);
+}
+
+html[data-theme="dark"] .warm-gradient {
+  background:
+    radial-gradient(circle at 12% 10%, rgba(124, 194, 255, 0.12), transparent 32%),
+    radial-gradient(circle at 82% 16%, rgba(124, 194, 255, 0.06), transparent 36%),
+    linear-gradient(180deg, var(--bg) 0%, #000000 100%);
+}
+
+html[data-theme="dark"] .image-card {
+  background: var(--surface-solid);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .grain {
+  background-image:
+    radial-gradient(rgba(245, 245, 245, 0.04) 1px, transparent 1px),
+    radial-gradient(rgba(124, 194, 255, 0.04) 1px, transparent 1px);
+}
+
+/* Re-skin existing case-study card components (Fini / Strawberry Matcha
+   styled with bg-white) for the dark theme. */
+html[data-theme="dark"] .bg-white {
+  background-color: var(--surface-solid);
+}
+html[data-theme="dark"] .ring-black\/10 {
+  --tw-ring-color: rgba(245, 245, 245, 0.1);
+  --tw-ring-opacity: 1;
+}
+html[data-theme="dark"] .ring-black\/20 {
+  --tw-ring-color: rgba(245, 245, 245, 0.18);
+}
+/* Drop the strong drop shadow on cards in dark mode; the off-black surface
+   already separates them. */
+html[data-theme="dark"] [class*="shadow-["] {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 18px 40px -28px rgba(0, 0, 0, 0.6);
+}
+html[data-theme="dark"] .pull-quote {
+  color: var(--text);
+}
+
 @layer base {
   html {
     --font-sans: "Instrument Sans", sans-serif !important;
@@ -209,6 +282,10 @@
   /* Spacing between sibling content blocks (e.g., insightCards → callout). */
   .section-rhythm > * + * {
     margin-top: var(--rhythm-lg);
+  }
+  /* AEON Context: wider gap between intro copy and team row */
+  .section-rhythm-aeon-context > * + * {
+    margin-top: clamp(56px, 8vw, 104px);
   }
   /* Strawberry Matcha uses more short editorial beats, so keep intra-section rhythm tighter. */
   .section-rhythm-matcha > * + * {

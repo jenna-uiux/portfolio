@@ -28,6 +28,16 @@ import { ImageCarousel } from "./ImageCarousel";
 import { ResearchMeta } from "./ResearchMeta";
 import { EvidenceInsights } from "./EvidenceInsights";
 import { ContrastGrid } from "./ContrastGrid";
+import { RoadWaterToggle } from "./RoadWaterToggle";
+import { IAPriorityMatrix } from "./IAPriorityMatrix";
+import { TeamIntro } from "./TeamIntro";
+import { JakartaContext } from "./JakartaContext";
+import { DesignPrinciples } from "./DesignPrinciples";
+import { MediaStatement } from "./MediaStatement";
+import { PersonaCollage } from "./PersonaCollage";
+import { ModesShowcase } from "./ModesShowcase";
+import { BackgroundPinnedDeck } from "./BackgroundPinnedDeck";
+import { AeonTargetSpread } from "./AeonTargetSpread";
 
 type RichTextProps = {
   text: string;
@@ -381,6 +391,89 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
         caption={block.caption}
       />
     );
+  }
+
+  if (block.kind === "roadWaterToggle") {
+    return (
+      <RoadWaterToggle
+        defaultMode={block.defaultMode}
+        caption={block.caption}
+      />
+    );
+  }
+
+  if (block.kind === "iaMatrix") {
+    return <IAPriorityMatrix />;
+  }
+
+  if (block.kind === "teamGrid") {
+    return <TeamIntro members={block.members} />;
+  }
+
+  if (block.kind === "jakartaContext") {
+    return <JakartaContext />;
+  }
+
+  if (block.kind === "designPrinciples") {
+    return <DesignPrinciples principles={block.principles} />;
+  }
+
+  if (block.kind === "mediaStatement") {
+    return (
+      <MediaStatement
+        src={block.src}
+        alt={block.alt}
+        eyebrow={block.eyebrow}
+        headline={block.headline}
+        body={block.body}
+        source={block.source}
+        ratio={block.ratio}
+        overlay={block.overlay}
+        align={block.align}
+        headlineSize={block.headlineSize}
+      />
+    );
+  }
+
+  if (block.kind === "proseTwoColumn") {
+    return (
+      <div className="not-prose grid gap-8 md:grid-cols-2 md:gap-12">
+        <p className="t-body max-w-none">
+          <RichText text={block.left} />
+        </p>
+        <p className="t-body max-w-none">
+          <RichText text={block.right} />
+        </p>
+      </div>
+    );
+  }
+
+  if (block.kind === "aeonTargetSpread") {
+    return (
+      <AeonTargetSpread
+        row1={block.row1}
+        row2={block.row2}
+        row3={block.row3}
+      />
+    );
+  }
+
+  if (block.kind === "backgroundPinnedDeck") {
+    return (
+      <BackgroundPinnedDeck
+        kicker={block.kicker}
+        eyebrow={block.eyebrow}
+        slides={block.slides}
+      />
+    );
+  }
+
+  if (block.kind === "personaCollage") {
+    return <PersonaCollage />;
+  }
+
+  if (block.kind === "modesShowcase") {
+    return <ModesShowcase />;
   }
 
   if (block.kind === "bulletList") {

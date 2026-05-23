@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { ConditionalFooter } from "@/components/ConditionalFooter";
 import { MagneticCursor } from "@/components/MagneticCursor";
 import { site } from "@/lib/site";
+
+const CLARITY_PROJECT_ID = "wvg0isfh9j";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -34,7 +37,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={outfit.variable}>
+    <html lang="en" className={outfit.variable} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -49,6 +52,12 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://use.typekit.net/vlg1buw.css" />
       </head>
       <body className="min-h-screen bg-bg text-ink">
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var p=location.pathname;if(/^\\/work\\/aeon(\\/|$)/.test(p)){document.documentElement.dataset.theme='dark';}}catch(_){};",
+          }}
+        />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:bg-surface focus:px-3 focus:py-2 focus:text-sm focus:shadow"
@@ -59,6 +68,13 @@ export default function RootLayout({
         <main id="main">{children}</main>
         <ConditionalFooter />
         <MagneticCursor />
+        <Script id="ms-clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "${CLARITY_PROJECT_ID}");`}
+        </Script>
       </body>
     </html>
   );

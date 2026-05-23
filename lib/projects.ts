@@ -6,6 +6,8 @@ export type ImagePlaceholder = {
   ratio?: ImageRatio;
   /** Public URL under `/public` (e.g. `/media/fini/thumbnail/demo.mp4`) */
   videoSrc?: string;
+  /** Public URL under `/public` for a static image cover. */
+  src?: string;
 };
 
 export type ChartId =
@@ -279,6 +281,85 @@ export type CaseContentBlock =
       images: { src: string; alt: string }[];
       ratio?: ImageRatio;
       caption?: string;
+    }
+  | {
+      kind: "roadWaterToggle";
+      defaultMode?: "road" | "water";
+      caption?: string;
+    }
+  | { kind: "iaMatrix"; caption?: string }
+  | {
+      kind: "teamGrid";
+      members: { name: string; role: string; photo: string }[];
+    }
+  | { kind: "jakartaContext" }
+  | {
+      kind: "designPrinciples";
+      principles: {
+        number: string;
+        title: string;
+        tagline: string;
+        videoSrc: string;
+        iconSrc: string;
+        /** Shown on hover (md+) over the panel. */
+        hoverDescription?: string;
+      }[];
+    }
+  | {
+      kind: "mediaStatement";
+      src: string;
+      alt?: string;
+      eyebrow?: string;
+      headline?: string;
+      body?: string;
+      source?: string;
+      ratio?: "21/9" | "16/9" | "4/3" | "3/2";
+      overlay?: number;
+      align?: "center" | "left-bottom";
+      /** Smaller headline for dense slides (e.g. Background research strip). */
+      headlineSize?: "default" | "compact";
+    }
+  | {
+      kind: "proseTwoColumn";
+      left: string;
+      right: string;
+    }
+  | { kind: "personaCollage" }
+  | { kind: "modesShowcase" }
+  | {
+      kind: "backgroundPinnedDeck";
+      /** Section kicker (e.g. "Background") — when set, render inside pin with the deck. */
+      kicker?: string;
+      /** Shown above the deck inside the pin region so it stays visible while scrubbing. */
+      eyebrow?: string;
+      slides: {
+        src: string;
+        alt: string;
+        headline: string;
+        body?: string;
+        source?: string;
+        overlay?: number;
+        align?: "center" | "left-bottom";
+      }[];
+    }
+  | {
+      kind: "aeonTargetSpread";
+      row1: {
+        label: string;
+        headline: string;
+        supporting: string;
+        mapSrc: string;
+        mapAlt: string;
+      };
+      row2: {
+        mapSrc: string;
+        mapAlt: string;
+        headline: string;
+        source?: string;
+      };
+      row3: {
+        statement: string;
+      };
     };
 
 export type CaseSection = {
@@ -315,6 +396,8 @@ export type CaseStudy = {
   featured: boolean;
   /** Short labels shown on the home teaser (e.g. "Agentic Coding"). */
   tags?: string[];
+  /** Site-wide tone override while this case study is open. */
+  theme?: "light" | "dark";
   externalLink?: { label: string; href: string };
   sections: CaseSection[];
 };
@@ -1105,36 +1188,207 @@ export const projects: CaseStudy[] = [
     ],
   },
   {
-    slug: "vibemaker",
-    title: "Vibemaker",
-    tagline: "A public lab for vibe coding and building in the open.",
+    slug: "aeon",
+    title: "AEON",
+    tagline: "Cruise Beyond the Future.",
     summary:
-      "Short-form experiments where I use AI coding tools to design, build, and document small products, websites, and creative interfaces.",
-    category: "Creative Lab",
-    role: "Designer · Builder · Storyteller",
-    tools: ["Cursor", "React", "Framer", "YouTube"],
-    focus: ["Vibe coding", "Creative tooling", "Build-in-public storytelling"],
-    year: "2026",
+      "Amphibious mobility for a climate-resilient future.\nAn adaptive UI system that shifts between road and water without breaking the driver's focus.",
+    category: "Mobility / HMI Design",
+    tags: ["HMI", "Mobility"],
+    role: "Product Designer · UI/UX lead in a 5-person team",
+    team: "2 Industrial Designers, 1 Brand Strategist, 1 Interior Architect Designer, me",
+    tools: ["Figma", "After Effects"],
+    focus: ["Multimodal HMI", "Adaptive in-vehicle UI"],
+    timeline: "Fall 2025 · concept → proof of concept",
+    year: "2025",
+    theme: "dark",
     cover: {
-      filename: "vibemaker_hero.jpg",
-      description: "YouTube channel still / vibe-coding shot",
+      filename: "aeon-front.png",
+      description: "AEON concept car — hero render",
       ratio: "16/9",
+      src: "/images/aeon/hero/aeon-front.png",
     },
     featured: true,
     externalLink: {
-      label: "Watch Vibemaker",
-      href: "https://www.youtube.com/@Vibemaker_l0l",
+      label: "Academy of Art × Autodesk",
+      href: "https://www.academyart.edu/",
     },
     sections: [
       {
-        id: "overview",
-        title: "Overview",
-        body: "Vibemaker is my creative lab for documenting what it feels like to build with AI tools. It connects design, code, narrative, and the messy middle of making things quickly.",
+        id: "context",
+        title: "Context",
+        eyebrow:
+          "Sponsored by Autodesk: Design a concept vehicle for 2050",
+        body: "",
+        contentBlocks: [
+          {
+            kind: "proseTwoColumn",
+            left: "AEON is a three month project sponsored by Autodesk. Our multidisciplinary team of five was challenged to design a vehicle for 2050.",
+            right:
+              "We explored how future climate conditions could reshape mobility, and as the team lead and product designer, I guided the project direction and designed the in-vehicle UI/UX system for an amphibious EV that moves seamlessly between land and water.",
+          },
+          {
+            kind: "teamGrid",
+            members: [
+              {
+                name: "Jinghan Yang",
+                role: "Industrial Designer",
+                photo: "/images/aeon/team/jinghan-yang.png",
+              },
+              {
+                name: "Bishoy M Aboseif",
+                role: "Industrial Designer",
+                photo: "/images/aeon/team/bishoy-aboseif.png",
+              },
+              {
+                name: "Jihyeon Jang",
+                role: "Product Designer",
+                photo: "/images/aeon/team/jihyeon-jang.png",
+              },
+              {
+                name: "Lina Hanich",
+                role: "Brand Strategist",
+                photo: "/images/aeon/team/lina-hanich.png",
+              },
+              {
+                name: "Veronica Gibson",
+                role: "Interior Designer",
+                photo: "/images/aeon/team/veronica-gibson.png",
+              },
+            ],
+          },
+        ],
       },
       {
-        id: "direction",
-        title: "Direction",
-        body: "The project is less about tutorials and more about process: how ideas become prototypes, how tools change the pace of design, and how a designer can build without waiting for perfect conditions.",
+        id: "background",
+        title: "Background",
+        body: "",
+        contentBlocks: [
+          {
+            kind: "backgroundPinnedDeck",
+            kicker: "Background",
+            eyebrow: "What could happen in 2050?",
+            slides: [
+              {
+                src: "/images/aeon/context/climate-city.png",
+                alt: "Flooded modern city",
+                headline: "Global sea level\nwill rise **30cm by 2050**",
+                overlay: 0.55,
+              },
+              {
+                src: "/images/aeon/context/climate-city.png",
+                alt: "Long-term infrastructure decay",
+                headline:
+                  "Asphalt and concrete\n**degrade faster** under repeated saltwater exposure.",
+                body: "Corrosion of steel reinforcements in bridges and elevated roads → structural failures. Maintenance cycles shrink from decades to years.",
+                source: "IPCC AR6 (2021)",
+                overlay: 0.6,
+                align: "left-bottom",
+              },
+              {
+                src: "/images/aeon/context/climate-traffic.png",
+                alt: "Traffic delays in rain",
+                headline:
+                  "Rising sea levels and increased flooding\ncan damage roads, **leading to significant traffic delays.**",
+                source: "EPA (2021). Appendix G: Roads.",
+                overlay: 0.6,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "concept",
+        title: "Concept",
+        eyebrow: "Turning water from barrier → path",
+        body: "",
+        contentBlocks: [
+          {
+            kind: "designPrinciples",
+            principles: [
+              {
+                number: "01",
+                title: "Seamless Transition",
+                tagline: "One continuous experience, two terrains.",
+                videoSrc: "/media/aeon/principles/principle_1.mp4",
+                iconSrc: "/images/aeon/principles/seamless.svg",
+                hoverDescription:
+                  "Moving between land and water should feel like one continuous journey.",
+              },
+              {
+                number: "02",
+                title: "Multisensory Interaction System",
+                tagline: "The right information, on the right surface.",
+                videoSrc: "/media/aeon/principles/principle_2.mp4",
+                iconSrc: "/images/aeon/principles/multisensory.svg",
+                hoverDescription:
+                  "The vehicle should communicate through multiple sensory cues to help users stay aware across changing environments.",
+              },
+              {
+                number: "03",
+                title: "Unlocked Freedom",
+                tagline: "The UI steps back when it can, shows up when it matters.",
+                videoSrc: "/media/aeon/principles/principle_3.mp4",
+                iconSrc: "/images/aeon/principles/freedom.svg",
+                hoverDescription:
+                  "Mobility should no longer be limited by traditional roads, giving users new ways to move and explore.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "target",
+        title: "Target",
+        eyebrow: "Where could the vehicle make the biggest impact?",
+        body: "",
+        contentBlocks: [
+          {
+            kind: "aeonTargetSpread",
+            row1: {
+              label: "Indonesia",
+              headline: "**17,000+** islands",
+                supporting:
+                  "Moving between places is already inconvenient and infrastructure dependent.",
+              mapSrc: "/images/aeon/context/indonesia-map.png",
+              mapAlt: "Indonesia archipelago map",
+            },
+            row2: {
+              mapSrc: "/images/aeon/context/jakarta-flood-map.png",
+              mapAlt: "Jakarta 2050 flood-risk map",
+              headline:
+                "By **2050**, much of Jakarta may become flood vulnerable.",
+              source: "Climate Central · Coastal Risk Screening Tool",
+            },
+            row3: {
+              statement:
+                "Jakarta became our target because climate vulnerability and fragmented infrastructure make alternative mobility increasingly essential.",
+            },
+          },
+          {
+            kind: "subheading",
+            title: "Meet Rafi — Field Engineer, Jakarta 2050.",
+          },
+          { kind: "personaCollage" },
+        ],
+      },
+      {
+        id: "ia",
+        title: "Information Architecture",
+        eyebrow: "Every surface carries a different layer of attention.",
+        body: "",
+        contentBlocks: [
+          { kind: "iaMatrix" },
+        ],
+      },
+      {
+        id: "modes",
+        title: "Modes",
+        eyebrow: "Two terrains. One continuous drive.",
+        body: "",
+        contentBlocks: [
+          { kind: "modesShowcase" },
+        ],
       },
     ],
   },

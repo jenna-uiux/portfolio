@@ -430,10 +430,11 @@ export const projects: CaseStudy[] = [
     ],
     year: "2026",
     cover: {
-      filename: "finiDemo.mp4",
+      filename: "fini_thumbnail.mp4",
       description: "Fini hero, phone in hand with planner UI",
       ratio: "16/9",
-      videoSrc: "https://youtu.be/BvTwxPZjxEs",
+      videoSrc:
+        "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/fini_thumbnail.mp4",
     },
     featured: true,
     sections: [
@@ -852,10 +853,11 @@ export const projects: CaseStudy[] = [
     timeline: "3 weeks · v0 → v1",
     year: "2026",
     cover: {
-      filename: "strawberry-matcha_hero.mp4",
+      filename: "strawberryMatcha_thumbnail.mp4",
       description: "Strawberry Matcha hero demo",
       ratio: "16/9",
-      videoSrc: "https://youtu.be/xYQwGtphHus",
+      videoSrc:
+        "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_thumbnail.mp4",
     },
     featured: true,
     sections: [

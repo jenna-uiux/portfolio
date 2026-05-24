@@ -40,7 +40,6 @@ export function CoverMedia({ cover, ratio, compact, className }: Props) {
         controls={false}
         className={[
           compact ? "rounded-md" : "rounded-lg",
-          "border border-ink/10",
           className ?? "",
         ]
           .filter(Boolean)

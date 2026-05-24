@@ -393,6 +393,8 @@ export type CaseStudy = {
   timeline?: string;
   year: string;
   cover: ImagePlaceholder;
+  /** Optional alternate cover for the home teaser (defaults to `cover`). */
+  teaserCover?: ImagePlaceholder;
   featured: boolean;
   /** Short labels shown on the home teaser (e.g. "Agentic Coding"). */
   tags?: string[];
@@ -1192,7 +1194,7 @@ export const projects: CaseStudy[] = [
     title: "AEON",
     tagline: "Cruise Beyond the Future.",
     summary:
-      "Amphibious mobility for a climate-resilient future.\nAn adaptive UI system that shifts between road and water without breaking the driver's focus.",
+      "Led product direction and designed the HMI of amphibious mobility for a climate-resilient future.",
     category: "Mobility / HMI Design",
     tags: ["HMI", "Mobility"],
     role: "Product Designer · UI/UX lead in a 5-person team",
@@ -1203,10 +1205,16 @@ export const projects: CaseStudy[] = [
     year: "2025",
     theme: "dark",
     cover: {
-      filename: "aeon-front.png",
-      description: "AEON concept car — hero render",
+      filename: "aeon_thumbnail_1.jpg",
+      description: "AEON concept car on water — case study hero",
       ratio: "16/9",
-      src: "/images/aeon/hero/aeon-front.png",
+      src: "/images/aeon/hero/aeon_thumbnail_1.jpg",
+    },
+    teaserCover: {
+      filename: "aeon_thumbnail_2.jpg",
+      description: "AEON concept car on water — home teaser",
+      ratio: "21/9",
+      src: "/images/aeon/hero/aeon_thumbnail_2.jpg",
     },
     featured: true,
     externalLink: {

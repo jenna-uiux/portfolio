@@ -53,7 +53,10 @@ export function CaseStudyTeaser({ project, index }: Props) {
             className="relative overflow-hidden rounded-lg"
           >
             <div className="transition-transform duration-700 ease-out group-hover:scale-[1.025]">
-              <CoverMedia cover={project.cover} ratio="21/9" />
+              <CoverMedia
+                cover={project.teaserCover ?? project.cover}
+                ratio={(project.teaserCover ?? project.cover).ratio ?? "21/9"}
+              />
             </div>
 
             <div

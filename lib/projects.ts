@@ -1211,10 +1211,10 @@ export const projects: CaseStudy[] = [
       src: "/images/aeon/hero/aeon_thumbnail_1.jpg",
     },
     teaserCover: {
-      filename: "aeon_thumbnail_2.jpg",
+      filename: "aeon_thumbnail_3.jpg",
       description: "AEON concept car on water — home teaser",
       ratio: "21/9",
-      src: "/images/aeon/hero/aeon_thumbnail_2.jpg",
+      src: "/images/aeon/hero/aeon_thumbnail_3.jpg",
     },
     featured: true,
     externalLink: {

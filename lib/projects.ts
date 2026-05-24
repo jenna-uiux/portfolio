@@ -432,6 +432,13 @@ export const projects: CaseStudy[] = [
     cover: {
       filename: "fini_thumbnail.mp4",
       description: "Fini hero, phone in hand with planner UI",
+      ratio: "16/9",
+      videoSrc:
+        "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/fini_thumbnail.mp4",
+    },
+    teaserCover: {
+      filename: "fini_thumbnail.mp4",
+      description: "Fini home teaser, phone in hand with planner UI",
       ratio: "21/9",
       videoSrc:
         "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/fini_thumbnail.mp4",
@@ -855,6 +862,13 @@ export const projects: CaseStudy[] = [
     cover: {
       filename: "strawberryMatcha_thumbnail.mp4",
       description: "Strawberry Matcha hero demo",
+      ratio: "16/9",
+      videoSrc:
+        "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_thumbnail.mp4",
+    },
+    teaserCover: {
+      filename: "strawberryMatcha_thumbnail.mp4",
+      description: "Strawberry Matcha home teaser",
       ratio: "21/9",
       videoSrc:
         "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_thumbnail.mp4",

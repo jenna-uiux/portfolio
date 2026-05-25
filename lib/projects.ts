@@ -1210,7 +1210,7 @@ export const projects: CaseStudy[] = [
     title: "AEON",
     tagline: "Cruise Beyond the Future.",
     summary:
-      "Led product direction and designed the HMI of amphibious mobility for a climate-resilient future.",
+      "Led product direction and designed the adaptive HMI for an amphibious vehicle concept for 2050, sponsored by Autodesk.",
     category: "Mobility / HMI Design",
     tags: ["HMI", "Mobility"],
     role: "Product Designer · UI/UX lead in a 5-person team",

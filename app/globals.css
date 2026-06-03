@@ -431,3 +431,70 @@ html[data-theme="dark"] .pull-quote {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-33.3333%, 0, 0); }
 }
+
+/* ───────────────────────────────────────────────────────────
+   Sketchbook footer — pencil underline + emoji bounce.
+   ─────────────────────────────────────────────────────────── */
+.pencil-underline-path {
+  stroke-dasharray: 140;
+  stroke-dashoffset: 140;
+  opacity: 0.9;
+  transition: stroke-dashoffset 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .pencil-underline-path,
+.group:focus-visible .pencil-underline-path {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pencil-underline-path {
+    transition: none;
+    stroke-dashoffset: 0;
+    opacity: 0.55;
+  }
+}
+
+@keyframes footprint-emoji-bounce {
+  0%   { transform: translateY(0) rotate(0deg); }
+  35%  { transform: translateY(-6px) rotate(-4deg); }
+  60%  { transform: translateY(0) rotate(2deg); }
+  85%  { transform: translateY(-2px) rotate(-1deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+.footprint-emoji {
+  display: inline-block;
+  animation: footprint-emoji-bounce 1.8s ease-out 0.4s 1 both;
+  transform-origin: 50% 80%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footprint-emoji { animation: none; }
+}
+
+/* ───────────────────────────────────────────────────────────
+   Footer dark scope — the footer is a near-black band so it reads
+   as a distinct "end of the page" space. Site color tokens (--ink,
+   --text) and the .t-mono utility are tuned for the light page, so
+   they're explicitly re-coloured to cream here.
+   ─────────────────────────────────────────────────────────── */
+.footer-dark {
+  --foot-cream: #f5f0e8;
+  color: var(--foot-cream);
+}
+
+.footer-dark .t-mono {
+  color: rgba(245, 240, 232, 0.5);
+}
+
+.footer-dark ::selection {
+  background: rgba(245, 240, 232, 0.16);
+  color: var(--foot-cream);
+}
+
+.footer-dark a:focus-visible,
+.footer-dark button:focus-visible {
+  outline: 2px solid rgba(245, 240, 232, 0.6);
+  outline-offset: 3px;
+}

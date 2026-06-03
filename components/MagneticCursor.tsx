@@ -38,13 +38,29 @@ export function MagneticCursor() {
     const onMove = (e: PointerEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
-      if (!visible) setVisible(true);
 
-      const target = (e.target as HTMLElement | null)?.closest?.(
-        "[data-cursor]",
-      ) as HTMLElement | null;
-      const next = (target?.dataset.cursor as CursorVariant) ?? null;
-      setVariant((prev) => (prev === next ? prev : next));
+      const el = e.target as HTMLElement | null;
+      const cursorEl = el?.closest?.("[data-cursor]") as HTMLElement | null;
+
+      // Interactive elements (links, buttons) keep their Read/Visit cursor,
+      // even inside a stamp zone.
+      if (cursorEl) {
+        if (!visible) setVisible(true);
+        const next = (cursorEl.dataset.cursor as CursorVariant) ?? null;
+        setVariant((prev) => (prev === next ? prev : next));
+        return;
+      }
+
+      // Over a stamp zone's background the footer renders its own stamp-shaped
+      // cursor, so hide the global one to avoid doubling up.
+      if (el?.closest?.("[data-stamp-zone]")) {
+        if (visible) setVisible(false);
+        setVariant(null);
+        return;
+      }
+
+      if (!visible) setVisible(true);
+      setVariant(null);
     };
 
     const onLeave = () => {

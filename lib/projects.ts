@@ -411,7 +411,7 @@ export const projects: CaseStudy[] = [
     tagline:
       "An accountability companion for the plans no one else is waiting on.",
     summary:
-      "Designed an AI productivity app that combines Apple Health data, task management, and personalized coaching to help users work with their energy levels.",
+      "Designed and developed an AI productivity mobile app that adapts to users' energy levels using Apple Health data",
     category: "AI UX / Productivity",
     tags: ["Agentic Coding"],
     role: "Design Engineer",
@@ -461,12 +461,8 @@ export const projects: CaseStudy[] = [
             src: "/images/fini/figma-highlights/highlight-energy.png",
             ratio: "16/9",
             finiHighlight: {
-              titleLines: [
-                "Understands your energy.",
-                "Helps you start.",
-              ],
-              body:
-                "Fini reads your daily energy using signals from Apple Health. When your energy is low, it breaks tasks into smaller steps to help you get started.",
+              titleLines: ["Understands your energy.", "Helps you start."],
+              body: "Fini reads your daily energy using signals from Apple Health. When your energy is low, it breaks tasks into smaller steps to help you get started.",
               textSide: "left",
               emphasizeImage: true,
             },
@@ -483,8 +479,7 @@ export const projects: CaseStudy[] = [
                 "Say everything on your mind.",
                 "Fini turns it into a plan.",
               ],
-              body:
-                "Describe what you need to do in your own words. Fini understands your intent and turns it into a prioritized task plan.",
+              body: "Describe what you need to do in your own words. Fini understands your intent and turns it into a prioritized task plan.",
               textSide: "right",
               /** Net +16px vs default -48px column lift ≈ 64px lower than -translate-y-12 baseline. */
               textColumnYClass: "md:translate-y-4",
@@ -499,8 +494,7 @@ export const projects: CaseStudy[] = [
             ratio: "16/9",
             finiHighlight: {
               titleLines: ["Your next step, on your wrist"],
-              body:
-                "Fini brings the right next step to your Apple Watch so you can stay focused and keep moving forward.",
+              body: "Fini brings the right next step to your Apple Watch so you can stay focused and keep moving forward.",
               textSide: "right",
             },
           },
@@ -571,8 +565,7 @@ export const projects: CaseStudy[] = [
             insights: [
               {
                 number: "01",
-                title:
-                  "The accountability gap is **real**, and it's binary.",
+                title: "The accountability gap is **real**, and it's binary.",
                 body: "On the same day, with the same available time, participants completed nearly 100% of externally driven tasks (meetings, classes, deadlines) while postponing self-initiated tasks again and again.",
                 evidenceQuote:
                   "Structured, externally driven tasks were consistently completed. Self-initiated tasks were frequently postponed. Users rely heavily on external accountability to maintain consistency.",
@@ -583,7 +576,7 @@ export const projects: CaseStudy[] = [
               {
                 number: "02",
                 title: "Starting is the hard part.",
-                body: "Once participants began a task, momentum sustained itself. The breakdown happened at the activation threshold. Vague tasks (\"study,\" \"work on portfolio\") collapsed first because there was no concrete first step to execute.",
+                body: 'Once participants began a task, momentum sustained itself. The breakdown happened at the activation threshold. Vague tasks ("study," "work on portfolio") collapsed first because there was no concrete first step to execute.',
                 evidenceQuote:
                   "The hardest step is starting. Once started, users sustain momentum easily. Vague task descriptions led to avoidance and procrastination.",
                 evidenceSource: "Diary Study · Behavioral Patterns 3 & 5",
@@ -649,8 +642,7 @@ export const projects: CaseStudy[] = [
                 label: "ANSWERS INSIGHT 03",
                 title: "Reads what your body can actually do today.",
                 body: "Fini pulls sleep, HRV, and resting heart rate from Apple Health and computes a daily capacity score. On a low-capacity day, the plan adapts: a 90-minute deep work block becomes a 15-minute review. The day still moves forward.",
-                imageSrc:
-                  "/images/fini/figma-highlights/highlight-energy.png",
+                imageSrc: "/images/fini/figma-highlights/highlight-energy.png",
                 imageAlt:
                   "Capacity-aware planner adapts task scope to today's energy",
               },
@@ -666,8 +658,7 @@ export const projects: CaseStudy[] = [
                 label: "ANSWERS INSIGHT 01",
                 title: "Becomes the witness your self-promises don't have.",
                 body: "Work has Slack, calendar invites, colleagues asking where things stand. Self-initiated work has none of that. Fini surfaces the next step on your wrist in the moments you'd otherwise drift, the way a calendar invite makes a meeting visible.",
-                imageSrc:
-                  "/images/fini/figma-highlights/highlight-watch.png",
+                imageSrc: "/images/fini/figma-highlights/highlight-watch.png",
                 imageAlt:
                   "Apple Watch surfaces the next concrete step at the right moment",
               },
@@ -736,33 +727,29 @@ export const projects: CaseStudy[] = [
                 label: "UX",
                 title: "Cognitive Overload",
                 front:
-                  "The act of manual task entry (categorizing, typing, and assigning energy weights) became a \"second job\" for users who were already biologically depleted.",
-                back:
-                  "\"I'm already exhausted. Having to type out my tasks and decide on energy levels feels like more work. I wish it could just hear my state and suggest the plan for me.\"",
+                  'The act of manual task entry (categorizing, typing, and assigning energy weights) became a "second job" for users who were already biologically depleted.',
+                back: '"I\'m already exhausted. Having to type out my tasks and decide on energy levels feels like more work. I wish it could just hear my state and suggest the plan for me."',
               },
               {
                 label: "Concept",
-                title: "The \"Starting\" Friction",
+                title: 'The "Starting" Friction',
                 front:
                   "Users were paralyzed by the sheer effort of starting while in a low-energy state. Flexible scheduling was a secondary need.",
-                back:
-                  "\"Flexible deadlines are great, but I'm so drained I don't even know where to begin. I just need the system to pick one small thing I can actually handle right now.\"",
+                back: "\"Flexible deadlines are great, but I'm so drained I don't even know where to begin. I just need the system to pick one small thing I can actually handle right now.\"",
               },
               {
                 label: "UI",
                 title: "Invisible Systems are Untrustworthy",
                 front:
                   "While the backend was processing complex bio-signals, the static UI didn't communicate this activity. The black-box approach led to skepticism about the AI's logic.",
-                back:
-                  "\"It says it's connected to my Watch, but I don't see any of my data on the screen. How do I know if this plan is actually based on my recovery or just random suggestions?\"",
+                back: "\"It says it's connected to my Watch, but I don't see any of my data on the screen. How do I know if this plan is actually based on my recovery or just random suggestions?\"",
               },
               {
                 label: "Performance",
                 title: "Logic Lag & Latency",
                 front:
                   "Technical audits revealed inefficient asynchronous calls and an unoptimized inference engine, resulting in data loading latencies of 0.8s to 1.2s.",
-                back:
-                  "Projected to drop trust scores by 40% and lift drop-off by ~25%, since users equate latency with system unreliability.",
+                back: "Projected to drop trust scores by 40% and lift drop-off by ~25%, since users equate latency with system unreliability.",
                 backLabel: "Engineering Impact",
               },
             ],
@@ -885,8 +872,7 @@ export const projects: CaseStudy[] = [
       {
         id: "problem",
         title: "User problem",
-        eyebrow:
-          "Filing alone leads to mistakes. General AI makes it worse.",
+        eyebrow: "Filing alone leads to mistakes. General AI makes it worse.",
         body: "Most couples filing for a marriage-based green card don't have a lawyer. They piece the process together from USCIS pages, Reddit threads, and lawyer blogs from years ago. Three forces collide.",
         contentBlocks: [
           {
@@ -956,7 +942,8 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             first: true,
-            title: "Ask Strawberry Matcha, a conversation that knows your case.",
+            title:
+              "Ask Strawberry Matcha, a conversation that knows your case.",
             body: "Users can ask anything, anytime. Strawberry Matcha answers based on the applicant's actual case status and preparation progress, and updates the case as the conversation continues.",
           },
           {
@@ -974,7 +961,8 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
-            title: "Field Translator, fills the gap between your real life and the form.",
+            title:
+              "Field Translator, fills the gap between your real life and the form.",
             body: "The applicant uploads a USCIS form PDF (any edition). The system reads the actual fields, cross-references the case data, and tells the user what to enter in each one, including the trickiest part: format conversion. A Korean address gets reshaped into US form structure. A Korean name gets matched to passport romanization. The values come out form-ready.",
           },
           { kind: "fieldTranslator" },
@@ -988,7 +976,8 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
-            title: "Timeline guidance, so you know where you are and what's next.",
+            title:
+              "Timeline guidance, so you know where you are and what's next.",
             body: "Each milestone shows where the applicant is in the process, what the step actually means, and what usually happens next, so the case never feels like a black box.",
           },
           {
@@ -1241,8 +1230,7 @@ export const projects: CaseStudy[] = [
       {
         id: "context",
         title: "Context",
-        eyebrow:
-          "Sponsored by Autodesk: Design a concept vehicle for 2050",
+        eyebrow: "Sponsored by Autodesk: Design a concept vehicle for 2050",
         body: "",
         contentBlocks: [
           {
@@ -1351,7 +1339,8 @@ export const projects: CaseStudy[] = [
               {
                 number: "03",
                 title: "Unlocked Freedom",
-                tagline: "The UI steps back when it can, shows up when it matters.",
+                tagline:
+                  "The UI steps back when it can, shows up when it matters.",
                 videoSrc: "/media/aeon/principles/principle_3.mp4",
                 iconSrc: "/images/aeon/principles/freedom.svg",
                 hoverDescription:
@@ -1372,8 +1361,8 @@ export const projects: CaseStudy[] = [
             row1: {
               label: "Indonesia",
               headline: "**17,000+** islands",
-                supporting:
-                  "Moving between places is already inconvenient and infrastructure dependent.",
+              supporting:
+                "Moving between places is already inconvenient and infrastructure dependent.",
               mapSrc: "/images/aeon/context/indonesia-map.png",
               mapAlt: "Indonesia archipelago map",
             },
@@ -1401,18 +1390,14 @@ export const projects: CaseStudy[] = [
         title: "Information Architecture",
         eyebrow: "Every surface carries a different layer of attention.",
         body: "",
-        contentBlocks: [
-          { kind: "iaMatrix" },
-        ],
+        contentBlocks: [{ kind: "iaMatrix" }],
       },
       {
         id: "modes",
         title: "Modes",
         eyebrow: "Two terrains. One continuous drive.",
         body: "",
-        contentBlocks: [
-          { kind: "modesShowcase" },
-        ],
+        contentBlocks: [{ kind: "modesShowcase" }],
       },
     ],
   },

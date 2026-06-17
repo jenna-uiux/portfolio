@@ -411,7 +411,7 @@ export const projects: CaseStudy[] = [
     tagline:
       "An accountability companion for the plans no one else is waiting on.",
     summary:
-      "Designed and built Fini from 0 → 1,\n an Apple Health connected AI productivity app",
+      "Designed an AI productivity app that combines Apple Health data, task management, and personalized coaching to help users work with their energy levels.",
     category: "AI UX / Productivity",
     tags: ["Agentic Coding"],
     role: "Design Engineer",
@@ -851,7 +851,7 @@ export const projects: CaseStudy[] = [
     tagline:
       "AI agent for marriage-based green card applicants (CR1 or F2A) filing without a lawyer.",
     summary:
-      "Designed a conversational AI agent around a harder question:\nHow do you make AI safe enough for high-stakes legal workflows?",
+      "Designed a trustworthy AI assistant for legal workflows, focusing on safety guardrails, transparency, and human oversight.",
     category: "AI UX / Legal workflow",
     tags: ["Agentic Coding"],
     role: "AI UX Designer · Solo project",
@@ -922,7 +922,7 @@ export const projects: CaseStudy[] = [
         title: "Solution",
         eyebrow:
           "A legal-trained AI agent that learns your case through conversation.",
-        body: "Three pillars hold it together. Each one is a deliberate counter to the way filing alone usually breaks down.",
+        body: "",
         contentBlocks: [
           {
             kind: "pillarGrid",
@@ -1210,7 +1210,7 @@ export const projects: CaseStudy[] = [
     title: "AEON",
     tagline: "Cruise Beyond the Future.",
     summary:
-      "Led product direction and designed the adaptive HMI for an amphibious vehicle concept for 2050, sponsored by Autodesk.",
+      "Led product direction and designed an adaptive vehicle interface for a 2050 amphibious mobility concept sponsored by Autodesk.",
     category: "Mobility / HMI Design",
     tags: ["HMI", "Mobility"],
     role: "Product Designer · UI/UX lead in a 5-person team",

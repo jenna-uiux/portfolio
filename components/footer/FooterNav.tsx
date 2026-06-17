@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
-import { PencilUnderline } from "./PencilUnderline";
 
 type NavLink = {
   label: string;
@@ -66,7 +65,7 @@ function NavGroup({
                 data-cursor="visit"
                 className={linkClass}
               >
-                <PencilUnderline>{link.label}</PencilUnderline>
+                <span className="footer-link-underline">{link.label}</span>
                 {link.href.startsWith("http") ? (
                   <span aria-hidden className={arrowClass}>
                     ↗
@@ -75,7 +74,7 @@ function NavGroup({
               </a>
             ) : (
               <Link href={link.href} data-cursor="visit" className={linkClass}>
-                <PencilUnderline>{link.label}</PencilUnderline>
+                <span className="footer-link-underline">{link.label}</span>
               </Link>
             )}
           </li>

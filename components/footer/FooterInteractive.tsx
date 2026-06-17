@@ -9,7 +9,6 @@ import {
 } from "framer-motion";
 import { site } from "@/lib/site";
 import { FooterNav } from "./FooterNav";
-import { StampPicker } from "./StampPicker";
 import { BinaryGlyph } from "./BinaryGlyph";
 import { MARK_BY_ID, type MarkId } from "./binaryMarks";
 
@@ -28,8 +27,9 @@ type Placed = {
   yPct: number;
 };
 
+const ACTIVE_MARK: MarkId = "dog";
+
 export function FooterInteractive() {
-  const [active, setActive] = useState<MarkId>("dog");
   const [placed, setPlaced] = useState<Placed[]>([]);
   const [fine, setFine] = useState(false);
   const [overCanvas, setOverCanvas] = useState(false);
@@ -58,7 +58,7 @@ export function FooterInteractive() {
           ...prev,
           {
             key: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-            markId: active,
+            markId: ACTIVE_MARK,
             seed: Math.floor(Math.random() * 1e9),
             xPct,
             yPct,
@@ -69,7 +69,7 @@ export function FooterInteractive() {
           : next;
       });
     },
-    [active],
+    [],
   );
 
   const onPointerMove = useCallback(
@@ -100,7 +100,7 @@ export function FooterInteractive() {
     [place],
   );
 
-  const activeMark = MARK_BY_ID[active];
+  const activeMark = MARK_BY_ID[ACTIVE_MARK];
 
   return (
     <div
@@ -148,8 +148,8 @@ export function FooterInteractive() {
       <div
         className="relative z-10 container-ultra"
         style={{
-          paddingTop: "clamp(4.5rem, 6vw, 6.5rem)",
-          paddingBottom: "clamp(2.5rem, 4vw, 3.5rem)",
+          paddingTop: "clamp(6.5rem, 9vw, 10rem)",
+          paddingBottom: "clamp(1.5rem, 2vw, 2.25rem)",
         }}
       >
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
@@ -164,19 +164,14 @@ export function FooterInteractive() {
               <span className="italic" style={{ fontFamily: SERIF }}>
                 footer
               </span>
-              <span className="footprint-emoji ml-2" aria-hidden>
+              <span className="ml-2" aria-hidden>
                 👣
               </span>
             </h2>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-[#f5f0e8]/55">
-              Your cursor is a stamp down here. Click anywhere to leave a mark —
-              or change the stamp first. Nothing is saved; it is just a small
-              bit of fun on the way out.
+              Your cursor&apos;s a stamp down here — tap anywhere to leave a
+              mark. Nothing&apos;s saved, just a little fun on your way out.
             </p>
-
-            <div className="mt-7">
-              <StampPicker active={active} onChange={setActive} />
-            </div>
           </div>
 
           <div className="lg:col-span-5 lg:pl-6 lg:pt-1">
@@ -184,7 +179,7 @@ export function FooterInteractive() {
           </div>
         </div>
 
-        <div className="mt-16 flex justify-end md:mt-24">
+        <div className="mt-12 flex justify-end md:mt-16">
           <span className="t-mono">{site.footer.copyright}</span>
         </div>
       </div>
@@ -201,7 +196,7 @@ export function FooterInteractive() {
           <div className="-translate-x-1/2 -translate-y-1/2 text-[#f5f0e8]">
             <BinaryGlyph
               mark={activeMark}
-              seed={`cursor-${active}`}
+              seed={`cursor-${ACTIVE_MARK}`}
               size={STAMP}
               density="full"
             />

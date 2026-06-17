@@ -838,7 +838,7 @@ export const projects: CaseStudy[] = [
     tagline:
       "AI agent for marriage-based green card applicants (CR1 or F2A) filing without a lawyer.",
     summary:
-      "Designed a trustworthy AI assistant for legal workflows, focusing on safety guardrails, transparency, and human oversight.",
+      "Designed a trustworthy AI assistant for legal workflows, focusing on safety guardrails, transparency, and human oversight",
     category: "AI UX / Legal workflow",
     tags: ["Agentic Coding"],
     role: "AI UX Designer · Solo project",
@@ -1199,7 +1199,7 @@ export const projects: CaseStudy[] = [
     title: "AEON",
     tagline: "Cruise Beyond the Future.",
     summary:
-      "Led product direction and designed an adaptive vehicle interface for a 2050 amphibious mobility concept sponsored by Autodesk.",
+      "Led product direction and designed an adaptive vehicle interface for a 2050 amphibious mobility concept sponsored by Autodesk",
     category: "Mobility / HMI Design",
     tags: ["HMI", "Mobility"],
     role: "Product Designer · UI/UX lead in a 5-person team",

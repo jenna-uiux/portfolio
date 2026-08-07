@@ -299,6 +299,9 @@ html[data-theme="dark"] .pull-quote {
   .section-rhythm-matcha > * + * {
     margin-top: clamp(32px, 4vw, 52px);
   }
+  .section-rhythm-matcha > .subheading-decision + * {
+    margin-top: var(--rhythm-sm);
+  }
   /* Case study: major content blocks (e.g. Fini Design & Build — v1 / UT / v2 / edge) */
   .section-rhythm-loose > * + * {
     margin-top: clamp(72px, 7vw, 112px);

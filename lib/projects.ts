@@ -209,6 +209,7 @@ export type CaseContentBlock =
       src: string;
       alt: string;
       objectFit?: "cover" | "contain";
+      borderless?: boolean;
     }
   | { kind: "edgeCaseExplorer" }
   | {
@@ -864,6 +865,7 @@ export const projects: CaseStudy[] = [
             src: "/images/strawberryMatcha/designDecision/conversationalAIUI/problem_articles.jpg",
             alt: "Research articles about immigration lawyer costs, USCIS Requests for Evidence, and legal AI hallucinations.",
             objectFit: "contain",
+            borderless: true,
           },
         ],
       },

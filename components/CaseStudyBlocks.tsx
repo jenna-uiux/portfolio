@@ -573,7 +573,12 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "image") {
     return (
-      <div className="mt-6 overflow-hidden rounded-2xl border border-ink/6">
+      <div
+        className={[
+          "mt-6 overflow-hidden rounded-2xl border",
+          block.borderless ? "border-transparent" : "border-ink/6",
+        ].join(" ")}
+      >
         <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
           <Image
             src={block.src}

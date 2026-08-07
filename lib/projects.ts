@@ -156,6 +156,8 @@ export type CaseContentBlock =
       first?: boolean;
       /** Keeps local subheading spacing tight when parent content rhythm already provides separation. */
       compact?: boolean;
+      /** Uses Instrument Serif for editorial feature headings. */
+      serif?: boolean;
       /** Small version label in a pill (e.g. v2), Apple-style doc header */
       kicker?: string;
     }
@@ -848,13 +850,6 @@ export const projects: CaseStudy[] = [
     featured: true,
     sections: [
       {
-        id: "context",
-        title: "Context",
-        eyebrow:
-          "An AI agent for couples filing their marriage-based green card alone.",
-        body: "Strawberry Matcha is for people going through the CR1 or F2A green card process without a lawyer. The applicant talks to it the way they would talk to someone who already knows the process. As they chat, it asks follow-up questions, picks up details about the case, and gets more useful the more it's used.",
-      },
-      {
         id: "problem",
         title: "User problem",
         eyebrow: "Filing alone leads to mistakes. General AI makes it worse.",
@@ -877,6 +872,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             first: true,
+            serif: true,
             title:
               "Ask Strawberry Matcha, a conversation that knows your case.",
             body: "Users can ask anything, anytime. Strawberry Matcha answers based on the applicant's actual case status and preparation progress, and updates the case as the conversation continues.",
@@ -891,6 +887,7 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
+            serif: true,
             title:
               "Field Translator, fills the gap between your real life and the form.",
             body: "When users upload any edition of a USCIS form PDF, Strawberry Matcha reads the actual form fields, cross-references them with the user's case data, and tells them exactly what to enter in each field. It also handles tricky format conversions, such as restructuring a Korean address to fit U.S. form fields or matching a Korean name to its passport romanization.",
@@ -906,6 +903,7 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
+            serif: true,
             title:
               "Timeline guidance, so you know where you are and what's next.",
             body: "Each milestone shows where the applicant is in the process, what the step actually means, and what usually happens next, so the case never feels like a black box.",
@@ -922,9 +920,8 @@ export const projects: CaseStudy[] = [
       },
       {
         id: "process",
-        title: "Design process",
-        eyebrow:
-          "From concept to crafted product in five steps, plus two design decisions that defined the shape of it.",
+        title: "How I Built",
+        eyebrow: "From concept to crafted product in five steps.",
         body: "",
         contentBlocks: [
           {
@@ -962,6 +959,13 @@ export const projects: CaseStudy[] = [
               },
             ],
           },
+        ],
+      },
+      {
+        id: "iterations",
+        title: "Iterations",
+        body: "",
+        contentBlocks: [
           {
             kind: "subheading",
             kicker: "Decision 01",

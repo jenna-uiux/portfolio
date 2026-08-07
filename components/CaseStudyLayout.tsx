@@ -94,7 +94,7 @@ export function CaseStudyLayout({ project }: Props) {
 
         <article className="md:col-span-9">
           <header className="max-w-3xl">
-            <h1 className="mt-4 t-h1">{project.title}</h1>
+            <h1 className="mt-4 t-h1-serif">{project.title}</h1>
             <p className="mt-5 max-w-2xl t-lead">{project.tagline}</p>
           </header>
 

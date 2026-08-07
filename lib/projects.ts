@@ -858,30 +858,6 @@ export const projects: CaseStudy[] = [
         title: "User problem",
         eyebrow: "Filing alone leads to mistakes. General AI makes it worse.",
         body: "Many couples applying for a marriage-based green card file without a lawyer. Legal fees run thousands of dollars, and the process looks doable, so they handle it themselves. Then the details catch up. 1 in 4 applicants gets a Request for Evidence for avoidable errors, and each one adds three to five months. General AI doesn't fill the gap. It hallucinates on legal details and answers for a generic case, not theirs.",
-        contentBlocks: [
-          {
-            kind: "pillarGrid",
-            pillars: [
-              {
-                number: "01",
-                title: "Lawyers are unaffordable for many couples.",
-                body: "Marriage-based green card lawyers charge $2,000 to $8,000+ on top of $1,700+ in USCIS fees. For most couples that's not a real option, so they file alone and learn the process as they go.",
-              },
-              {
-                number: "02",
-                title: "DIY filing produces costly mistakes.",
-                body: "==1 in 4== marriage-based applicants gets a Request for Evidence, most of them for missing documents and filing errors. The kind of mistakes that happen without someone to ask the right questions first.",
-                sourceCaption:
-                  "Source: CitizenPath, USCIS Request for Evidence Guide",
-              },
-              {
-                number: "03",
-                title: "General AI hallucinates on legal workflows.",
-                body: "ChatGPT and Claude sound confident, but they aren't trained on legal workflows. They miss steps. They give advice that fits a generic case, not yours. For an immigration filing, that's not safe enough.",
-              },
-            ],
-          },
-        ],
       },
       {
         id: "features",

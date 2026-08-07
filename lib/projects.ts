@@ -1053,11 +1053,6 @@ export const projects: CaseStudy[] = [
             compact: true,
           },
           {
-            kind: "annotatedCallout",
-            label: "Design consideration",
-            body: "The AI is only as accurate as what it knows about you. If onboarding leaks, every answer downstream leaks too.",
-          },
-          {
             kind: "prose",
             body: "The original onboarding was too short. Without enough context about the user's case, the AI was filling gaps by guessing, and the hallucinations broke trust fast.\n\nI studied how immigration lawyers actually intake their clients. The questions they ask up front aren't paperwork. They're how the lawyer learns the case before giving any advice. I rebuilt onboarding around those same questions, so the AI starts with enough context to be accurate from the first message.",
           },

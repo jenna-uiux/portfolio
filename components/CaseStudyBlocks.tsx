@@ -295,7 +295,9 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "subheading") {
     const topMargin = block.kicker
-      ? "var(--rhythm-xl)"
+      ? block.compact
+        ? 0
+        : "var(--rhythm-xl)"
       : block.compact
         ? 0
         : block.first

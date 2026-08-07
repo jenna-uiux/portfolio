@@ -849,7 +849,7 @@ export const projects: CaseStudy[] = [
     sections: [
       {
         id: "problem",
-        title: "User problem",
+        title: "Problem",
         eyebrow: "Filing alone leads to mistakes. General AI makes it worse.",
         body: "Many couples applying for a marriage-based green card file without a lawyer. Legal fees run thousands of dollars, and the process looks doable, so they handle it themselves. Then the details catch up. 1 in 4 applicants gets a Request for Evidence for avoidable errors, and each one adds three to five months. General AI doesn't fill the gap. It hallucinates on legal details and answers for a generic case, not theirs.",
         contentBlocks: [

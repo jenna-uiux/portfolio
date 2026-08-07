@@ -177,7 +177,14 @@ export function CaseStudyLayout({ project }: Props) {
 
                   {s.eyebrow ? (
                     useSentenceHeadline ? (
-                      <h2 className="mt-3 max-w-[80%] t-h2-tight">
+                      <h2
+                        className={[
+                          "mt-3 max-w-[80%]",
+                          s.eyebrowCompact
+                            ? "text-[24px] font-medium leading-[1.3] tracking-[-0.018em] text-ink"
+                            : "t-h2-tight",
+                        ].join(" ")}
+                      >
                         {s.eyebrow}
                       </h2>
                     ) : project.slug === "aeon" ? (

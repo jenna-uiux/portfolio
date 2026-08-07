@@ -306,45 +306,17 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
     return (
       <div
         style={{ marginTop: topMargin }}
-        className={
-          block.kicker && block.compact ? "subheading-decision" : undefined
-        }
+        className={block.compact ? "subheading-decision" : undefined}
       >
         {block.kicker ? (
           <div>
             <span className="t-eyebrow inline-flex rounded-full border border-[color:var(--accent-orange)] px-2.5 py-0.5">
               {block.kicker}
             </span>
-            <h3
-              className="mt-3 t-h3"
-              style={
-                block.serif
-                  ? {
-                      fontFamily: '"Instrument Serif", serif',
-                      fontWeight: 400,
-                      letterSpacing: "-0.01em",
-                    }
-                  : undefined
-              }
-            >
-              {block.title}
-            </h3>
+            <h3 className="mt-3 t-h3">{block.title}</h3>
           </div>
         ) : (
-          <h3
-            className="t-h3"
-            style={
-              block.serif
-                ? {
-                    fontFamily: '"Instrument Serif", serif',
-                    fontWeight: 400,
-                    letterSpacing: "-0.01em",
-                  }
-                : undefined
-            }
-          >
-            {block.title}
-          </h3>
+          <h3 className="t-h3">{block.title}</h3>
         )}
         {block.body ? (
           <p className="mt-3 t-body">

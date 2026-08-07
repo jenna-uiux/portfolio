@@ -10,6 +10,7 @@ export type TimelineStep = {
 };
 
 const AUTO_MS = 24_000; // 0 → maxHour in 24 seconds (~1s per hour)
+const HOLD_MS = 3_000; // pause on the final frame before the loop replays
 
 function parseHour(t: string) {
   const m = t.match(/\d+/);
@@ -159,7 +160,7 @@ function ConfettiBurst({ trigger }: { trigger: number }) {
 // ── Main component ──────────────────────────────────────────
 export function TimelineStepper({ steps }: { steps: TimelineStep[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0 });
+  const inView = useInView(ref, { once: false, amount: 0.2 });
 
   const stepHours = steps.map((s) => parseHour(s.time));
   const maxHour = Math.max(...stepHours);
@@ -175,11 +176,15 @@ export function TimelineStepper({ steps }: { steps: TimelineStep[] }) {
   const runAuto = useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     startRef.current = null;
+    const cycle = AUTO_MS + HOLD_MS;
     const tick = (ts: number) => {
       if (!startRef.current) startRef.current = ts;
-      const pct = Math.min((ts - startRef.current) / AUTO_MS, 1);
+      // Loop forever: ramp 0 → maxHour over AUTO_MS, hold at the top for
+      // HOLD_MS, then wrap back to 0 and replay.
+      const elapsed = (ts - startRef.current) % cycle;
+      const pct = Math.min(elapsed / AUTO_MS, 1);
       setHour(Math.round(pct * maxHour));
-      if (pct < 1) rafRef.current = requestAnimationFrame(tick);
+      rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
   }, [maxHour]);

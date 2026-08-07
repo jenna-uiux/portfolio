@@ -102,7 +102,7 @@ export function NumberedTimeline({ steps }: Props) {
   );
 
   return (
-    <div ref={ref} className="numbered-timeline">
+    <div ref={ref} className="numbered-timeline mt-8">
       {/* Desktop: horizontal left-to-right timeline */}
       <div className="hidden md:block">
         <div className="relative">

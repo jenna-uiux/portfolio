@@ -200,7 +200,6 @@ export type CaseContentBlock =
         number: string;
         title: string;
         body: string;
-        evidenceQuote?: string;
         evidenceSource?: string;
         footer?: string;
       }[];
@@ -261,7 +260,7 @@ export type CaseContentBlock =
     }
   | {
       kind: "numberedTimeline";
-      steps: { num: string; name: string; note?: string }[];
+      steps: { num: string; name: string; note?: string; tag?: string }[];
     }
   | {
       kind: "explorationCards";
@@ -414,7 +413,7 @@ export const projects: CaseStudy[] = [
       "Designed and developed an AI productivity mobile app that adapts to users' energy levels using Apple Health data",
     category: "AI UX / Productivity",
     tags: ["Agentic Coding"],
-    role: "Design Engineer",
+    role: "Sole Designer + Developer",
     tools: [
       "Cursor",
       "SwiftUI",
@@ -546,15 +545,6 @@ export const projects: CaseStudy[] = [
         body: "I ran a 6-day diary study to see what people actually do when they're alone with their own goals.",
         contentBlocks: [
           {
-            kind: "researchMeta",
-            items: [
-              { value: "3", label: "Participants" },
-              { value: "6", label: "Days each" },
-              { value: "2×", label: "Daily check-ins" },
-              { value: "5", label: "Patterns found" },
-            ],
-          },
-          {
             kind: "subheading",
             compact: true,
             title: "",
@@ -566,30 +556,24 @@ export const projects: CaseStudy[] = [
               {
                 number: "01",
                 title: "The accountability gap is **real**, and it's binary.",
-                body: "On the same day, with the same available time, participants completed nearly 100% of externally driven tasks (meetings, classes, deadlines) while postponing self-initiated tasks again and again.",
-                evidenceQuote:
-                  "Structured, externally driven tasks were consistently completed. Self-initiated tasks were frequently postponed. Users rely heavily on external accountability to maintain consistency.",
+                body: "Same day, same free time — participants finished nearly 100% of externally driven tasks while self-initiated ones kept slipping.",
                 evidenceSource: "Diary Study · Behavioral Pattern A",
                 footer:
-                  "The pattern is **structural**. Every work commitment lives inside a system of reminders, calendars, and witnesses. Self-promises live alone.",
+                  "The gap is **structural**: work lives inside reminders and witnesses. Self-promises live alone.",
               },
               {
                 number: "02",
                 title: "Starting is the hard part.",
-                body: 'Once participants began a task, momentum sustained itself. The breakdown happened at the activation threshold. Vague tasks ("study," "work on portfolio") collapsed first because there was no concrete first step to execute.',
-                evidenceQuote:
-                  "The hardest step is starting. Once started, users sustain momentum easily. Vague task descriptions led to avoidance and procrastination.",
+                body: 'Once started, momentum held. Tasks broke at the activation threshold — vague ones like "study" collapsed first, with no concrete first step.',
                 evidenceSource: "Diary Study · Behavioral Patterns 3 & 5",
               },
               {
                 number: "03",
                 title: "Capacity is **measurable**. Intention isn't.",
-                body: "The most consequential finding: participants abandoned plans when their **biological capacity** ran out, regardless of how much time they had left. Poor sleep, low recovery, and accumulated fatigue predicted abandonment more reliably than mood, motivation, or schedule density.",
-                evidenceQuote:
-                  "Recovery quality depended on sleep quality and emotional stability. Anxiety, stress, and sleep deprivation caused procrastination even when energy levels felt high. Users consistently overestimated their daily capacity, leading to over-scheduling and task fatigue.",
+                body: "Participants abandoned plans when **biological capacity** ran out — sleep, recovery, and fatigue predicted it better than mood or motivation.",
                 evidenceSource: "Diary Study · Insights A, B, D",
                 footer:
-                  "People plan with their **aspirations**. They execute with their **biology**. Biology is the half of that equation already being measured every minute, by the device on their wrist.",
+                  "People plan with their **aspirations** but execute with their **biology** — the half already measured on their wrist.",
               },
             ],
           },
@@ -935,8 +919,6 @@ export const projects: CaseStudy[] = [
       {
         id: "features",
         title: "Key features",
-        eyebrow:
-          "Three features that close the gap between filing alone and having a lawyer.",
         body: "",
         contentBlocks: [
           {
@@ -945,11 +927,6 @@ export const projects: CaseStudy[] = [
             title:
               "Ask Strawberry Matcha, a conversation that knows your case.",
             body: "Users can ask anything, anytime. Strawberry Matcha answers based on the applicant's actual case status and preparation progress, and updates the case as the conversation continues.",
-          },
-          {
-            kind: "annotatedCallout",
-            label: "My goal",
-            body: "Make immigration questions feel like talking to someone who already knows your case, not searching a forum.",
           },
           {
             kind: "mediaPlaceholder",
@@ -1003,26 +980,31 @@ export const projects: CaseStudy[] = [
               {
                 num: "01",
                 name: "Define concept\n& Research to train the AI",
+                tag: "Domain research",
                 note: "Mapped how immigration lawyers actually walk a couple through CR1 / F2A.",
               },
               {
                 num: "02",
                 name: "Design System Architecture",
+                tag: "Cursor plan mode",
                 note: "Used Cursor's plan mode to map out the full system as a diagram, so I could see how every piece fit before writing code.",
               },
               {
                 num: "03",
                 name: "Fast validation",
+                tag: "Cursor prototype",
                 note: "Used Cursor to spin up a working prototype quickly, so I could test the idea with real applicants before investing more.",
               },
               {
                 num: "04",
                 name: "Iterations",
+                tag: "Real applicants",
                 note: "Reworked chat structure and onboarding based on where trust was breaking.",
               },
               {
                 num: "05",
                 name: "Craft refinement",
+                tag: "Figma polish",
                 note: "Polished the UI in Figma, tightening tone, pacing, and visual hierarchy across the whole product.",
               },
             ],

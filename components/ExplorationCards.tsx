@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type CSSProperties } from "react";
+import { useState } from "react";
 import { RichText } from "./CaseStudyBlocks";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
@@ -131,14 +131,9 @@ export function ExplorationCards({
                   className={[
                     "flex-1 cursor-pointer rounded-2xl px-5 py-4 transition-all duration-200 focus-visible:outline-none",
                     isSelected
-                      ? "bg-white ring-2 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]"
-                      : "bg-white/60 ring-1 ring-black/8 hover:bg-white hover:ring-black/15",
+                      ? "border-2 border-[color:var(--accent)] bg-white shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]"
+                      : "border border-black/10 bg-white/60 hover:border-black/15 hover:bg-white",
                   ].join(" ")}
-                  style={
-                    isSelected
-                      ? ({ "--tw-ring-color": "var(--accent)" } as CSSProperties)
-                      : undefined
-                  }
                 >
                   <div className="flex items-center justify-between">
                     <span

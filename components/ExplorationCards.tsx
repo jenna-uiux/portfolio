@@ -84,7 +84,7 @@ export function ExplorationCards({
             intro ? "mt-6" : "",
           ].join(" ")}
         >
-          <figure className="relative min-h-[480px] overflow-hidden rounded-2xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]">
+          <figure className="relative min-h-[480px] overflow-hidden rounded-2xl bg-black/[0.03] ring-1 ring-black/10">
             {options.map((opt, i) =>
               opt.image?.src ? (
                 <Image
@@ -93,7 +93,7 @@ export function ExplorationCards({
                   alt={opt.image.description}
                   fill
                   className={[
-                    "object-contain p-4 transition-opacity duration-300",
+                    "object-contain transition-opacity duration-300",
                     selected === i ? "opacity-100" : "opacity-0",
                   ].join(" ")}
                   sizes="(min-width: 768px) 55vw, 100vw"
@@ -129,10 +129,10 @@ export function ExplorationCards({
                     }
                   }}
                   className={[
-                    "flex-1 cursor-pointer rounded-2xl bg-white px-5 py-4 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)] transition-all duration-200 focus-visible:outline-none",
+                    "flex-1 cursor-pointer rounded-2xl px-5 py-4 transition-all duration-200 focus-visible:outline-none",
                     isSelected
-                      ? "ring-2"
-                      : "ring-1 ring-black/10 hover:-translate-y-0.5 hover:ring-black/20",
+                      ? "bg-white ring-2 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]"
+                      : "bg-white/60 ring-1 ring-black/8 hover:bg-white hover:ring-black/15",
                   ].join(" ")}
                   style={
                     isSelected

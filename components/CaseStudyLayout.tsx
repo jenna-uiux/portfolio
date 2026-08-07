@@ -159,7 +159,9 @@ export function CaseStudyLayout({ project }: Props) {
                         ? aeonBackgroundPinsKicker
                           ? `mt-0 ${contentBlockRhythm}`
                           : `mt-2 md:mt-3 ${contentBlockRhythm}`
-                        : `mt-6 ${contentBlockRhythm}`;
+                        : !s.body.trim() && !s.eyebrow
+                          ? `mt-3 ${contentBlockRhythm}`
+                          : `mt-6 ${contentBlockRhythm}`;
               return (
               <section
                 key={s.id}

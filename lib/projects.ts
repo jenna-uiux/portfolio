@@ -1059,7 +1059,6 @@ export const projects: CaseStudy[] = [
           {
             kind: "imageCarousel",
             ratio: "16/9",
-            caption: "Onboarding flow, modeled after lawyer intake.",
             images: [
               {
                 src: "/images/strawberryMatcha/designDecision/onboarding/1.jpg",

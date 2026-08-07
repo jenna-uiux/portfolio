@@ -365,8 +365,6 @@ export type CaseSection = {
   id: string;
   title: string;
   eyebrow?: string;
-  /** Smaller sentence-style headline (24px) for sub-section intros. */
-  eyebrowCompact?: boolean;
   body: string;
   /** Renders immediately after body copy, before bullets / contentBlocks (full width of article column). */
   mediaAfterBody?: MediaItem[];
@@ -970,7 +968,6 @@ export const projects: CaseStudy[] = [
         title: "Design process",
         eyebrow:
           "From concept to crafted product in five steps, plus two design decisions that defined the shape of it.",
-        eyebrowCompact: true,
         body: "",
         contentBlocks: [
           {

@@ -132,7 +132,7 @@ export function ExplorationCards({
                     "flex-1 cursor-pointer rounded-2xl px-5 py-4 transition-all duration-200 focus-visible:outline-none",
                     isSelected
                       ? "border-2 border-[color:var(--accent)] bg-white shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]"
-                      : "border border-black/10 bg-white/60 hover:border-black/15 hover:bg-white",
+                      : "border-2 border-transparent bg-white/60 hover:bg-white",
                   ].join(" ")}
                 >
                   <div className="flex items-center justify-between">

@@ -42,7 +42,9 @@ export function PillarGrid({ pillars }: Props) {
             <RichText text={p.body} />
           </p>
           {p.sourceCaption ? (
-            <p className="mt-4 t-mono">{p.sourceCaption}</p>
+            <p className="mt-4 t-caption tracking-normal normal-case">
+              {p.sourceCaption}
+            </p>
           ) : null}
         </article>
       ))}

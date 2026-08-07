@@ -1016,13 +1016,8 @@ export const projects: CaseStudy[] = [
             compact: true,
           },
           {
-            kind: "annotatedCallout",
-            label: "User insight",
-            body: "Users were getting good answers but couldn't act on them. They couldn't tell what mattered most, and didn't know what to ask next.",
-          },
-          {
             kind: "prose",
-            body: "The first version of the chat dumped each response into one long paragraph. The AI was answering well, but the answers weren't usable. People scanned, hesitated, and stopped.\n\nI explored three ways to give responses more shape before settling on one.",
+            body: "The first version of the chat dumped each response into one long paragraph. The AI was answering well, but the answers weren't usable. People scanned, hesitated, and stopped. I explored three ways to give responses more shape before settling on one.",
           },
           {
             kind: "explorationCards",

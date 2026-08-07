@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { RichText } from "./CaseStudyBlocks";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
@@ -27,15 +27,7 @@ export function ExplorationCards({
   finalPickBody,
 }: Props) {
   const ref = useScrollReveal<HTMLDivElement>({ stagger: 0.07 });
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [hovered, setHovered] = useState<number | null>(null);
-  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-
-  const handleMove = (e: React.MouseEvent) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
+  const [selected, setSelected] = useState(0);
 
   const cols =
     options.length === 2
@@ -44,9 +36,8 @@ export function ExplorationCards({
       ? "md:grid-cols-3"
       : "md:grid-cols-1";
 
-  const hoveredImage =
-    hovered !== null ? options[hovered]?.image : undefined;
-  const isLastCard = hovered === options.length - 1;
+  const hasImages = options.some((opt) => opt.image?.src);
+  const selectedOption = options[selected];
 
   return (
     <div ref={ref} className="exploration-cards">
@@ -57,67 +48,86 @@ export function ExplorationCards({
       ) : null}
 
       <div
-        ref={containerRef}
-        onMouseMove={handleMove}
         className={[
-          "relative grid grid-cols-1 gap-x-6 gap-y-6",
+          "grid grid-cols-1 gap-x-6 gap-y-6",
           cols,
           intro ? "mt-6" : "",
         ].join(" ")}
       >
         {options.map((opt, i) => {
-          const isHovered = hovered === i;
+          const isSelected = hasImages && selected === i;
+          const selectable = Boolean(opt.image?.src);
           return (
             <article
               key={opt.number}
               data-reveal
-              onMouseEnter={() => opt.image && setHovered(i)}
-              onMouseLeave={() => setHovered((cur) => (cur === i ? null : cur))}
+              role={selectable ? "button" : undefined}
+              tabIndex={selectable ? 0 : undefined}
+              aria-pressed={selectable ? isSelected : undefined}
+              onClick={selectable ? () => setSelected(i) : undefined}
+              onKeyDown={
+                selectable
+                  ? (e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelected(i);
+                      }
+                    }
+                  : undefined
+              }
               className={[
-                "group flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)] transition-all duration-200",
-                opt.image
-                  ? "cursor-pointer hover:-translate-y-0.5 hover:ring-black/20"
+                "group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)] transition-all duration-200",
+                isSelected ? "ring-2" : "ring-1 ring-black/10",
+                selectable
+                  ? "cursor-pointer hover:-translate-y-0.5 hover:ring-black/20 focus-visible:outline-none focus-visible:ring-2"
                   : "",
               ].join(" ")}
+              style={
+                isSelected || selectable
+                  ? ({ "--tw-ring-color": isSelected ? "var(--accent)" : undefined } as CSSProperties)
+                  : undefined
+              }
             >
-              {/* thumbnail strip hint */}
+              {/* Mobile: inline screenshot so comparison works on touch */}
               {opt.image?.src ? (
-                <div className="relative h-[72px] w-full shrink-0 overflow-hidden">
+                <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden border-b border-black/5 bg-black/[0.02] md:hidden">
                   <Image
                     src={opt.image.src}
-                    alt=""
+                    alt={opt.image.description}
                     fill
-                    className={[
-                      "object-cover object-top transition-all duration-300",
-                      isHovered ? "opacity-100 scale-[1.02]" : "opacity-40",
-                    ].join(" ")}
-                    sizes="(min-width: 768px) 33vw, 100vw"
-                    aria-hidden
+                    className="object-contain"
+                    sizes="100vw"
                   />
-                  {/* "hover to preview" label */}
-                  <span
-                    className={[
-                      "absolute bottom-2 right-2 rounded-full px-2 py-0.5 t-mono transition-opacity duration-200",
-                      isHovered ? "opacity-0" : "opacity-100",
-                    ].join(" ")}
-                    style={{
-                      background: "rgba(255,255,255,0.82)",
-                      backdropFilter: "blur(4px)",
-                      color: "rgba(23,23,23,0.55)",
-                    }}
-                  >
-                    Hover to preview
-                  </span>
                 </div>
               ) : null}
 
               <div className="flex flex-1 flex-col px-6 py-5">
-                <span
-                  className="t-mono tabular-nums"
-                  style={{ color: "var(--accent)" }}
-                >
-                  {opt.number}
-                </span>
+                <div className="flex items-center justify-between">
+                  <span
+                    className="t-mono tabular-nums"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    {opt.number}
+                  </span>
+                  {selectable ? (
+                    <span
+                      className={[
+                        "hidden rounded-full px-2 py-0.5 t-mono transition-colors duration-200 md:inline-flex",
+                        isSelected ? "" : "text-ink/35",
+                      ].join(" ")}
+                      style={
+                        isSelected
+                          ? {
+                              background: "var(--accent-soft)",
+                              color: "var(--accent)",
+                            }
+                          : undefined
+                      }
+                    >
+                      {isSelected ? "Previewing" : "Click to preview"}
+                    </span>
+                  ) : null}
+                </div>
                 <h5 className="mt-3 text-[17px] font-medium leading-[1.35] tracking-[-0.005em] text-ink">
                   <RichText text={opt.title} />
                 </h5>
@@ -161,35 +171,45 @@ export function ExplorationCards({
             </article>
           );
         })}
-
-        {hoveredImage?.src ? (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute z-30 hidden md:block"
-            style={{
-              left: pos.x,
-              top: pos.y,
-              transform: isLastCard
-                ? "translate(calc(-100% - 16px), calc(-100% - 12px))"
-                : "translate(16px, calc(-100% - 12px))",
-            }}
-          >
-            <div
-              className="overflow-hidden rounded-xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_24px_48px_-20px_rgba(0,0,0,0.35)]"
-              style={{ width: 380 }}
-            >
-              <Image
-                src={hoveredImage.src}
-                alt={hoveredImage.description}
-                width={380}
-                height={0}
-                style={{ width: "100%", height: "auto", display: "block" }}
-                sizes="380px"
-              />
-            </div>
-          </div>
-        ) : null}
       </div>
+
+      {/* Desktop: shared large preview panel, crossfades between options */}
+      {hasImages ? (
+        <figure data-reveal className="mt-6 hidden md:block">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-white ring-1 ring-black/10 shadow-[0_1px_0_rgba(0,0,0,0.04),0_18px_40px_-28px_rgba(0,0,0,0.18)]">
+            {options.map((opt, i) =>
+              opt.image?.src ? (
+                <Image
+                  key={opt.number}
+                  src={opt.image.src}
+                  alt={opt.image.description}
+                  fill
+                  className={[
+                    "object-contain p-4 transition-opacity duration-300",
+                    selected === i ? "opacity-100" : "opacity-0",
+                  ].join(" ")}
+                  sizes="(min-width: 768px) 70vw, 100vw"
+                  priority={i === 0}
+                />
+              ) : null
+            )}
+            <span
+              className="absolute left-4 top-4 inline-flex items-center rounded-full px-2.5 py-0.5 t-mono"
+              style={{
+                background: "var(--accent-soft)",
+                color: "var(--accent)",
+              }}
+            >
+              Option {selectedOption?.number}
+            </span>
+          </div>
+          {selectedOption?.image?.description ? (
+            <figcaption className="mt-3 t-caption text-ink/55">
+              {selectedOption.image.description}
+            </figcaption>
+          ) : null}
+        </figure>
+      ) : null}
 
       {finalPickLabel || finalPickBody ? (
         <div

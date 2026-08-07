@@ -883,10 +883,6 @@ export const projects: CaseStudy[] = [
               },
             ],
           },
-          {
-            kind: "problemStatement",
-            body: "How might we make case-aware legal guidance affordable and reliable for couples filing alone?",
-          },
         ],
       },
       {

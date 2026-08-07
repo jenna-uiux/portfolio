@@ -884,35 +884,6 @@ export const projects: CaseStudy[] = [
         ],
       },
       {
-        id: "solution",
-        title: "Solution",
-        eyebrow:
-          "A legal-trained AI agent that learns your case through conversation.",
-        body: "",
-        contentBlocks: [
-          {
-            kind: "pillarGrid",
-            pillars: [
-              {
-                number: "01",
-                title: "Built around how immigration lawyers actually work.",
-                body: "Strawberry Matcha follows the legal workflow, asks the right questions in the right order, and stays grounded in the applicant's specific case instead of falling back on generic advice.",
-              },
-              {
-                number: "02",
-                title: "It learns as you chat.",
-                body: "Instead of a long form upfront, it starts with a short intake and keeps learning as the user talks. It asks follow-ups when it needs more context, and suggests what to ask when the user isn't sure.",
-              },
-              {
-                number: "03",
-                title: "It walks you through every form, field by field.",
-                body: "When the user uploads a USCIS form, Strawberry Matcha checks each field against the case it has built. It points out what's missing, what looks off, and how to fix it before submission.",
-              },
-            ],
-          },
-        ],
-      },
-      {
         id: "features",
         title: "Key features",
         body: "",

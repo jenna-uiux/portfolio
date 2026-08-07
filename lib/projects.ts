@@ -936,7 +936,7 @@ export const projects: CaseStudy[] = [
             kind: "subheading",
             title:
               "Field Translator, fills the gap between your real life and the form.",
-            body: "The applicant uploads a USCIS form PDF (any edition). The system reads the actual fields, cross-references the case data, and tells the user what to enter in each one, including the trickiest part: format conversion. A Korean address gets reshaped into US form structure. A Korean name gets matched to passport romanization. The values come out form-ready.",
+            body: "When users upload any edition of a USCIS form PDF, Strawberry Matcha reads the actual form fields, cross-references them with the user's case data, and tells them exactly what to enter in each field. It also handles tricky format conversions, such as restructuring a Korean address to fit U.S. form fields or matching a Korean name to its passport romanization.",
           },
           { kind: "fieldTranslator" },
           {

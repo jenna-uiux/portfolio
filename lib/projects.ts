@@ -968,13 +968,13 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "prose",
-            body: "The first version of the chat dumped each response into one long paragraph. The AI was answering well, but the answers weren't usable. People scanned, hesitated, and stopped. I explored three ways to give responses more shape before settling on one.",
+            body: "The first version dumped each response into one long paragraph. In user testing, the answers were accurate but people didn't act on them. They skimmed, asked me to repeat things the AI had already said, and gave up mid-task. I explored three response formats before settling on one.",
           },
           {
             kind: "explorationCards",
             options: [
               {
-                number: "01",
+                number: "1",
                 title: "Single response paragraph.",
                 pros: ["Fast to implement; no extra UI."],
                 cons: [
@@ -989,7 +989,7 @@ export const projects: CaseStudy[] = [
                 },
               },
               {
-                number: "02",
+                number: "2",
                 title: "Full doc-style hierarchy with headers and bullets.",
                 pros: ["Maximum scannability."],
                 cons: [
@@ -1004,7 +1004,7 @@ export const projects: CaseStudy[] = [
                 },
               },
               {
-                number: "03",
+                number: "3",
                 title:
                   "Two-layer voice (serif acknowledgment + sans-serif info) with suggested follow-ups.",
                 pros: [
@@ -1021,7 +1021,7 @@ export const projects: CaseStudy[] = [
                 },
               },
             ],
-            finalPickLabel: "Final pick: Option 03",
+            finalPickLabel: "Final pick: Version 3",
             finalPickBody:
               "Two-layer voice keeps the chat warm but makes the answer scannable, and the suggested follow-ups stop users from getting stuck on what to ask next.",
           },
@@ -1032,7 +1032,7 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
-            title: "Onboarding as the foundation of trust.",
+            title: "Redesigning onboarding to stop hallucinations.",
             compact: true,
           },
           {

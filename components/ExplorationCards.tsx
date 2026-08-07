@@ -55,7 +55,8 @@ export function ExplorationCards({
         >
           <span
             aria-hidden
-            className="t-mono shrink-0 select-none leading-none text-ink/40"
+            className="t-mono shrink-0 select-none leading-none"
+            style={{ color: "#C44E4E" }}
           >
             −
           </span>
@@ -108,7 +109,7 @@ export function ExplorationCards({
                 color: "var(--accent)",
               }}
             >
-              Option {selectedOption?.number}
+              Version {selectedOption?.number}
             </span>
           </figure>
 
@@ -140,7 +141,7 @@ export function ExplorationCards({
                       className="t-mono tabular-nums"
                       style={{ color: "var(--accent)" }}
                     >
-                      {opt.number}
+                      Version {opt.number}
                     </span>
                     {isSelected ? (
                       <span
@@ -194,7 +195,7 @@ export function ExplorationCards({
                 className="t-mono tabular-nums"
                 style={{ color: "var(--accent)" }}
               >
-                {opt.number}
+                Version {opt.number}
               </span>
               <h5 className="mt-3 text-[17px] font-medium leading-[1.35] tracking-[-0.005em] text-ink">
                 <RichText text={opt.title} />

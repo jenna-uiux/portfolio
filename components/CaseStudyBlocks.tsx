@@ -294,18 +294,14 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
   }
 
   if (block.kind === "subheading") {
-    const topMargin = block.kicker
-      ? block.compact
-        ? 0
-        : "var(--rhythm-xl)"
+    const topMargin = block.first
+      ? 0
       : block.compact
-        ? 0
-        : block.first
-          ? 0
-          : "var(--rhythm-xl)";
+        ? undefined
+        : "var(--rhythm-xl)";
     return (
       <div
-        style={{ marginTop: topMargin }}
+        style={topMargin !== undefined ? { marginTop: topMargin } : undefined}
         className={block.compact ? "subheading-decision" : undefined}
       >
         {block.kicker ? (

@@ -490,7 +490,7 @@ export const projects: CaseStudy[] = [
     slug: "fini",
     title: "Fini",
     tagline:
-      "An AI planner that makes personal goals easier to plan and easier to start.",
+      "An AI planner that makes personal goals easier to start and easier to achieve.",
     summary:
       "Designed and developed an AI productivity mobile app that adapts to users' energy levels using Apple Health data",
     category: "AI UX / Productivity",

@@ -27,6 +27,14 @@ import { ExplorationCards } from "./ExplorationCards";
 import { ImageCarousel } from "./ImageCarousel";
 import { ResearchMeta } from "./ResearchMeta";
 import { EvidenceInsights } from "./EvidenceInsights";
+import { AffinityInsightCards } from "./AffinityInsightCards";
+import { ResearchPhotoRow } from "./ResearchPhotoRow";
+import { InsightDirectionMap } from "./InsightDirectionMap";
+import { FinalProductFeatures } from "./FinalProductFeatures";
+import { ProductLogicFlow } from "./ProductLogicFlow";
+import { ProcessSteps } from "./ProcessSteps";
+import { TakeawayCards } from "./TakeawayCards";
+import { ReflectionInsights } from "./ReflectionInsights";
 import { ContrastGrid } from "./ContrastGrid";
 import { RoadWaterToggle } from "./RoadWaterToggle";
 import { IAPriorityMatrix } from "./IAPriorityMatrix";
@@ -132,6 +140,16 @@ function AgenticMetricPanel() {
 }
 
 export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
+  if (block.kind === "chart") {
+    return (
+      <Chart
+        id={block.id}
+        caption={block.caption}
+        ratio={block.ratio ?? "16/9"}
+      />
+    );
+  }
+
   if (block.kind === "logicDemo") {
     return (
       <div className="border-t hairline pt-10">
@@ -327,6 +345,10 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
     return <TimelineStepper steps={block.steps} />;
   }
 
+  if (block.kind === "processSteps") {
+    return <ProcessSteps steps={block.steps} />;
+  }
+
   if (block.kind === "flipCards") {
     return <InsightFlipCards cards={block.cards} />;
   }
@@ -353,6 +375,10 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "evidenceInsights") {
     return <EvidenceInsights insights={block.insights} />;
+  }
+
+  if (block.kind === "affinityInsights") {
+    return <AffinityInsightCards insights={block.insights} />;
   }
 
   if (block.kind === "annotatedCallout") {
@@ -565,6 +591,36 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
     );
   }
 
+  if (block.kind === "imageRow") {
+    return <ResearchPhotoRow images={block.images} />;
+  }
+
+  if (block.kind === "insightDirectionMap") {
+    return (
+      <InsightDirectionMap
+        insights={block.insights}
+        goal={block.goal}
+        principles={block.principles}
+      />
+    );
+  }
+
+  if (block.kind === "finalProductFeatures") {
+    return <FinalProductFeatures features={block.features} />;
+  }
+
+  if (block.kind === "productLogicFlow") {
+    return <ProductLogicFlow />;
+  }
+
+  if (block.kind === "takeawayCards") {
+    return <TakeawayCards cards={block.cards} />;
+  }
+
+  if (block.kind === "reflectionInsights") {
+    return <ReflectionInsights items={block.items} photo={block.photo} />;
+  }
+
   if (block.kind === "image") {
     return (
       <div
@@ -647,28 +703,7 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
     );
   }
 
-  return (
-    <div className="grid gap-x-10 gap-y-8 border-t hairline pt-8 md:grid-cols-3">
-      {block.cards.map((card) => (
-        <article key={card.title}>
-          <p className="max-w-[28ch] text-[15px] font-medium leading-[1.4] tracking-normal text-ink normal-case">
-            {card.title}
-          </p>
-          {card.body.split("\n\n").map((para, j) => (
-            <p
-              key={j}
-              className={[
-                "max-w-[34ch] t-body-sm",
-                j === 0 ? "mt-4" : "mt-3",
-              ].join(" ")}
-            >
-              <RichText text={para} />
-            </p>
-          ))}
-        </article>
-      ))}
-    </div>
-  );
+  return null;
 }
 
 export function SectionBlock({ block }: { block: CaseBlock }) {

@@ -13,6 +13,7 @@ export type ImagePlaceholder = {
 export type ChartId =
   | "diary-structure"
   | "energy-rhythm"
+  | "obligation-capacity"
   | "signal-flow"
   | "elastic-deadline"
   | "readiness-mapping"
@@ -84,6 +85,12 @@ export type CaseContentBlock =
       body: string;
     }
   | {
+      kind: "chart";
+      id: ChartId;
+      caption?: string;
+      ratio?: ImageRatio;
+    }
+  | {
       kind: "comparison";
       items: {
         label: string;
@@ -130,6 +137,22 @@ export type CaseContentBlock =
       }[];
     }
   | {
+      kind: "reflectionInsights";
+      items: {
+        number: string;
+        title: string;
+        body: string;
+      }[];
+      photo?: {
+        src: string;
+        alt: string;
+        caption: string;
+        width: number;
+        height: number;
+        href?: string;
+      };
+    }
+  | {
       kind: "storyBeats";
       beats: {
         eyebrow?: string;
@@ -164,6 +187,32 @@ export type CaseContentBlock =
       steps: { time: string; label: string; body: string }[];
     }
   | {
+      kind: "processSteps";
+      steps: {
+        num: string;
+        title: string;
+        body: string;
+        overview?: {
+          label: string;
+          output: string;
+          tools: string[];
+        };
+        /** Editorial arrangement of the step's artifacts. Defaults to "single". */
+        layout?: "stacked" | "asymmetric" | "photoPair" | "single";
+        images?: {
+          src: string;
+          alt: string;
+          caption?: string;
+          body?: string;
+          /** Intrinsic pixel dimensions, used to preserve the natural aspect ratio. */
+          width: number;
+          height: number;
+          /** Photos may fill their frame; text-heavy artifacts must not be cropped. */
+          fit?: "cover" | "contain";
+        }[];
+      }[];
+    }
+  | {
       kind: "flipCards";
       cards: {
         label: string;
@@ -191,6 +240,16 @@ export type CaseContentBlock =
       }[];
     }
   | {
+      kind: "finalProductFeatures";
+      features: {
+        number: string;
+        title: string;
+        body: string;
+        videoSrc: string;
+        videoDescription: string;
+      }[];
+    }
+  | {
       kind: "researchMeta";
       items: { value: string; label: string }[];
     }
@@ -205,11 +264,33 @@ export type CaseContentBlock =
       }[];
     }
   | {
+      kind: "affinityInsights";
+      insights: {
+        number: string;
+        title: string;
+        body: string;
+        tone?: "accent" | "ink";
+      }[];
+    }
+  | {
       kind: "image";
       src: string;
       alt: string;
       objectFit?: "cover" | "contain";
       borderless?: boolean;
+    }
+  | {
+      kind: "imageRow";
+      images: { src: string; alt: string }[];
+    }
+  | {
+      kind: "insightDirectionMap";
+      insights: string[];
+      goal: string;
+      principles: string[];
+    }
+  | {
+      kind: "productLogicFlow";
     }
   | { kind: "edgeCaseExplorer" }
   | {
@@ -409,7 +490,7 @@ export const projects: CaseStudy[] = [
     slug: "fini",
     title: "Fini",
     tagline:
-      "An accountability companion for the plans no one else is waiting on.",
+      "An AI planner that makes personal goals easier to plan and easier to start.",
     summary:
       "Designed and developed an AI productivity mobile app that adapts to users' energy levels using Apple Health data",
     category: "AI UX / Productivity",
@@ -418,15 +499,12 @@ export const projects: CaseStudy[] = [
     tools: [
       "Cursor",
       "SwiftUI",
-      "Apple HealthKit",
       "Supabase",
-      "Anthropic API",
       "Figma",
     ],
     focus: [
-      "Agentic Engineering",
+      "Agentic Coding",
       "Bio-adaptive UX",
-      "Cognitive Load Management",
     ],
     year: "2026",
     cover: {
@@ -446,206 +524,121 @@ export const projects: CaseStudy[] = [
     featured: true,
     sections: [
       {
-        id: "overview",
-        title: "Overview",
-        eyebrow:
-          "Personal plans deserve the same accountability as everything else on your calendar.",
-        body: "Fini is an accountability companion for the plans you make to yourself. The portfolio you keep meaning to update. The skill you wanted to learn. The plans no one else is waiting on.",
-        mediaHeading: "Product Highlights",
-        media: [
-          {
-            kind: "image",
-            filename: "highlight-energy.png",
-            description:
-              "Fini reads Apple Health signals and breaks tasks into smaller steps when energy is low",
-            src: "/images/fini/figma-highlights/highlight-energy.png",
-            ratio: "16/9",
-            finiHighlight: {
-              titleLines: ["Understands your energy.", "Helps you start."],
-              body: "Fini reads your daily energy using signals from Apple Health. When your energy is low, it breaks tasks into smaller steps to help you get started.",
-              textSide: "left",
-              emphasizeImage: true,
-            },
-          },
-          {
-            kind: "image",
-            filename: "highlight-voice.png",
-            description:
-              "Voice and intent: Fini turns what you say into a prioritized plan",
-            src: "/images/fini/figma-highlights/highlight-voice.png",
-            ratio: "16/9",
-            finiHighlight: {
-              titleLines: [
-                "Say everything on your mind.",
-                "Fini turns it into a plan.",
-              ],
-              body: "Describe what you need to do in your own words. Fini understands your intent and turns it into a prioritized task plan.",
-              textSide: "right",
-              /** Net +16px vs default -48px column lift ≈ 64px lower than -translate-y-12 baseline. */
-              textColumnYClass: "md:translate-y-4",
-            },
-          },
-          {
-            kind: "image",
-            filename: "highlight-watch.png",
-            description:
-              "Next step on Apple Watch, glanceable, focused forward motion",
-            src: "/images/fini/figma-highlights/highlight-watch.png",
-            ratio: "16/9",
-            finiHighlight: {
-              titleLines: ["Your next step, on your wrist"],
-              body: "Fini brings the right next step to your Apple Watch so you can stay focused and keep moving forward.",
-              textSide: "right",
-            },
-          },
-        ],
-      },
-      {
-        id: "problem",
-        title: "The Problem",
-        eyebrow:
-          "The plans that shape who you become are always the first to break.",
-        body: "Look at the plans you finished this week. Then look at the ones you didn't. The pattern isn't random. The plans that finished were the ones with external accountability. The 10am meeting. The deadline your manager set.\n\nBut the plans that fell through had no deadlines, **even though they were the ones that actually grow you.**",
-        contentBlocks: [
-          {
-            kind: "comparison",
-            items: [
-              {
-                label: "PLANS THAT FINISHED",
-                title: "External accountability",
-                examples: [
-                  "Team standup",
-                  "Client deadline",
-                  "Wednesday class",
-                  "Doctor's appointment",
-                ],
-                verdict: "Completed on schedule",
-                verdictTone: "done",
-              },
-              {
-                label: "PLANS THAT DIDN'T",
-                title: "Internal accountability",
-                examples: [
-                  "Update portfolio",
-                  "Study Swift",
-                  "Side project",
-                  "Daily writing",
-                ],
-                verdict: "Postponed indefinitely",
-                verdictTone: "fail",
-              },
-            ],
-          },
-        ],
-      },
-      {
         id: "research",
         title: "Research",
         eyebrow:
-          "Why does this keep happening, even to people who genuinely want to grow?",
-        body: "I ran a 6-day diary study to see what people actually do when they're alone with their own goals.",
+          "Personal goals kept losing to work, school, and deadlines.",
+        body: "Look at the plans you finished this week, then look at the ones you postponed. Personal goals rarely did, even when they mattered more to your long-term growth. Why does this keep happening?",
         contentBlocks: [
           {
-            kind: "subheading",
-            compact: true,
-            title: "",
-            body: "Each participant logged energy, mood, intended tasks, and what they actually finished, twice a day. Three findings reframed the entire problem.",
+            kind: "imageRow",
+            images: [
+              {
+                src: "/images/fini/fini_research_p1.jpg",
+                alt: "Participant filling out a diary study sheet during a research session",
+              },
+              {
+                src: "/images/fini/fini_research_p2.jpg",
+                alt: "Diary study template used to log tasks, energy, and daily reflections",
+              },
+            ],
           },
           {
-            kind: "evidenceInsights",
+            kind: "subheading",
+            title: "Behavioral pattern analysis",
+            body: "In a 6-day diary study, I found that users often returned to personal plans only after external obligations had already consumed their time and energy.",
+          },
+          {
+            kind: "chart",
+            id: "obligation-capacity",
+          },
+          {
+            kind: "subheading",
+            title: "Affinity Mapping",
+            body: "I combined a 6-day diary study with semi-structured interviews to understand both what disrupted participants' plans and why. I mapped their diary entries and interview responses through affinity mapping, revealing two recurring patterns.",
+          },
+          {
+            kind: "affinityInsights",
             insights: [
               {
                 number: "01",
-                title: "The accountability gap is **real**, and it's binary.",
-                body: "Same day, same free time — participants finished nearly 100% of externally driven tasks while self-initiated ones kept slipping.",
-                evidenceSource: "Diary Study · Behavioral Pattern A",
-                footer:
-                  "The gap is **structural**: work lives inside reminders and witnesses. Self-promises live alone.",
+                title: "Follow-through rose and fell with daily capacity.",
+                body: "Participants completed less of what they planned on days with poorer sleep, higher stress, or lower energy.",
+                tone: "accent",
               },
               {
                 number: "02",
-                title: "Starting is the hard part.",
-                body: 'Once started, momentum held. Tasks broke at the activation threshold — vague ones like "study" collapsed first, with no concrete first step.',
-                evidenceSource: "Diary Study · Behavioral Patterns 3 & 5",
-              },
-              {
-                number: "03",
-                title: "Capacity is **measurable**. Intention isn't.",
-                body: "Participants abandoned plans when **biological capacity** ran out — sleep, recovery, and fatigue predicted it better than mood or motivation.",
-                evidenceSource: "Diary Study · Insights A, B, D",
-                footer:
-                  "People plan with their **aspirations** but execute with their **biology** — the half already measured on their wrist.",
+                title: "Starting was the main point of failure.",
+                body: "Once participants began a task, they usually kept going. Most unfinished plans broke down before any action, at the moment of deciding where and how to begin.",
+                tone: "ink",
               },
             ],
           },
         ],
       },
       {
-        id: "system-architecture",
-        title: "Systems Architecture",
-        eyebrow: "Let's see the Big Picture!",
-        body: "Fini does two things. It gives self-initiated plans **external accountability**. It anchors every plan to the **biological capacity** your body actually has today. Before writing a line of SwiftUI, I mapped how those two promises had to flow through one shared engine.\n\n[[MEDIA_AFTER_BODY]]\n\nAt the heart of that engine is a single number: how much your body can actually carry today.",
-        mediaAfterBody: [
-          {
-            kind: "video",
-            filename: "system-layer.mp4",
-            description:
-              "System architecture, signals, inference, and planning surface",
-            src: "https://youtu.be/XDqWAexK94A",
-            ratio: "16/9",
-            autoPlay: true,
-            loop: true,
-            muted: true,
-            controls: true,
-            objectFit: "contain",
-          },
-        ],
+        id: "solution",
+        title: "Solution",
+        eyebrow: "Design direction",
+        body: "The research pointed to a critical moment before action: users returned to personal plans with changing capacity and still had to decide what was realistic and where to begin. I translated these findings into one design goal and two principles for Fini.",
         contentBlocks: [
           {
-            kind: "logicDemo",
-            title: "The Logic: Quantifying Capacity",
-            body: "Sleep, HRV, and Activity flow into a single function. The output is a personalized energy score that tells the plan what your body can actually carry today.",
+            kind: "insightDirectionMap",
+            insights: [
+              "Follow-through rose and fell with daily capacity",
+              "Starting was the main point of failure",
+            ],
+            goal:
+              "Help users begin with a manageable next step that fits their current capacity.",
+            principles: [
+              "Adapt the plan to the user's current capacity.",
+              "Make the next step clear and immediately actionable.",
+            ],
           },
           {
-            kind: "annotatedCallout",
-            label: "DESIGN PRINCIPLE",
-            body: "The plan follows the body's lead.",
+            kind: "subheading",
+            title: "Product logic flow",
+            body: "Based on the design principles, I mapped Fini's product logic, including the inputs it uses, how it processes them, and where users can review or override the result.",
+          },
+          {
+            kind: "productLogicFlow",
           },
         ],
       },
       {
-        id: "product",
-        title: "The Product",
-        eyebrow: "Three behaviors. One companion.",
-        body: "Each behavior maps directly to a research finding. Every screen earned its place in the diary study.",
+        id: "final-product",
+        title: "Final Product",
+        eyebrow:
+          "Fini: making personal goals easier to start and easier to achieve.",
+        body: "Fini adapts task recommendations to the user's current capacity. It uses Apple Health data to prioritize tasks, breaks down larger tasks when capacity is low, and turns voice input into a structured plan.",
         contentBlocks: [
           {
-            kind: "v2Items",
-            items: [
+            kind: "finalProductFeatures",
+            features: [
               {
                 number: "01",
-                label: "ANSWERS INSIGHT 03",
-                title: "Reads what your body can actually do today.",
-                body: "Fini pulls sleep, HRV, and resting heart rate from Apple Health and computes a daily capacity score. On a low-capacity day, the plan adapts: a 90-minute deep work block becomes a 15-minute review. The day still moves forward.",
-                imageSrc: "/images/fini/figma-highlights/highlight-energy.png",
-                imageAlt:
-                  "Capacity-aware planner adapts task scope to today's energy",
+                title: "Capacity-aware recommendations",
+                body: "Fini estimates the user's current capacity using sleep, HRV, and activity data from Apple Health. Tasks are prioritized based on that estimate.",
+                videoSrc:
+                  "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/fini_thumbnail.mp4",
+                videoDescription:
+                  "Fini recommends and prioritizes tasks based on the user's current capacity",
               },
               {
                 number: "02",
-                label: "ANSWERS INSIGHT 02",
-                title: "Lowers the activation barrier to nearly zero.",
-                body: "Manual task entry is a tax on people who are already depleted. Speak what's in your head; Fini parses, prioritizes, and breaks vague intentions into concrete first steps. 15 minutes of planning becomes 30 seconds of speaking.",
-                videoSrc: "https://youtu.be/polxGcvmrB4",
+                title: "Adaptive task breakdown",
+                body: "When capacity is low, Fini breaks large tasks into smaller steps and shows where to start.",
+                videoSrc: "https://youtu.be/gVS543_K-bs",
+                videoDescription:
+                  "Fini breaks a large task into manageable next steps",
               },
               {
                 number: "03",
-                label: "ANSWERS INSIGHT 01",
-                title: "Becomes the witness your self-promises don't have.",
-                body: "Work has Slack, calendar invites, colleagues asking where things stand. Self-initiated work has none of that. Fini surfaces the next step on your wrist in the moments you'd otherwise drift, the way a calendar invite makes a meeting visible.",
-                imageSrc: "/images/fini/figma-highlights/highlight-watch.png",
-                imageAlt:
-                  "Apple Watch surfaces the next concrete step at the right moment",
+                title: "Voice-based task capture",
+                body: "Users can describe a goal by voice. Fini converts it into tasks, subtasks, and a default priority.",
+                videoSrc: "https://youtu.be/polxGcvmrB4",
+                videoDescription:
+                  "Fini converts a spoken goal into structured tasks and subtasks",
               },
             ],
           },
@@ -653,165 +646,157 @@ export const projects: CaseStudy[] = [
       },
       {
         id: "build-iterate",
-        title: "Build & Iterate",
-        eyebrow: "From hypothesis to working system in 24 hours.",
-        body: "Static mockups can't reveal whether a behavioral system actually works. With a clear PRD and the architecture mapped, I shipped a functional V1 in a day and put it in front of users.",
+        title: "Process",
+        eyebrow: "How I built Fini with an agentic coding workflow",
+        body: "I built and tested the iOS and watchOS apps with Cursor. An agentic coding workflow helped me get the core system working early, so I could test live AI responses, HealthKit data, and cross-device behavior on real devices.",
         contentBlocks: [
           {
-            kind: "subheading",
-            first: true,
-            kicker: "approach",
-            title: "24-hour validation loop",
-            body: "I designed in Cursor with the inference layer wired live, so user testing could run on real bio-data the next morning.",
-          },
-          {
-            kind: "timelineStepper",
+            kind: "processSteps",
             steps: [
               {
-                time: "Hour 0 – 2",
-                label: "PRD & Architecture Planning",
-                body: "Clarified the product hypothesis with ChatGPT, drafted a short PRD, and defined color, font, and system architecture in Cursor Plan Mode.",
+                num: "01",
+                title: "Define the Product and System",
+                body: "I created the PRD and Systems Architecture first to map the data flow, device responsibilities, permissions, and fallback states before coding. Because Fini works across iOS, watchOS, HealthKit, AI, and a backend, designing each screen separately would not show where the experience could break.",
+                overview: {
+                  label: "Define",
+                  output: "PRD + Systems Architecture",
+                  tools: ["ChatGPT", "Cursor Plan Mode"],
+                },
+                layout: "stacked",
+                images: [
+                  {
+                    src: "/images/fini/process/process_01_1.png",
+                    alt: "Systems Architecture diagram connecting the iOS SwiftUI app, watchOS companion, HealthKit, Supabase Edge Functions, and the Anthropic API",
+                    caption:
+                      "Systems Architecture across iOS, watchOS, HealthKit, Supabase, and Anthropic.",
+                    width: 2836,
+                    height: 1218,
+                  },
+                  {
+                    src: "/images/fini/process/process_01_2.png",
+                    alt: "Fini product requirements document showing overview, problem, core insight, and target user sections",
+                    caption:
+                      "The PRD defined the problem, the core insight, and the target user before any screens existed.",
+                    width: 1374,
+                    height: 780,
+                  },
+                ],
               },
               {
-                time: "Hour 3 – 7",
-                label: "Core Data Modeling",
-                body: "Cursor generated foundational data models and Supabase schema. HealthKit integration stubs scaffolded in SwiftUI.",
+                num: "02",
+                title: "Build a Working Prototype",
+                body: "I used the PRD and Systems Architecture as project context for the first working build. I reviewed the generated code and refined each feature against the product logic.",
+                overview: {
+                  label: "Build",
+                  output: "Working iOS + watchOS prototype",
+                  tools: ["Cursor", "SwiftUI", "Supabase", "Anthropic API"],
+                },
+                layout: "asymmetric",
+                images: [
+                  {
+                    src: "/images/fini/process/process_02_1.png",
+                    alt: "Cursor workspace showing an implementation plan, audit findings, and a review conversation about Fini's energy prediction logic",
+                    caption:
+                      "Each pass was reviewed against the product logic before it stayed in the build.",
+                    body: "Anthropic’s API structured and prioritized tasks. I routed the API calls through a Supabase Edge Function, keeping the API key out of the client app. Supabase also stored the app data used for capacity estimation.",
+                    width: 2784,
+                    height: 1824,
+                  },
+                  {
+                    src: "/images/fini/process/process_02_2.png",
+                    alt: "Supabase dashboard listing the deployed AI edge functions used by Fini",
+                    caption:
+                      "Supabase Edge Functions handled the AI calls for task structuring and prioritization.",
+                    width: 2342,
+                    height: 1014,
+                  },
+                ],
               },
               {
-                time: "Hour 8 – 13",
-                label: "SwiftUI + HealthKit Integration",
-                body: "Built the live HealthKit signal pipeline. Sleep, HRV, and activity data flowing into the readiness engine.",
+                num: "03",
+                title: "Test On-Device",
+                body: "I used Fini in my daily routine and recorded issues in a QA log. I checked permissions, missing data, loading time, and iPhone–Watch behavior, then fixed the issues in short iterations.",
+                overview: {
+                  label: "Test",
+                  output: "On-device QA findings",
+                  tools: ["Xcode", "HealthKit", "iPhone", "Apple Watch"],
+                },
+                layout: "photoPair",
+                images: [
+                  {
+                    src: "/images/fini/process/process_03_2.png",
+                    alt: "Apple Watch on a wrist at night showing a Fini notification about tasks adjusted for tomorrow",
+                    caption:
+                      "Testing in daily use surfaced timing, permission, and sync issues.",
+                    width: 1347,
+                    height: 1165,
+                    fit: "cover",
+                  },
+                  {
+                    src: "/images/fini/process/process_03_1.jpg",
+                    alt: "Four iPhone screens from the working build: today view, task list, week view, and AI dashboard",
+                    caption:
+                      "Working iOS screens used to verify live recommendations and cross-device states.",
+                    width: 2138,
+                    height: 1165,
+                    fit: "cover",
+                  },
+                ],
               },
               {
-                time: "Hour 14 – 19",
-                label: "Anthropic Inference Pipeline",
-                body: "Supabase Edge Functions connected to the Anthropic API. First AI-generated task plans appearing in the UI.",
-              },
-              {
-                time: "Hour 20 – 23",
-                label: "QA + Debug Loop",
-                body: "End-to-end user flow tested with real data. Critical edge cases caught and fixed. Latency identified as V1's biggest UX risk.",
-              },
-              {
-                time: "Hour 24",
-                label: "V1 Complete",
-                body: "A fully functional prototype, ready for the first real user test. Rough, but real.",
+                num: "04",
+                title: "Refine the Experience",
+                body: "Once the core workflow was stable, I used Figma to refine the information hierarchy, interaction states, and visual consistency across iOS and watchOS. I then applied those changes to the working build.",
+                overview: {
+                  label: "Refine",
+                  output: "Refined cross-device experience",
+                  tools: ["Figma", "Cursor", "SwiftUI"],
+                },
+                layout: "single",
+                images: [
+                  {
+                    src: "/images/fini/process/process_04_1.png",
+                    alt: "Figma design system page with Fini's typography scale, color ramps, buttons, spacing, radius, and shadow tokens",
+                    caption:
+                      "A shared design system kept type, color, and spacing consistent across iOS and watchOS.",
+                    width: 3024,
+                    height: 1898,
+                  },
+                ],
               },
             ],
           },
-          {
-            kind: "subheading",
-            kicker: "v1",
-            title: "What broke under real use",
-            body: "User testing surfaced four gaps no Figma file would have caught.",
-          },
-          {
-            kind: "flipCards",
-            cards: [
-              {
-                label: "UX",
-                title: "Cognitive Overload",
-                front:
-                  'The act of manual task entry (categorizing, typing, and assigning energy weights) became a "second job" for users who were already biologically depleted.',
-                back: '"I\'m already exhausted. Having to type out my tasks and decide on energy levels feels like more work. I wish it could just hear my state and suggest the plan for me."',
-              },
-              {
-                label: "Concept",
-                title: 'The "Starting" Friction',
-                front:
-                  "Users were paralyzed by the sheer effort of starting while in a low-energy state. Flexible scheduling was a secondary need.",
-                back: "\"Flexible deadlines are great, but I'm so drained I don't even know where to begin. I just need the system to pick one small thing I can actually handle right now.\"",
-              },
-              {
-                label: "UI",
-                title: "Invisible Systems are Untrustworthy",
-                front:
-                  "While the backend was processing complex bio-signals, the static UI didn't communicate this activity. The black-box approach led to skepticism about the AI's logic.",
-                back: "\"It says it's connected to my Watch, but I don't see any of my data on the screen. How do I know if this plan is actually based on my recovery or just random suggestions?\"",
-              },
-              {
-                label: "Performance",
-                title: "Logic Lag & Latency",
-                front:
-                  "Technical audits revealed inefficient asynchronous calls and an unoptimized inference engine, resulting in data loading latencies of 0.8s to 1.2s.",
-                back: "Projected to drop trust scores by 40% and lift drop-off by ~25%, since users equate latency with system unreliability.",
-                backLabel: "Engineering Impact",
-              },
-            ],
-          },
-          {
-            kind: "subheading",
-            kicker: "v2",
-            title: "Each gap, addressed",
-            body: "Every change traces back to a specific user-testing finding.",
-          },
-          {
-            kind: "v2Items",
-            items: [
-              {
-                number: "01",
-                title: "Voice Task Entry",
-                body: "To eliminate the cognitive load of manual entry, I implemented Voice Capture. An Edge Function parses natural language into categorized, energy-weighted tasks, removing the friction of planning.",
-                videoSrc: "https://youtu.be/polxGcvmrB4",
-              },
-              {
-                number: "02",
-                title: "Making It Easier to Start",
-                body: "Energy-Matched Breakdown turns large, overwhelming tasks into small, doable steps based on real-time energy, **so users can take the first step, even on low-energy days.**",
-                videoSrc: "https://youtu.be/gVS543_K-bs",
-              },
-              {
-                number: "03",
-                title: "Making the system visible",
-                body: "I redesigned the Hero Section to surface raw bio-data (HRV, Stress, Sleep). When the system's reasoning is visible, the AI feels trustworthy. Choosing what to surface became the central UX decision.",
-                imageSrc: "/media/fini/design-build/visualTrust.jpg?v=2",
-                imageAlt:
-                  "Making the system visible: before static UI vs after data-driven interface with bio-signals",
-              },
-              {
-                number: "04",
-                title: "Optimizing the Bio-Inference Model",
-                body: "The initial energy model was skewed by workout data, leading to inaccurate scheduling. I directed Cursor to re-engineer the data ingestion layer, prioritizing Resting Heart Rate for biological accuracy and adding query caching to cut system latency.",
-                hasConsole: true,
-              },
-            ],
-          },
-          {
-            kind: "subheading",
-            kicker: "v∞",
-            title: "Solving the edge cases",
-            body: "User testing keeps running. Each edge case ships back into the model and the UI.",
-          },
-          { kind: "edgeCaseExplorer" },
         ],
       },
       {
-        id: "impact-vision",
-        title: "Impact & Vision",
-        eyebrow: "Help people keep promises to themselves.",
-        body: "Through structure that adapts to how their body actually works, and accountability that finally exists for the plans no one else is waiting on.",
+        id: "reflection",
+        title: "Reflection",
+        eyebrow: "",
+        body: "",
         contentBlocks: [
           {
-            kind: "annotatedCallout",
-            label: "REFLECTION",
-            body: "Designing while shipping changed what I treat as 'done.' When the inference layer broke on a Tuesday-morning user, I fixed it the same hour because I'd also written the SwiftUI view it broke. Of the five patterns the diary study surfaced, three made V1 and two are waiting for the next sprint. That triage is the design engineer's job: weighing the user's evidence against the system's constraints, and shipping the version where they meet.",
-          },
-          {
-            kind: "takeawayCards",
-            cards: [
+            kind: "reflectionInsights",
+            items: [
               {
-                title: "What I gained",
-                body: "Merging design and engineering into one person collapsed the iteration loop from days to hours. The design got better because the engineering kept pushing back.\n\n[View my note →](https://docs.google.com/document/d/12PMD79Cqjkw8ChC-CLue5E5lhuJFyfU7k8Eio9iWtCo/edit?usp=sharing)",
+                number: "01",
+                title: "0→1 Product Development",
+                body: "I took Fini from research and product definition to a working iOS and watchOS product, gaining experience across design, architecture, and implementation.",
               },
               {
-                title: "Recognition",
-                body: "Selected for the Academy of Art University 2026 Spring Show.\n\n[View Spring Show page →](https://2026springshow.academyart.edu/student/jihyeon-jang/)",
-              },
-              {
-                title: "What's next",
-                body: "App Store launch. Goal: **500 users** and a **4.5★** rating in month one.",
+                number: "02",
+                title: "Multimodal Systems Thinking",
+                body: "Working across voice input, health data, iOS, and watchOS taught me that friction often appears between touchpoints. Looking at the full system helped me make better product decisions.",
               },
             ],
+            photo: {
+              src: "/images/fini/fini_reflection_1.jpg",
+              alt: "Jihyeon presenting Fini on a large display at the Academy of Art University Spring Show",
+              caption:
+                "Selected for the Academy of Art University 2026 Spring Show!",
+              width: 4032,
+              height: 3024,
+              href: "https://2026springshow.academyart.edu/student/jihyeon-jang/",
+            },
           },
         ],
       },
@@ -864,7 +849,7 @@ export const projects: CaseStudy[] = [
       },
       {
         id: "features",
-        title: "Key features",
+        title: "Solutions",
         body: "",
         contentBlocks: [
           {

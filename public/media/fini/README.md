@@ -26,7 +26,7 @@ To change a filename, update the `src` in `lib/projects.ts` for the matching med
 
 | Slot | Drop file at |
 | --- | --- |
-| System architecture walkthrough (below intro copy) | `system-architecture/system-layer.mp4` |
+| Systems Architecture walkthrough (below intro copy) | `system-architecture/system-layer.mp4` |
 | System process — HealthKit signals → Edge Functions → AI orchestration → planning output | `system-architecture/process-diagram.jpg` |
 
 ## Design & Build

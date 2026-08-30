@@ -210,7 +210,15 @@ html[data-theme="dark"] .pull-quote {
     color: var(--text);
   }
   .t-h3 {
-    font-size: 24px;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0;
+    color: var(--text);
+  }
+  .t-h3-serif {
+    font-family: "Instrument Serif", serif;
+    font-size: 36px;
     font-weight: 500;
     line-height: 1.3;
     letter-spacing: 0;
@@ -230,7 +238,7 @@ html[data-theme="dark"] .pull-quote {
     color: var(--body);
   }
   .t-body {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 300;
     line-height: 1.7;
     color: var(--body);

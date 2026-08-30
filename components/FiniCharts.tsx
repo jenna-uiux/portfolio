@@ -1,5 +1,6 @@
 import type { ChartId, ImageRatio } from "@/lib/projects";
 import { EnergyRhythmInteractive } from "./EnergyRhythmInteractive";
+import { ObligationCapacityChart } from "./ObligationCapacityChart";
 
 const ratioClass: Record<ImageRatio, string> = {
   "16/9": "aspect-[16/9]",
@@ -13,6 +14,7 @@ const ratioClass: Record<ImageRatio, string> = {
 const TITLES: Record<ChartId, string> = {
   "diary-structure": "Diary study · entry density",
   "energy-rhythm": "Daily energy rhythm",
+  "obligation-capacity": "External obligations consume capacity before personal goals",
   "signal-flow": "Signal → inference → plan",
   "elastic-deadline": "Elastic deadline behavior",
   "readiness-mapping": "Signals → readiness states",
@@ -39,11 +41,21 @@ function ChartFrame({
         role="img"
         aria-label={TITLES[kind]}
         className={[
-          "relative w-full overflow-hidden rounded-lg bg-white",
-          ratioClass[ratio],
+          "relative w-full overflow-hidden rounded-lg",
+          kind === "obligation-capacity" ? "bg-transparent" : "bg-white",
+          kind === "obligation-capacity"
+            ? "aspect-[20/7] min-h-[300px]"
+            : ratioClass[ratio],
         ].join(" ")}
       >
-        <div className="absolute inset-0 px-8 py-8">{children}</div>
+        <div
+          className={[
+            "absolute inset-0",
+            kind === "obligation-capacity" ? "p-0" : "px-8 py-8",
+          ].join(" ")}
+        >
+          {children}
+        </div>
       </div>
       {caption ? (
         <figcaption className="mt-3 text-[12px] font-light italic text-ink/55">
@@ -944,6 +956,7 @@ function AICorrectionLoopChart() {
 const REGISTRY: Record<ChartId, React.ComponentType> = {
   "diary-structure": DiaryStructureChart,
   "energy-rhythm": EnergyRhythmInteractive,
+  "obligation-capacity": ObligationCapacityChart,
   "signal-flow": SignalFlowChart,
   "elastic-deadline": ElasticDeadlineChart,
   "readiness-mapping": ReadinessMappingChart,

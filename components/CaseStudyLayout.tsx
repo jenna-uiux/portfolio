@@ -66,8 +66,7 @@ export function CaseStudyLayout({ project }: Props) {
           aria-label="Case study outline"
           className="md:col-span-3 md:sticky md:top-24 md:self-start"
         >
-          <p className="t-eyebrow-mut">Case study</p>
-          <p className="mt-2 t-h4">{project.title}</p>
+          <p className="t-h4">{project.title}</p>
 
           <nav className="mt-8 hidden md:block">
             <ul className="space-y-1">
@@ -93,42 +92,32 @@ export function CaseStudyLayout({ project }: Props) {
         </aside>
 
         <article className="md:col-span-9">
-          <header className="max-w-3xl">
-            <h1 className="mt-4 t-h1-serif">{project.title}</h1>
-            <p className="mt-5 max-w-2xl t-lead">{project.tagline}</p>
+          <header className="grid items-end gap-10 md:grid-cols-12 md:gap-12">
+            <div className="md:col-span-7">
+              <h1 className="font-normal leading-[1.02] tracking-[-0.02em] text-ink text-[clamp(48px,5.8vw,72px)] [font-family:'Instrument_Serif',serif]">
+                {project.title}
+              </h1>
+              <p className="mt-10 max-w-[20ch] font-sans text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[26ch]">
+                {project.tagline}
+              </p>
+            </div>
+
+            <dl className="md:col-span-5 divide-y divide-ink/10">
+              <Meta label="Role" value={project.role} />
+              <Meta label="Tools" value={project.tools.join(", ")} />
+              <Meta label="Focus" value={project.focus.join(", ")} />
+              {project.timeline ? (
+                <Meta label="Timeline" value={project.timeline} />
+              ) : null}
+            </dl>
           </header>
 
           <div className="mt-10">
             <CoverMedia cover={project.cover} ratio={project.cover.ratio ?? "16/9"} />
           </div>
 
-          <dl
-            className={[
-              "mt-10 grid w-full items-start gap-x-6 border-t hairline pt-8 sm:gap-x-8 md:gap-x-10",
-              project.timeline
-                ? "grid-cols-2 [grid-template-columns:repeat(2,minmax(0,1fr))] md:grid-cols-4 md:[grid-template-columns:repeat(4,minmax(0,1fr))] gap-y-8 md:gap-y-0"
-                : "grid-cols-3 [grid-template-columns:repeat(3,minmax(0,1fr))]",
-            ].join(" ")}
-          >
-            <Meta label="Role" value={project.role} />
-            <Meta label="Tools" value={project.tools.join(", ")} />
-            <Meta label="Focus" value={project.focus.join(", ")} />
-            {project.timeline ? (
-              <Meta label="Timeline" value={project.timeline} />
-            ) : null}
-          </dl>
-
           <div className="mt-12">
-            {project.sections.map((s, i) => {
-              const next = project.sections[i + 1];
-              const isFiniOverviewToProblem =
-                project.slug === "fini" &&
-                s.id === "overview" &&
-                next?.id === "problem";
-              const isFiniProblemAfterOverview =
-                project.slug === "fini" &&
-                s.id === "problem" &&
-                project.sections[i - 1]?.id === "overview";
+            {project.sections.map((s) => {
               const contentBlockRhythm =
                 project.slug === "fini" &&
                 (s.id === "build-iterate" || s.id === "design-build")
@@ -148,9 +137,8 @@ export function CaseStudyLayout({ project }: Props) {
                 firstBlock?.kind === "backgroundPinnedDeck" &&
                 Boolean(firstBlock.kicker?.trim());
               const contentBlocksWrapperClass =
-                project.slug === "fini" &&
-                (s.id === "research" || s.id === "problem")
-                  ? `mt-0 ${contentBlockRhythm}`
+                project.slug === "fini" && s.id === "research"
+                  ? `mt-10 ${contentBlockRhythm}`
                   : s.body.trim()
                     ? `mt-12 ${contentBlockRhythm}`
                     : isAeonContext
@@ -162,15 +150,13 @@ export function CaseStudyLayout({ project }: Props) {
                         : !s.body.trim() && !s.eyebrow
                           ? `mt-3 ${contentBlockRhythm}`
                           : `mt-6 ${contentBlockRhythm}`;
+              const isFiniFinalProduct =
+                project.slug === "fini" && s.id === "final-product";
               return (
               <section
                 key={s.id}
                 id={s.id}
-                className={[
-                  "scroll-mt-24 section-padding",
-                  isFiniOverviewToProblem ? "!pb-4" : "",
-                  isFiniProblemAfterOverview ? "!pt-4" : "",
-                ].join(" ")}
+                className="scroll-mt-24 section-padding"
               >
                 <div>
                   {!aeonBackgroundPinsKicker ? (
@@ -179,7 +165,12 @@ export function CaseStudyLayout({ project }: Props) {
 
                   {s.eyebrow ? (
                     useSentenceHeadline ? (
-                      <h2 className="mt-3 max-w-[80%] t-h3">
+                      <h2
+                        className={[
+                          "mt-3 max-w-[80%]",
+                          isFiniFinalProduct ? "t-h3-serif" : "t-h3",
+                        ].join(" ")}
+                      >
                         {s.eyebrow}
                       </h2>
                     ) : project.slug === "aeon" ? (
@@ -337,7 +328,7 @@ export function CaseStudyLayout({ project }: Props) {
                   <div
                     className={
                       project.slug === "fini" &&
-                      (s.id === "problem" || s.id === "challenge")
+                      (s.id === "research" || s.id === "challenge")
                         ? "mt-3"
                         : "mt-12"
                     }
@@ -455,9 +446,11 @@ function OutlineLink({
 
 function Meta({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex min-w-0 flex-col">
-      <dt className="t-eyebrow-mut">{label}</dt>
-      <dd className="mt-1.5 t-body-sm">{value}</dd>
+    <div className="grid grid-cols-[5.5rem_1fr] items-baseline gap-x-6 py-3.5 last:pb-0 sm:grid-cols-[6.5rem_1fr]">
+      <dt className="font-sans text-[13px] font-medium text-ink">{label}</dt>
+      <dd className="min-w-0 text-[14px] font-light leading-[1.5] text-ink/75">
+        {value}
+      </dd>
     </div>
   );
 }

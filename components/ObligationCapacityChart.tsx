@@ -346,7 +346,7 @@ export function ObligationCapacityChart() {
           fill={INK}
           fillOpacity="0.55"
         >
-          User's energy capacity
+          User&apos;s energy capacity
         </text>
         <circle
           cx="152"

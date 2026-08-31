@@ -490,7 +490,7 @@ export const projects: CaseStudy[] = [
     slug: "fini",
     title: "Fini",
     tagline:
-      "An AI planner that makes personal goals easier to start and easier to achieve.",
+      "An AI planner that makes personal goals\neasier to start and easier to achieve.",
     summary:
       "Designed and developed an AI productivity mobile app that adapts to users' energy levels using Apple Health data",
     category: "AI UX / Productivity",
@@ -789,12 +789,12 @@ export const projects: CaseStudy[] = [
               },
             ],
             photo: {
-              src: "/images/fini/fini_reflection_1.jpg",
+              src: "/images/fini/fini_reflection_2.jpg",
               alt: "Jihyeon presenting Fini on a large display at the Academy of Art University Spring Show",
               caption:
                 "Selected for the Academy of Art University 2026 Spring Show!",
-              width: 4032,
-              height: 3024,
+              width: 4324,
+              height: 2886,
               href: "https://2026springshow.academyart.edu/student/jihyeon-jang/",
             },
           },
@@ -814,7 +814,6 @@ export const projects: CaseStudy[] = [
     role: "AI UX Designer · Solo project",
     tools: ["Cursor", "Claude API", "Supabase", "Figma"],
     focus: ["Conversational AI", "Decision-support UX"],
-    timeline: "3 weeks · v0 → v1",
     year: "2026",
     cover: {
       filename: "strawberryMatcha_thumbnail.mp4",

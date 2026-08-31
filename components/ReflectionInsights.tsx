@@ -50,13 +50,14 @@ export function ReflectionInsights({ items, photo }: Props) {
             className="absolute inset-x-2 bottom-0 top-8 rotate-[1.2deg] rounded-xl bg-[color:var(--accent-orange)]/15 md:inset-x-6"
           />
           <div className="relative -rotate-[0.8deg] transition-transform duration-500 ease-out hover:rotate-0">
-            <div className="relative aspect-video overflow-hidden rounded-lg border-[6px] border-white bg-white shadow-[0_18px_55px_rgba(23,23,23,0.14)]">
+            <div className="overflow-hidden rounded-lg border-[6px] border-white bg-white shadow-[0_18px_55px_rgba(23,23,23,0.14)]">
               <Image
                 src={photo.src}
                 alt={photo.alt}
-                fill
+                width={photo.width}
+                height={photo.height}
                 sizes="(min-width: 1024px) 1100px, 100vw"
-                className="object-cover object-[30%_38%]"
+                className="h-auto w-full"
               />
             </div>
             <span className="absolute -right-2 -top-4 rotate-[3deg] rounded-full bg-[color:var(--accent-orange)] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.14em] text-white md:right-5">

@@ -97,7 +97,13 @@ export function CaseStudyLayout({ project }: Props) {
               <h1 className="font-normal leading-[1.02] tracking-[-0.02em] text-ink text-[clamp(48px,5.8vw,72px)] [font-family:'Instrument_Serif',serif]">
                 {project.title}
               </h1>
-              <p className="mt-10 max-w-[20ch] font-sans text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[26ch]">
+              <p
+                className={
+                  project.slug === "fini"
+                    ? "mt-10 max-w-[38ch] whitespace-pre-line font-sans text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[42ch]"
+                    : "mt-10 max-w-[20ch] font-sans text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[26ch]"
+                }
+              >
                 {project.tagline}
               </p>
             </div>

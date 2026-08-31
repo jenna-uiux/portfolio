@@ -361,11 +361,11 @@ function StepArtifacts({ step }: { step: ProcessStep }) {
         ) : null}
 
         {supporting ? (
-          <div className="mt-10 grid gap-4 md:mt-12 md:grid-cols-12 md:items-end md:gap-4">
-            <div className="order-2 md:order-1 md:col-span-4">
-              <p className="max-w-[30ch] t-caption">{supporting.caption}</p>
-            </div>
-            <div className="order-1 md:order-2 md:col-span-8">
+          <div className="mt-10 flex flex-col gap-4 md:mt-12 md:flex-row md:items-end md:gap-5">
+            <p className="order-2 max-w-[30ch] shrink-0 t-caption md:order-1">
+              {supporting.caption}
+            </p>
+            <div className="order-1 min-w-0 flex-1 md:order-2">
               <Artifact
                 image={supporting}
                 sizes="(min-width: 768px) 48vw, 100vw"

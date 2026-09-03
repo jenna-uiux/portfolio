@@ -864,7 +864,7 @@ export const projects: CaseStudy[] = [
             description: "Ask Strawberry Matcha demo",
             mediaType: "video",
             ratio: "16/9",
-            src: "https://youtu.be/xYQwGtphHus",
+            src: "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_demo_01.mp4",
           },
           {
             kind: "subheading",
@@ -879,7 +879,7 @@ export const projects: CaseStudy[] = [
             description: "Field Translator walkthrough",
             mediaType: "video",
             ratio: "16/9",
-            src: "https://youtu.be/UpcUNjCdrGE",
+            src: "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_demo_02.mp4",
           },
           {
             kind: "subheading",
@@ -893,7 +893,7 @@ export const projects: CaseStudy[] = [
             description: "Timeline screen",
             mediaType: "video",
             ratio: "16/9",
-            src: "https://youtu.be/HdhcB66vtPU",
+            src: "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_demo_03.mp4",
           },
         ],
       },

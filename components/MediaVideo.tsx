@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { ImageRatio } from "@/lib/projects";
 import { isYouTubeMediaUrl, parseYouTubeId } from "@/lib/youtube";
@@ -47,14 +47,56 @@ export function MediaVideo({
   controls = true,
   objectFit = "cover",
 }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [errored, setErrored] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
   const resolvedSrc = resolveMediaUrl(src);
   const resolvedPoster = poster ? resolveMediaUrl(poster) : undefined;
-  const youTubeId =
-    isYouTubeMediaUrl(src) ? parseYouTubeId(src) : null;
+  const youTubeId = isYouTubeMediaUrl(src) ? parseYouTubeId(src) : null;
+
+  // Only attach the real src once near the viewport — avoids downloading
+  // 50–150MB hero/demo clips that are still off-screen.
+  useEffect(() => {
+    if (youTubeId) return;
+    const node = containerRef.current;
+    if (!node) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      setShouldLoad(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px", threshold: 0.01 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [youTubeId]);
+
+  useEffect(() => {
+    if (!shouldLoad || !autoPlay) return;
+    const video = videoRef.current;
+    if (!video) return;
+    const play = () => {
+      void video.play().catch(() => {
+        // Autoplay can still be blocked; controls/user gesture handle the rest.
+      });
+    };
+    if (video.readyState >= 2) play();
+    else video.addEventListener("loadeddata", play, { once: true });
+  }, [shouldLoad, autoPlay, resolvedSrc]);
 
   return (
     <div
+      ref={containerRef}
       className={[
         "relative w-full overflow-hidden rounded-lg",
         errored ? "border border-dashed border-ink/18 bg-white/40" : "bg-white",
@@ -89,24 +131,33 @@ export function MediaVideo({
           </div>
         </>
       ) : (
-        <video
-          className={[
-            "absolute inset-0 h-full w-full",
-            objectFit === "contain" ? "object-contain" : "object-cover",
-          ].join(" ")}
-          src={resolvedSrc}
-          poster={resolvedPoster}
-          controls={controls}
-          playsInline
-          preload={autoPlay ? "auto" : "metadata"}
-          autoPlay={autoPlay}
-          loop={loop}
-          muted={autoPlay ? true : (muted ?? false)}
-          aria-label={description}
-          onError={() => setErrored(true)}
-        >
-          {description}
-        </video>
+        <>
+          {!shouldLoad ? (
+            <div
+              aria-hidden
+              className="absolute inset-0 animate-pulse bg-ink/[0.04]"
+            />
+          ) : null}
+          <video
+            ref={videoRef}
+            className={[
+              "absolute inset-0 h-full w-full",
+              objectFit === "contain" ? "object-contain" : "object-cover",
+            ].join(" ")}
+            src={shouldLoad ? resolvedSrc : undefined}
+            poster={resolvedPoster}
+            controls={controls}
+            playsInline
+            preload={shouldLoad ? (autoPlay ? "metadata" : "metadata") : "none"}
+            autoPlay={shouldLoad && autoPlay}
+            loop={loop}
+            muted={autoPlay ? true : (muted ?? false)}
+            aria-label={description}
+            onError={() => setErrored(true)}
+          >
+            {description}
+          </video>
+        </>
       )}
     </div>
   );

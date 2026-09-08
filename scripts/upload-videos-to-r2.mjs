@@ -4,59 +4,17 @@ import path from "node:path";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 const ROOT = process.cwd();
+const WEB_DIR = path.join(ROOT, ".tmp/web-videos");
 
+/** Compressed web MP4s → same public R2 object keys (overwrite). */
 const uploads = [
-  {
-    local: "public/media/fini/design-build/proactiveAtomization.mp4",
-    key: "fini_proactiveAtomization.mp4",
-  },
-  {
-    local: "public/media/fini/design-build/voiceTaskEntry.mp4",
-    key: "fini_voiceTaskEntry.mp4",
-  },
-  {
-    local: "public/media/fini/system-architecture/system-layer.mp4",
-    key: "fini_system-layer.mp4",
-  },
-  {
-    local: "public/media/strawberryMatcha/demo/demo_01.mp4",
-    key: "strawberryMatcha_demo_01.mp4",
-  },
-  {
-    local: "public/media/strawberryMatcha/demo/demo_02.mp4",
-    key: "strawberryMatcha_demo_02.mp4",
-  },
-  {
-    local: "public/media/strawberryMatcha/demo/demo_03.mp4",
-    key: "strawberryMatcha_demo_03.mp4",
-  },
-  {
-    local: "public/media/aeon/principles/principle_1.mp4",
-    key: "aeon_principle_1.mp4",
-  },
-  {
-    local: "public/media/aeon/principles/principle_2.mp4",
-    key: "aeon_principle_2.mp4",
-  },
-  {
-    local: "public/media/aeon/principles/principle_3.mp4",
-    key: "aeon_principle_3.mp4",
-  },
-  {
-    local: "public/images/aeon/ia/visual-language/Floating Lights.mp3",
-    key: "audio/Floating Lights.mp3",
-    contentType: "audio/mpeg",
-  },
-  {
-    local: "public/images/aeon/ia/visual-language/Gliding Through the Mist.mp3",
-    key: "audio/Gliding Through the Mist.mp3",
-    contentType: "audio/mpeg",
-  },
-  {
-    local: "public/images/aeon/ia/visual-language/Silver Glider.mp3",
-    key: "audio/Silver Glider.mp3",
-    contentType: "audio/mpeg",
-  },
+  "fini_thumbnail.mp4",
+  "fini_proactiveAtomization.mp4",
+  "fini_voiceTaskEntry.mp4",
+  "strawberryMatcha_thumbnail.mp4",
+  "strawberryMatcha_demo_01.mp4",
+  "strawberryMatcha_demo_02.mp4",
+  "strawberryMatcha_demo_03.mp4",
 ];
 
 function requireEnv(name) {
@@ -84,25 +42,27 @@ async function main() {
     credentials: { accessKeyId, secretAccessKey },
   });
 
-  for (const { local, key, contentType } of uploads) {
-    const abs = path.join(ROOT, local);
+  for (const key of uploads) {
+    const abs = path.join(WEB_DIR, key);
     const body = await fs.readFile(abs);
+    const mb = (body.byteLength / 1024 / 1024).toFixed(1);
 
     await client.send(
       new PutObjectCommand({
         Bucket: bucket,
         Key: key,
         Body: body,
-        ContentType: contentType ?? "video/mp4",
+        ContentType: "video/mp4",
+        CacheControl: "public, max-age=31536000, immutable",
       })
     );
 
     // eslint-disable-next-line no-console
-    console.log(`${local} -> ${publicBase}/${key}`);
+    console.log(`${key} (${mb} MB) -> ${publicBase}/${key}`);
   }
 
   // eslint-disable-next-line no-console
-  console.log("\nDone. Videos are public via your R2 dev subdomain.");
+  console.log("\nDone. Overwrote R2 objects with compressed web videos.");
 }
 
 main().catch((err) => {

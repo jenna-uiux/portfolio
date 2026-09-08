@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Principle = {
   number: string;
@@ -29,12 +29,35 @@ export function DesignPrinciples({ principles }: { principles: Principle[] }) {
 }
 
 function Panel({ principle, variant }: { principle: Principle; variant: number }) {
+  const rootRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoOk, setVideoOk] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
   const descId = `principle-hover-${principle.number}`;
+
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setShouldLoad(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "180px 0px", threshold: 0.01 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <motion.div
+      ref={rootRef}
       className="group relative cursor-default overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/25"
       tabIndex={0}
       role="group"
@@ -65,12 +88,12 @@ function Panel({ principle, variant }: { principle: Principle; variant: number }
 
       <video
         ref={videoRef}
-        src={principle.videoSrc}
-        autoPlay
+        src={shouldLoad ? principle.videoSrc : undefined}
+        autoPlay={shouldLoad}
         muted
         loop
         playsInline
-        preload="auto"
+        preload={shouldLoad ? "metadata" : "none"}
         onLoadedData={() => setVideoOk(true)}
         onError={() => setVideoOk(false)}
         className="absolute inset-0 h-full w-full object-cover"

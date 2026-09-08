@@ -1,3 +1,5 @@
+import { R2_MEDIA, r2Url } from "./media";
+
 export type ImageRatio = "16/9" | "4/3" | "4/5" | "1/1" | "3/2" | "21/9";
 
 export type ImagePlaceholder = {
@@ -176,6 +178,8 @@ export type CaseContentBlock =
       kind: "subheading";
       title: string;
       body?: string;
+      /** Secondary line under the h3 (rendered as h4). */
+      subtitle?: string;
       first?: boolean;
       /** Keeps local subheading spacing tight when parent content rhythm already provides separation. */
       compact?: boolean;
@@ -278,9 +282,16 @@ export type CaseContentBlock =
       alt: string;
       objectFit?: "cover" | "contain";
       borderless?: boolean;
+      /** When set with height, renders at the image's natural aspect instead of a fixed 16:9 frame. */
+      width?: number;
+      height?: number;
     }
   | {
       kind: "imageRow";
+      images: { src: string; alt: string }[];
+    }
+  | {
+      kind: "hoverImagePair";
       images: { src: string; alt: string }[];
     }
   | {
@@ -335,6 +346,8 @@ export type CaseContentBlock =
       label: string;
       body: string;
       tone?: "neutral" | "accent";
+      /** Dark inset panel (AEON mission strip). */
+      variant?: "default" | "panel";
     }
   | {
       kind: "problemStatement";
@@ -407,12 +420,21 @@ export type CaseContentBlock =
     }
   | { kind: "personaCollage" }
   | { kind: "modesShowcase" }
+  | { kind: "aeonHmiInformationMap" }
+  | { kind: "aeonHmiArchitectureFigures" }
+  | { kind: "aeonDesignDevelopmentFigures" }
+  | { kind: "aeonVisualLanguageFigure" }
+  | { kind: "aeonMoodSoundBoard" }
+  | { kind: "aeonFinalDesignFigures" }
+  | { kind: "aeonOutcomeProof" }
   | {
       kind: "backgroundPinnedDeck";
       /** Section kicker (e.g. "Background") — when set, render inside pin with the deck. */
       kicker?: string;
       /** Shown above the deck inside the pin region so it stays visible while scrubbing. */
       eyebrow?: string;
+      /** Intro copy between eyebrow and slides (stays in pin region). */
+      intro?: string;
       slides: {
         src: string;
         alt: string;
@@ -511,15 +533,13 @@ export const projects: CaseStudy[] = [
       filename: "fini_thumbnail.mp4",
       description: "Fini hero, phone in hand with planner UI",
       ratio: "16/9",
-      videoSrc:
-        "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/fini_thumbnail.mp4",
+      videoSrc: r2Url(R2_MEDIA.finiThumbnail),
     },
     teaserCover: {
       filename: "fini_thumbnail.mp4",
       description: "Fini home teaser, phone in hand with planner UI",
       ratio: "21/9",
-      videoSrc:
-        "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/fini_thumbnail.mp4",
+      videoSrc: r2Url(R2_MEDIA.finiThumbnail),
     },
     featured: true,
     sections: [
@@ -619,8 +639,7 @@ export const projects: CaseStudy[] = [
                 number: "01",
                 title: "Capacity-aware recommendations",
                 body: "Fini estimates the user's current capacity using sleep, HRV, and activity data from Apple Health. Tasks are prioritized based on that estimate.",
-                videoSrc:
-                  "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/fini_thumbnail.mp4",
+                videoSrc: r2Url(R2_MEDIA.finiThumbnail),
                 videoDescription:
                   "Fini recommends and prioritizes tasks based on the user's current capacity",
               },
@@ -628,7 +647,7 @@ export const projects: CaseStudy[] = [
                 number: "02",
                 title: "Adaptive task breakdown",
                 body: "When capacity is low, Fini breaks large tasks into smaller steps and shows where to start.",
-                videoSrc: "https://youtu.be/gVS543_K-bs",
+                videoSrc: r2Url(R2_MEDIA.finiProactiveAtomization),
                 videoDescription:
                   "Fini breaks a large task into manageable next steps",
               },
@@ -636,7 +655,7 @@ export const projects: CaseStudy[] = [
                 number: "03",
                 title: "Voice-based task capture",
                 body: "Users can describe a goal by voice. Fini converts it into tasks, subtasks, and a default priority.",
-                videoSrc: "https://youtu.be/polxGcvmrB4",
+                videoSrc: r2Url(R2_MEDIA.finiVoiceTaskEntry),
                 videoDescription:
                   "Fini converts a spoken goal into structured tasks and subtasks",
               },
@@ -806,7 +825,7 @@ export const projects: CaseStudy[] = [
     slug: "strawberry-matcha",
     title: "Strawberry Matcha",
     tagline:
-      "AI agent for marriage-based green card applicants (CR1 or F2A) filing without a lawyer.",
+      "AI agent for marriage-based green card applicants\n(CR1 or F2A) filing without a lawyer.",
     summary:
       "Designed a trustworthy AI assistant for legal workflows, focusing on safety guardrails, transparency, and human oversight",
     category: "AI UX / Legal workflow",
@@ -819,15 +838,13 @@ export const projects: CaseStudy[] = [
       filename: "strawberryMatcha_thumbnail.mp4",
       description: "Strawberry Matcha hero demo",
       ratio: "16/9",
-      videoSrc:
-        "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_thumbnail.mp4",
+      videoSrc: r2Url(R2_MEDIA.strawberryMatchaThumbnail),
     },
     teaserCover: {
       filename: "strawberryMatcha_thumbnail.mp4",
       description: "Strawberry Matcha home teaser",
       ratio: "21/9",
-      videoSrc:
-        "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_thumbnail.mp4",
+      videoSrc: r2Url(R2_MEDIA.strawberryMatchaThumbnail),
     },
     featured: true,
     sections: [
@@ -864,7 +881,7 @@ export const projects: CaseStudy[] = [
             description: "Ask Strawberry Matcha demo",
             mediaType: "video",
             ratio: "16/9",
-            src: "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_demo_01.mp4",
+            src: r2Url(R2_MEDIA.strawberryMatchaDemo01),
           },
           {
             kind: "subheading",
@@ -879,7 +896,7 @@ export const projects: CaseStudy[] = [
             description: "Field Translator walkthrough",
             mediaType: "video",
             ratio: "16/9",
-            src: "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_demo_02.mp4",
+            src: r2Url(R2_MEDIA.strawberryMatchaDemo02),
           },
           {
             kind: "subheading",
@@ -893,7 +910,7 @@ export const projects: CaseStudy[] = [
             description: "Timeline screen",
             mediaType: "video",
             ratio: "16/9",
-            src: "https://pub-c7669d9caa7d49c9b61a17793af8c3a0.r2.dev/strawberryMatcha_demo_03.mp4",
+            src: r2Url(R2_MEDIA.strawberryMatchaDemo03),
           },
         ],
       },
@@ -1102,29 +1119,29 @@ export const projects: CaseStudy[] = [
   {
     slug: "aeon",
     title: "AEON",
-    tagline: "Cruise Beyond the Future.",
+    tagline:
+      "Designed an HMI for a 2050 concept vehicle\nthat moves between road and water.",
     summary:
       "Led product direction and designed an adaptive vehicle interface for a 2050 amphibious mobility concept sponsored by Autodesk",
     category: "Mobility / HMI Design",
     tags: ["HMI", "Mobility"],
-    role: "Product Designer · UI/UX lead in a 5-person team",
+    role: "Team Lead · Product Designer",
     team: "2 Industrial Designers, 1 Brand Strategist, 1 Interior Architect Designer, me",
     tools: ["Figma", "After Effects"],
     focus: ["Multimodal HMI", "Adaptive in-vehicle UI"],
-    timeline: "Fall 2025 · concept → proof of concept",
     year: "2025",
     theme: "dark",
     cover: {
-      filename: "aeon_thumbnail_1.jpg",
-      description: "AEON concept car on water — case study hero",
+      filename: "final_4_1.jpg",
+      description: "AEON on water with gull-wing door open and seat extended — case study hero",
       ratio: "16/9",
-      src: "/images/aeon/hero/aeon_thumbnail_1.jpg",
+      src: "/images/aeon/final/final_4_1.jpg",
     },
     teaserCover: {
-      filename: "aeon_thumbnail_3.jpg",
+      filename: "aeon_thumbnail.jpg",
       description: "AEON concept car on water — home teaser",
       ratio: "21/9",
-      src: "/images/aeon/hero/aeon_thumbnail_3.jpg",
+      src: "/images/aeon/hero/aeon_thumbnail.jpg",
     },
     featured: true,
     externalLink: {
@@ -1136,13 +1153,19 @@ export const projects: CaseStudy[] = [
         id: "context",
         title: "Context",
         eyebrow: "Sponsored by Autodesk: Design a concept vehicle for 2050",
-        body: "",
+        body: "AEON is a three-month concept project **sponsored by Autodesk**. The brief was **to design a future vehicle for 2050 and take it from concept to proof of concept.** Our multidisciplinary team of five explored how future climate conditions could reshape mobility and developed AEON, an amphibious EV designed for road and water.",
         contentBlocks: [
           {
-            kind: "proseTwoColumn",
-            left: "AEON is a three month project sponsored by Autodesk. Our multidisciplinary team of five was challenged to design a vehicle for 2050.",
-            right:
-              "We explored how future climate conditions could reshape mobility, and as the team lead and product designer, I guided the project direction and designed the in-vehicle UI/UX system for an amphibious EV that moves seamlessly between land and water.",
+            kind: "annotatedCallout",
+            label: "Autodesk Mission",
+            body:
+              "\u201CTo empower everyone, everywhere to design and make anything.\u201D",
+            tone: "neutral",
+            variant: "panel",
+          },
+          {
+            kind: "prose",
+            body: "As team lead and sole product designer, I guided the overall project direction and designed the vehicle\u2019s HMI, from information architecture to the final road and water modes.",
           },
           {
             kind: "teamGrid",
@@ -1177,49 +1200,29 @@ export const projects: CaseStudy[] = [
         ],
       },
       {
-        id: "background",
-        title: "Background",
-        body: "",
+        id: "problem",
+        title: "Problem",
+        eyebrow: "Rising sea levels could make existing roads unreliable.",
+        body: "With Autodesk's mission as a starting point, we researched the challenges that could affect how people move in 2050. Rising sea levels became our focus because flooding could make existing roads increasingly unreliable.",
         contentBlocks: [
           {
-            kind: "backgroundPinnedDeck",
-            kicker: "Background",
-            eyebrow: "What could happen in 2050?",
-            slides: [
+            kind: "hoverImagePair",
+            images: [
               {
-                src: "/images/aeon/context/climate-city.png",
-                alt: "Flooded modern city",
-                headline: "Global sea level\nwill rise **30cm by 2050**",
-                overlay: 0.55,
+                src: "/images/aeon/context/Problem_1_2.jpg",
+                alt: "Global sea level rise and infrastructure degradation by 2050",
               },
               {
-                src: "/images/aeon/context/climate-city.png",
-                alt: "Long-term infrastructure decay",
-                headline:
-                  "Asphalt and concrete\n**degrade faster** under repeated saltwater exposure.",
-                body: "Corrosion of steel reinforcements in bridges and elevated roads → structural failures. Maintenance cycles shrink from decades to years.",
-                source: "IPCC AR6 (2021)",
-                overlay: 0.6,
-                align: "left-bottom",
-              },
-              {
-                src: "/images/aeon/context/climate-traffic.png",
-                alt: "Traffic delays in rain",
-                headline:
-                  "Rising sea levels and increased flooding\ncan damage roads, **leading to significant traffic delays.**",
-                source: "EPA (2021). Appendix G: Roads.",
-                overlay: 0.6,
+                src: "/images/aeon/context/Problem_2.jpg",
+                alt: "Flooding and traffic delays on urban roads",
               },
             ],
           },
-        ],
-      },
-      {
-        id: "concept",
-        title: "Concept",
-        eyebrow: "Turning water from barrier → path",
-        body: "",
-        contentBlocks: [
+          {
+            kind: "subheading",
+            title: "Turning water from barrier → path",
+            body: "We saw water as an alternative route when roads were disrupted. This became the basis for AEON, an amphibious vehicle designed to transition between road and water.",
+          },
           {
             kind: "designPrinciples",
             principles: [
@@ -1227,82 +1230,120 @@ export const projects: CaseStudy[] = [
                 number: "01",
                 title: "Seamless Transition",
                 tagline: "One continuous experience, two terrains.",
-                videoSrc: "/media/aeon/principles/principle_1.mp4",
+                videoSrc: r2Url(R2_MEDIA.aeonPrinciple1),
                 iconSrc: "/images/aeon/principles/seamless.svg",
                 hoverDescription:
-                  "Moving between land and water should feel like one continuous journey.",
+                  "Move seamlessly between\nland and water.",
               },
               {
                 number: "02",
                 title: "Multisensory Interaction System",
                 tagline: "The right information, on the right surface.",
-                videoSrc: "/media/aeon/principles/principle_2.mp4",
+                videoSrc: r2Url(R2_MEDIA.aeonPrinciple2),
                 iconSrc: "/images/aeon/principles/multisensory.svg",
                 hoverDescription:
-                  "The vehicle should communicate through multiple sensory cues to help users stay aware across changing environments.",
+                  "Stay aware through multisensory cues.",
               },
               {
                 number: "03",
                 title: "Unlocked Freedom",
                 tagline:
                   "The UI steps back when it can, shows up when it matters.",
-                videoSrc: "/media/aeon/principles/principle_3.mp4",
+                videoSrc: r2Url(R2_MEDIA.aeonPrinciple3),
                 iconSrc: "/images/aeon/principles/freedom.svg",
                 hoverDescription:
-                  "Mobility should no longer be limited by traditional roads, giving users new ways to move and explore.",
+                  "Move beyond traditional roads.",
               },
             ],
           },
         ],
       },
       {
-        id: "target",
-        title: "Target",
-        eyebrow: "Where could the vehicle make the biggest impact?",
+        id: "ia",
+        title: "HMI Design Process",
         body: "",
         contentBlocks: [
           {
-            kind: "aeonTargetSpread",
-            row1: {
-              label: "Indonesia",
-              headline: "**17,000+** islands",
-              supporting:
-                "Moving between places is already inconvenient and infrastructure dependent.",
-              mapSrc: "/images/aeon/context/indonesia-map.png",
-              mapAlt: "Indonesia archipelago map",
-            },
-            row2: {
-              mapSrc: "/images/aeon/context/jakarta-flood-map.png",
-              mapAlt: "Jakarta 2050 flood-risk map",
-              headline:
-                "By **2050**, much of Jakarta may become flood vulnerable.",
-              source: "Climate Central · Coastal Risk Screening Tool",
-            },
-            row3: {
-              statement:
-                "Jakarta became our target because climate vulnerability and fragmented infrastructure make alternative mobility increasingly essential.",
-            },
+            kind: "subheading",
+            first: true,
+            title: "Display & Information Architecture",
+            body: "During early HMI reviews, I learned about established automotive HMI practices from our design mentor. I used two factors to guide placement: the information\u2019s function and how quickly the driver needed to access it.",
           },
+          { kind: "aeonHmiInformationMap" },
+          {
+            kind: "prose",
+            body: "I defined the role of the HUD, cluster, infotainment, and auxiliary displays, then set the priority of the information shown on each one.",
+          },
+          { kind: "aeonHmiArchitectureFigures" },
           {
             kind: "subheading",
-            title: "Meet Rafi — Field Engineer, Jakarta 2050.",
+            title: "Visual Language",
+            body: "I created a shared visual system for AEON\u2019s road and water modes. The layout and type hierarchy remain consistent, while form, color, and motion adapt to each environment.",
           },
-          { kind: "personaCollage" },
+          { kind: "aeonVisualLanguageFigure" },
+          {
+            kind: "prose",
+            body: "Alongside the moodboard, I created an AI-generated track with Suno and shared it with the team. It helped us align on AEON\u2019s pace, atmosphere, and emotional tone while developing the visual language.",
+          },
+          { kind: "aeonMoodSoundBoard" },
+          {
+            kind: "subheading",
+            compact: true,
+            title: "Design Development",
+            body: "I applied the display architecture and visual language to develop three HMI modes, adapting the information and controls for parking, road, and water.",
+          },
+          { kind: "aeonDesignDevelopmentFigures" },
         ],
       },
       {
-        id: "ia",
-        title: "Information Architecture",
-        eyebrow: "Every surface carries a different layer of attention.",
+        id: "final",
+        title: "Final Design",
         body: "",
-        contentBlocks: [{ kind: "iaMatrix" }],
+        contentBlocks: [
+          {
+            kind: "subheading",
+            first: true,
+            title: "Keeping the Interface Familiar Across Modes",
+            body: "Because drivers may transition between road and water during the same trip, I kept essential information in consistent locations so they would not need to relearn the interface. Road mode prioritizes traffic and route decisions, while water mode prioritizes heading, stability, and visual motion cues to help reduce motion sickness.",
+          },
+          { kind: "aeonFinalDesignFigures" },
+        ],
       },
       {
-        id: "modes",
-        title: "Modes",
-        eyebrow: "Two terrains. One continuous drive.",
+        id: "outcome",
+        title: "Outcome",
         body: "",
-        contentBlocks: [{ kind: "modesShowcase" }],
+        contentBlocks: [
+          {
+            kind: "subheading",
+            first: true,
+            title: "Making a 2050 Concept Vehicle Believable",
+            body: "Designing a concept vehicle for 2050 meant balancing imagination with credibility. To evaluate whether we achieved that balance, we conducted an adapted UEQ-S evaluation. This provides measurable support for the final proof of concept we presented to Autodesk\u2019s EMEA Automotive Team.",
+          },
+          { kind: "aeonOutcomeProof" },
+        ],
+      },
+      {
+        id: "reflection",
+        title: "Reflection",
+        body: "",
+        contentBlocks: [
+          {
+            kind: "reflectionInsights",
+            items: [
+              {
+                number: "01",
+                title: "Designing Safety into the Experience",
+                body: "Working on AEON\u2019s HMI challenged me to rethink how drivers process critical information under pressure. I learned that safety in HMI starts with restraint: limiting on-screen density, elevating key alerts, and maintaining consistent control logic across driving modes so every interaction feels effortless and safe.",
+              },
+              {
+                number: "02",
+                title: "Building Alignment Through Evidence",
+                body: "When our team had different ideas about the target market, I returned to research to build consensus. Using data as an objective anchor helped move the conversation beyond personal preferences and toward a clear, shared strategy. This kept every discipline aligned through execution.",
+              },
+            ],
+          },
+        ],
       },
     ],
   },

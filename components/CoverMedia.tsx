@@ -56,7 +56,6 @@ export function CoverMedia({ cover, ratio, compact, className }: Props) {
           "relative w-full overflow-hidden",
           ratioClass[r],
           compact ? "rounded-md" : "rounded-lg",
-          "border border-ink/10",
           className ?? "",
         ]
           .filter(Boolean)

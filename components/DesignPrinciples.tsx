@@ -65,11 +65,12 @@ function Panel({ principle, variant }: { principle: Principle; variant: number }
 
       <video
         ref={videoRef}
+        src={principle.videoSrc}
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
         onLoadedData={() => setVideoOk(true)}
         onError={() => setVideoOk(false)}
         className="absolute inset-0 h-full w-full object-cover"
@@ -78,9 +79,7 @@ function Panel({ principle, variant }: { principle: Principle; variant: number }
           transition: "opacity 0.55s ease-out",
           pointerEvents: "none",
         }}
-      >
-        <source src={principle.videoSrc} type="video/mp4" />
-      </video>
+      />
 
       {/* Darken video — sits between footage and icon/label */}
       <div
@@ -136,7 +135,7 @@ function Panel({ principle, variant }: { principle: Principle; variant: number }
           className="absolute inset-0 z-[5] flex items-center justify-center bg-black/[0.82] px-4 py-8 opacity-0 [visibility:hidden] transition-[opacity,visibility] duration-300 ease-out pointer-events-none md:group-hover:pointer-events-auto md:group-hover:opacity-100 md:group-hover:[visibility:visible] md:group-focus-within:pointer-events-auto md:group-focus-within:opacity-100 md:group-focus-within:[visibility:visible]"
         >
           <p
-            className="max-w-[32ch] text-center text-[12px] font-light leading-relaxed tracking-[-0.01em] text-white/95 md:text-[13px]"
+            className="max-w-[28ch] whitespace-pre-line text-center text-[14px] font-light leading-snug tracking-[-0.01em] text-white/95"
             style={{ textShadow: "0 1px 18px rgba(0,0,0,0.8)" }}
           >
             {principle.hoverDescription}

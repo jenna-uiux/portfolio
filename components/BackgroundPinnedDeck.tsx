@@ -198,10 +198,12 @@ export function BackgroundPinnedDeck({
   slides,
   kicker,
   eyebrow,
+  intro,
 }: {
   slides: BackgroundPinnedSlide[];
   kicker?: string;
   eyebrow?: string;
+  intro?: string;
 }) {
   const reduced = usePrefersReducedMotion();
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -267,6 +269,11 @@ export function BackgroundPinnedDeck({
             {eyebrow ? <DeckEyebrow>{eyebrow}</DeckEyebrow> : null}
           </div>
         ) : null}
+        {intro ? (
+          <p className="mb-6 max-w-[62ch] text-[15px] font-light leading-relaxed text-[rgba(210,210,210,0.9)] md:text-[16px]">
+            {intro}
+          </p>
+        ) : null}
         {slides.map((s, i) => (
           <div key={i} className="relative aspect-[16/9] w-full">
             <SlideLayer slide={s} imagePriority={i === 0} />
@@ -289,6 +296,11 @@ export function BackgroundPinnedDeck({
             ) : null}
             {eyebrow ? <DeckEyebrow>{eyebrow}</DeckEyebrow> : null}
           </div>
+        ) : null}
+        {intro ? (
+          <p className="mb-6 max-w-[62ch] shrink-0 text-[15px] font-light leading-relaxed text-[rgba(210,210,210,0.9)] md:mb-8 md:text-[16px]">
+            {intro}
+          </p>
         ) : null}
         <div className="relative aspect-[16/9] w-full shrink-0">
           {slides.map((slide, i) => (

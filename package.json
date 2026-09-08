@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "upload:videos": "node --env-file=.env.local scripts/upload-videos-to-r2.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -21,6 +22,7 @@
     "three": "^0.184.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1124.0",
     "@types/node": "^22.10.1",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",

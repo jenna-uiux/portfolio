@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   },
   description: site.description,
   metadataBase: new URL(site.url),
+  icons: {
+    icon: [{ url: "/images/home/favicon.svg", type: "image/svg+xml" }],
+  },
   openGraph: {
     title: site.title,
     description: site.description,
@@ -47,6 +50,10 @@ export default function RootLayout({
         />
         <link
           href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=aspekta@200,350,500,550&display=swap"
           rel="stylesheet"
         />
         <link rel="stylesheet" href="https://use.typekit.net/vlg1buw.css" />

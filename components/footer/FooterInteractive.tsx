@@ -164,9 +164,6 @@ export function FooterInteractive() {
               <span className="italic" style={{ fontFamily: SERIF }}>
                 footer
               </span>
-              <span className="ml-2" aria-hidden>
-                👣
-              </span>
             </h2>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-[#f5f0e8]/55">
               Your cursor&apos;s a stamp down here — tap anywhere to leave a

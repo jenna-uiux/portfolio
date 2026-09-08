@@ -100,15 +100,26 @@ export function CaseStudyLayout({ project }: Props) {
               <p
                 className={
                   project.slug === "fini"
-                    ? "mt-10 max-w-[38ch] whitespace-pre-line font-sans text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[42ch]"
-                    : "mt-10 max-w-[20ch] font-sans text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[26ch]"
+                    ? "mt-10 max-w-[38ch] whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[42ch]"
+                    : project.slug === "aeon"
+                      ? "mt-10 max-w-[36ch] whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#f5f5f5b8] md:max-w-[40ch]"
+                      : project.slug === "strawberry-matcha"
+                        ? "mt-10 max-w-[42ch] whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[48ch]"
+                        : "mt-10 max-w-[20ch] font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[26ch]"
                 }
               >
                 {project.tagline}
               </p>
             </div>
 
-            <dl className="md:col-span-5 divide-y divide-ink/10">
+            <dl
+              className={[
+                "md:col-span-5 divide-y",
+                project.slug === "aeon"
+                  ? "divide-[#2a2a2a]"
+                  : "divide-ink/10",
+              ].join(" ")}
+            >
               <Meta label="Role" value={project.role} />
               <Meta label="Tools" value={project.tools.join(", ")} />
               <Meta label="Focus" value={project.focus.join(", ")} />
@@ -132,11 +143,13 @@ export function CaseStudyLayout({ project }: Props) {
                     ? "section-rhythm-matcha"
                   : "section-rhythm";
               const useSentenceHeadline =
-                project.slug === "strawberry-matcha" || project.slug === "fini";
+                project.slug === "strawberry-matcha" ||
+                project.slug === "fini" ||
+                project.slug === "aeon";
               const isAeonContext =
                 project.slug === "aeon" && s.id === "context";
               const isAeonBackground =
-                project.slug === "aeon" && s.id === "background";
+                project.slug === "aeon" && s.id === "problem";
               const firstBlock = s.contentBlocks?.[0];
               const aeonBackgroundPinsKicker =
                 isAeonBackground &&
@@ -179,10 +192,6 @@ export function CaseStudyLayout({ project }: Props) {
                       >
                         {s.eyebrow}
                       </h2>
-                    ) : project.slug === "aeon" ? (
-                      <h3 className="mt-3 max-w-[95%] text-[36px] font-medium leading-[1.25] tracking-[-0.02em] text-ink">
-                        {s.eyebrow}
-                      </h3>
                     ) : (
                       <h3 className="mt-3 t-h3">{s.eyebrow}</h3>
                     )

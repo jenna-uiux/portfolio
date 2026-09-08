@@ -30,7 +30,7 @@ export function ReflectionInsights({ items, photo }: Props) {
             className="grid gap-4 md:grid-cols-12 md:gap-10"
           >
             <div className="md:col-span-5">
-              <h3 className="text-[24px] font-medium leading-[1.3] tracking-[-0.015em] text-ink md:whitespace-nowrap">
+              <h3 className="text-[24px] font-medium leading-[1.3] tracking-[-0.015em] text-ink">
                 <RichText text={item.title} />
               </h3>
             </div>

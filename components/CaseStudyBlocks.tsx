@@ -29,6 +29,7 @@ import { ResearchMeta } from "./ResearchMeta";
 import { EvidenceInsights } from "./EvidenceInsights";
 import { AffinityInsightCards } from "./AffinityInsightCards";
 import { ResearchPhotoRow } from "./ResearchPhotoRow";
+import { HoverImagePair } from "./HoverImagePair";
 import { InsightDirectionMap } from "./InsightDirectionMap";
 import { FinalProductFeatures } from "./FinalProductFeatures";
 import { ProductLogicFlow } from "./ProductLogicFlow";
@@ -46,6 +47,13 @@ import { PersonaCollage } from "./PersonaCollage";
 import { ModesShowcase } from "./ModesShowcase";
 import { BackgroundPinnedDeck } from "./BackgroundPinnedDeck";
 import { AeonTargetSpread } from "./AeonTargetSpread";
+import { AeonHmiInformationMap } from "./AeonHmiInformationMap";
+import { AeonHmiArchitectureFigures } from "./AeonHmiArchitectureFigures";
+import { AeonDesignDevelopmentFigures } from "./AeonDesignDevelopmentFigures";
+import { AeonVisualLanguageFigure } from "./AeonVisualLanguageFigure";
+import { AeonMoodSoundBoard } from "./AeonMoodSoundBoard";
+import { AeonFinalDesignFigures } from "./AeonFinalDesignFigures";
+import { AeonOutcomeProof } from "./AeonOutcomeProof";
 
 type RichTextProps = {
   text: string;
@@ -332,6 +340,11 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
         ) : (
           <h3 className="t-h3">{block.title}</h3>
         )}
+        {block.subtitle ? (
+          <h4 className="mt-3 t-h4 font-normal text-ink">
+            <RichText text={block.subtitle} />
+          </h4>
+        ) : null}
         {block.body ? (
           <p className="mt-3 t-body">
             <RichText text={block.body} />
@@ -387,6 +400,7 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
         label={block.label}
         body={block.body}
         tone={block.tone}
+        variant={block.variant}
       />
     );
   }
@@ -431,6 +445,34 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "iaMatrix") {
     return <IAPriorityMatrix />;
+  }
+
+  if (block.kind === "aeonHmiInformationMap") {
+    return <AeonHmiInformationMap />;
+  }
+
+  if (block.kind === "aeonHmiArchitectureFigures") {
+    return <AeonHmiArchitectureFigures />;
+  }
+
+  if (block.kind === "aeonDesignDevelopmentFigures") {
+    return <AeonDesignDevelopmentFigures />;
+  }
+
+  if (block.kind === "aeonVisualLanguageFigure") {
+    return <AeonVisualLanguageFigure />;
+  }
+
+  if (block.kind === "aeonMoodSoundBoard") {
+    return <AeonMoodSoundBoard />;
+  }
+
+  if (block.kind === "aeonFinalDesignFigures") {
+    return <AeonFinalDesignFigures />;
+  }
+
+  if (block.kind === "aeonOutcomeProof") {
+    return <AeonOutcomeProof />;
   }
 
   if (block.kind === "teamGrid") {
@@ -490,6 +532,7 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
       <BackgroundPinnedDeck
         kicker={block.kicker}
         eyebrow={block.eyebrow}
+        intro={block.intro}
         slides={block.slides}
       />
     );
@@ -595,6 +638,10 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
     return <ResearchPhotoRow images={block.images} />;
   }
 
+  if (block.kind === "hoverImagePair") {
+    return <HoverImagePair images={block.images} />;
+  }
+
   if (block.kind === "insightDirectionMap") {
     return (
       <InsightDirectionMap
@@ -622,6 +669,28 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
   }
 
   if (block.kind === "image") {
+    if (block.width && block.height) {
+      return (
+        <figure
+          className={[
+            "m-0 overflow-hidden",
+            block.borderless
+              ? "rounded-none"
+              : "rounded-2xl border border-ink/6",
+          ].join(" ")}
+        >
+          <Image
+            src={block.src}
+            alt={block.alt}
+            width={block.width}
+            height={block.height}
+            className="block h-auto w-full"
+            sizes="(min-width: 1024px) 80vw, 100vw"
+          />
+        </figure>
+      );
+    }
+
     return (
       <div
         className={[

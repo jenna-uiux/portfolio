@@ -301,11 +301,12 @@ export function ObligationCapacityChart() {
   );
 
   return (
-    <div ref={root} className="h-full w-full">
+    <div ref={root} className="h-full w-full min-w-0 overflow-hidden">
       <svg
         viewBox="0 0 1000 350"
         className="h-full w-full"
         preserveAspectRatio="xMidYMid meet"
+        overflow="hidden"
       >
       <g aria-label="Energy decreases as external obligations consume attention">
         {DOT_COLUMNS.map((dots, columnIndex) => (

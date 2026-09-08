@@ -52,8 +52,10 @@ export function Nav() {
           className="flex items-center gap-6 text-[13px]"
         >
           {site.nav.map((item) => {
-            const active =
-              pathname === item.href || pathname.startsWith(`${item.href}/`);
+            const isWork = item.href === "/#work";
+            const active = isWork
+              ? pathname === "/" || pathname.startsWith("/work")
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
             const linkTone = isAbout
               ? active
                 ? "text-[#FAFAFA]"
@@ -61,14 +63,30 @@ export function Nav() {
               : active
                 ? "text-ink"
                 : "text-[#5B5B5B] hover:text-ink";
+            const className = ["underline-grow transition-colors", linkTone].join(
+              " ",
+            );
+
+            // Same-page hash: plain anchor so the browser scrolls to #work.
+            if (isWork && pathname === "/") {
+              return (
+                <a
+                  key={item.href}
+                  href="#work"
+                  aria-current={active ? "page" : undefined}
+                  className={className}
+                >
+                  {item.label}
+                </a>
+              );
+            }
+
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={["underline-grow transition-colors", linkTone].join(
-                  " "
-                )}
+                className={className}
               >
                 {item.label}
               </Link>

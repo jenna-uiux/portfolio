@@ -482,28 +482,24 @@ html[data-theme="dark"] .pull-quote {
     transition: none;
   }
 }
-/* ───────────────────────────────────────────────────────────
-   Footer dark scope — the footer is a near-black band so it reads
-   as a distinct "end of the page" space. Site color tokens (--ink,
-   --text) and the .t-mono utility are tuned for the light page, so
-   they're explicitly re-coloured to cream here.
-   ─────────────────────────────────────────────────────────── */
-.footer-dark {
-  --foot-cream: #f5f0e8;
-  color: var(--foot-cream);
+
+@keyframes prompt-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 
-.footer-dark .t-mono {
-  color: rgba(245, 240, 232, 0.5);
+.prompt-cursor {
+  animation: prompt-blink 1.1s steps(1, end) infinite;
 }
 
-.footer-dark ::selection {
-  background: rgba(245, 240, 232, 0.16);
-  color: var(--foot-cream);
-}
-
-.footer-dark a:focus-visible,
-.footer-dark button:focus-visible {
-  outline: 2px solid rgba(245, 240, 232, 0.6);
-  outline-offset: 3px;
+@media (prefers-reduced-motion: reduce) {
+  .prompt-cursor {
+    animation: none;
+  }
 }

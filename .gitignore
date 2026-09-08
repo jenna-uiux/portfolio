@@ -12,3 +12,4 @@ out
 # Supabase CLI cache
 supabase/.temp
 .tmp
+.tmp-screens/

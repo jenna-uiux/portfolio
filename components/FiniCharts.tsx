@@ -35,28 +35,33 @@ function ChartFrame({
   caption,
   children,
 }: ChartFrameProps) {
+  const isObligation = kind === "obligation-capacity";
+
   return (
-    <figure className="w-full">
-      <div
-        role="img"
-        aria-label={TITLES[kind]}
-        className={[
-          "relative w-full overflow-hidden rounded-lg",
-          kind === "obligation-capacity" ? "bg-transparent" : "bg-white",
-          kind === "obligation-capacity"
-            ? "aspect-[20/7] min-h-[300px]"
-            : ratioClass[ratio],
-        ].join(" ")}
-      >
+    <figure className="w-full min-w-0">
+      {isObligation ? (
         <div
+          role="img"
+          aria-label={TITLES[kind]}
+          className="w-full min-w-0 overflow-x-auto overscroll-x-contain rounded-lg [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {/* Fixed readable canvas on small screens; scales fluidly from md up. */}
+          <div className="relative h-[250px] w-[714px] max-w-none bg-transparent md:h-auto md:min-h-[300px] md:w-full md:aspect-[20/7]">
+            <div className="absolute inset-0 p-0">{children}</div>
+          </div>
+        </div>
+      ) : (
+        <div
+          role="img"
+          aria-label={TITLES[kind]}
           className={[
-            "absolute inset-0",
-            kind === "obligation-capacity" ? "p-0" : "px-8 py-8",
+            "relative w-full min-w-0 overflow-hidden rounded-lg bg-white",
+            ratioClass[ratio],
           ].join(" ")}
         >
-          {children}
+          <div className="absolute inset-0 px-8 py-8">{children}</div>
         </div>
-      </div>
+      )}
       {caption ? (
         <figcaption className="mt-3 text-[12px] font-light italic text-ink/55">
           {caption}

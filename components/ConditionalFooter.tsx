@@ -11,8 +11,12 @@ export function ConditionalFooter() {
     return null;
   }
 
+  if (pathname === "/work/aeon" || pathname.startsWith("/work/aeon/")) {
+    return <SketchbookFooter variant="dark" />;
+  }
+
   // Home, Work, Fun, and every case study under /work/* and /fun/* share the
-  // interactive stamp footer.
+  // editorial footer.
   const isSketchbook =
     pathname === "/" ||
     pathname === "/work" ||

@@ -130,7 +130,7 @@ export function MediaVideo({
       ref={containerRef}
       className={[
         "relative w-full overflow-hidden rounded-lg",
-        errored ? "border border-dashed border-ink/18 bg-white/40" : "bg-white",
+        errored ? "border border-dashed border-ink/18 bg-white/40" : "bg-black",
         ratioClass[ratio],
         className,
       ].join(" ")}

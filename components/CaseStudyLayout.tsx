@@ -61,10 +61,10 @@ export function CaseStudyLayout({ project }: Props) {
   return (
     <div className="pt-28 pb-24" style={accentOverride}>
       {project.theme === "dark" ? <ThemeController theme="dark" /> : null}
-      <div className="container-ultra grid gap-12 md:grid-cols-12">
+      <div className="container-ultra grid min-w-0 gap-12 md:grid-cols-12">
         <aside
           aria-label="Case study outline"
-          className="md:col-span-3 md:sticky md:top-24 md:self-start"
+          className="min-w-0 md:col-span-3 md:sticky md:top-24 md:self-start"
         >
           <p className="t-h4">{project.title}</p>
 
@@ -91,20 +91,20 @@ export function CaseStudyLayout({ project }: Props) {
           </div>
         </aside>
 
-        <article className="md:col-span-9">
+        <article className="min-w-0 md:col-span-9">
           <header className="grid items-end gap-10 md:grid-cols-12 md:gap-12">
-            <div className="md:col-span-7">
+            <div className="min-w-0 md:col-span-7">
               <h1 className="font-normal leading-[1.02] tracking-[-0.02em] text-ink text-[clamp(48px,5.8vw,72px)] [font-family:'Instrument_Serif',serif]">
                 {project.title}
               </h1>
               <p
                 className={
                   project.slug === "fini"
-                    ? "mt-10 max-w-[38ch] whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[42ch]"
+                    ? "mt-10 max-w-full whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[42ch]"
                     : project.slug === "aeon"
-                      ? "mt-10 max-w-[36ch] whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#f5f5f5b8] md:max-w-[40ch]"
+                      ? "mt-10 max-w-full whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#f5f5f5b8] md:max-w-[40ch]"
                       : project.slug === "strawberry-matcha"
-                        ? "mt-10 max-w-[42ch] whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[48ch]"
+                        ? "mt-10 max-w-full whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[48ch]"
                         : "mt-10 max-w-[20ch] font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[26ch]"
                 }
               >

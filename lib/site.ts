@@ -10,7 +10,7 @@ export const site = {
     youtube: "https://www.youtube.com/@Vibemaker_l0l",
   },
   nav: [
-    { label: "Work", href: "/work" },
+    { label: "Work", href: "/#work" },
     { label: "Fun", href: "/fun" },
     { label: "About", href: "/about" },
   ] as const,

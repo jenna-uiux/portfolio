@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "upload:videos": "node --env-file=.env.local scripts/upload-videos-to-r2.mjs"
+    "upload:videos": "node --env-file=.env.local scripts/upload-videos-to-r2.mjs",
+    "publish": "git add . && git commit -m \"update portfolio\" && git push",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

@@ -213,13 +213,22 @@
   align-items: center;
   gap: 8px;
 }
-.root :global(.voice) label {
+.root :global(.voice) label,
+.root :global(.voice-caption) {
   font-size: 9px;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: #686868;
   cursor: pointer;
+  text-align: center;
+  max-width: 160px;
+  line-height: 1.35;
+}
+.root :global(.voice-caption):global(.is-status) {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 10px;
 }
 .root :global(.voice-switch) {
   position: relative;
@@ -304,17 +313,6 @@
 .root :global(.sound-icon) i:nth-child(3) {
   height: 14px;
 }
-.root :global(.voice-status) {
-  position: absolute;
-  bottom: 64px;
-  right: 0;
-  width: 230px;
-  font-size: 12px;
-  line-height: 1.4;
-  text-align: right;
-  color: #666;
-  margin: 0;
-}
 @media (max-width: 640px) {
   .root {
     min-height: 600px;
@@ -331,10 +329,6 @@
   }
   .root :global(.second-line) {
     margin-top: 9px;
-  }
-  .root :global(.voice-status) {
-    bottom: 68px;
-    width: 210px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -130,10 +130,13 @@ export function Hero() {
             </span>
           </button>
         </div>
-        <label htmlFor="hero-voice">Sound Reactive</label>
-        <p className="voice-status" aria-live="polite">
-          {error || (voice ? 'Listening · nothing recorded' : '')}
-        </p>
+        <label
+          htmlFor="hero-voice"
+          className={'voice-caption' + (voice || error ? ' is-status' : '')}
+          aria-live="polite"
+        >
+          {error || (voice ? 'Listening · nothing recorded' : 'Sound Reactive')}
+        </label>
       </div>
     </section>
   );

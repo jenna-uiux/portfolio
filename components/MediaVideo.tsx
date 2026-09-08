@@ -81,18 +81,49 @@ export function MediaVideo({
     return () => observer.disconnect();
   }, [youTubeId]);
 
+  // Autoplay when visible; pause when scrolled away (muted required by browsers).
   useEffect(() => {
-    if (!shouldLoad || !autoPlay) return;
+    if (!shouldLoad || !autoPlay || youTubeId) return;
+    const node = containerRef.current;
     const video = videoRef.current;
-    if (!video) return;
+    if (!node || !video) return;
+
+    let cancelled = false;
+
     const play = () => {
+      if (cancelled) return;
+      video.muted = true;
+      video.defaultMuted = true;
       void video.play().catch(() => {
         // Autoplay can still be blocked; controls/user gesture handle the rest.
       });
     };
-    if (video.readyState >= 2) play();
-    else video.addEventListener("loadeddata", play, { once: true });
-  }, [shouldLoad, autoPlay, resolvedSrc]);
+
+    if (typeof IntersectionObserver === "undefined") {
+      play();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          if (video.readyState >= 2) play();
+          else video.addEventListener("loadeddata", play, { once: true });
+        } else {
+          video.pause();
+        }
+      },
+      { rootMargin: "80px 0px", threshold: 0.2 }
+    );
+
+    observer.observe(node);
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      video.removeEventListener("loadeddata", play);
+      video.pause();
+    };
+  }, [shouldLoad, autoPlay, youTubeId, resolvedSrc]);
 
   return (
     <div
@@ -148,8 +179,7 @@ export function MediaVideo({
             poster={resolvedPoster}
             controls={controls}
             playsInline
-            preload={shouldLoad ? (autoPlay ? "metadata" : "metadata") : "none"}
-            autoPlay={shouldLoad && autoPlay}
+            preload={shouldLoad ? "metadata" : "none"}
             loop={loop}
             muted={autoPlay ? true : (muted ?? false)}
             aria-label={description}

@@ -225,7 +225,7 @@ export function AeonVisualLanguageFigure() {
                   />
                 </div>
                 <figcaption
-                  className="mt-3 text-center text-[11px] font-[200] text-white/55 transition-colors duration-300 group-hover/load:text-white"
+                  className="mt-3 text-center text-[12px] leading-tight text-white/55 transition-colors duration-300 group-hover/load:text-white"
                   style={{ fontFamily: "Aspekta, sans-serif" }}
                 >
                   Loading / Waiting
@@ -241,7 +241,7 @@ export function AeonVisualLanguageFigure() {
                   />
                 </div>
                 <figcaption
-                  className="mt-3 text-center text-[11px] font-[200] text-white/55 transition-colors duration-300 group-hover/talk:text-white"
+                  className="mt-3 text-center text-[12px] leading-tight text-white/55 transition-colors duration-300 group-hover/talk:text-white"
                   style={{ fontFamily: "Aspekta, sans-serif" }}
                 >
                   Interaction / Conversation

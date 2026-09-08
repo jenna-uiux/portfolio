@@ -932,7 +932,8 @@ function MediaPlaceholder({
           autoPlay
           loop
           muted
-          controls={false}
+          controls
+          objectFit="contain"
           className="rounded-2xl border border-ink/10"
         />
         {sourceCaption ? <p className="mt-3 t-mono">{sourceCaption}</p> : null}

@@ -36,6 +36,9 @@ export function FinalProductFeatures({ features }: Props) {
                 src={feature.videoSrc}
                 description={feature.videoDescription}
                 ratio="16/9"
+                autoPlay
+                loop
+                muted
                 controls
                 objectFit="contain"
               />

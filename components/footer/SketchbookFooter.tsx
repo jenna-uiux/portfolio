@@ -53,7 +53,7 @@ export function SketchbookFooter({
             >
               I design digital products,
               <br />
-              and build them until they feel real.
+              then build them for real.
             </p>
           </div>
 

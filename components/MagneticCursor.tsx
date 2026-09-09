@@ -51,7 +51,7 @@ export function MagneticCursor() {
       animate={{ opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
     >
-      <div className="h-3 w-3 rounded-full bg-black" />
+      <div className="h-3 w-3 rounded-full bg-black [[data-theme=dark]_&]:bg-[#f5f5f5]" />
     </motion.div>
   );
 }

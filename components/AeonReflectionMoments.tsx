@@ -10,14 +10,14 @@ const photos = [
   {
     src: "/images/aeon/reflection/team.jpg",
     alt: "Three AEON teammates taking a selfie in front of their vehicle design boards",
-    title: "love this team <3",
-    caption: "the AEON crew, in person + online. couldn’t have done it without them.",
+    title: "AEON crew <3",
+    caption: "couldn’t have done it without the whole team + our remote crew 🤍",
   },
   {
     src: "/images/aeon/reflection/autodesk.jpg",
     alt: "An online Autodesk session showing a vehicle design walkthrough",
-    title: "a little masterclass from Autodesk",
-    caption: "getting a walkthrough from the pros. so much to soak in.",
+    title: "Autodesk showing us how it’s done",
+    caption: "trying to absorb everything",
   },
 ] as const;
 
@@ -98,8 +98,8 @@ export function AeonReflectionMoments() {
             )}
           </div>
           <figcaption className={styles.caption}>
-            <p id="waymo-moment-title" className={styles.title}>thinking about AEON’s HUD on a Waymo ride</p>
-            <p className={styles.description}>figuring out what info I’d want right in front of me.</p>
+            <p id="waymo-moment-title" className={styles.title}>couldn’t turn the designer brain off</p>
+            <p className={styles.description}>somehow ended up studying the HMI</p>
           </figcaption>
         </figure>
       </div>

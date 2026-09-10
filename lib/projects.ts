@@ -427,6 +427,7 @@ export type CaseContentBlock =
   | { kind: "aeonMoodSoundBoard" }
   | { kind: "aeonFinalDesignFigures" }
   | { kind: "aeonOutcomeProof" }
+  | { kind: "aeonReflectionMoments" }
   | {
       kind: "backgroundPinnedDeck";
       /** Section kicker (e.g. "Background") — when set, render inside pin with the deck. */
@@ -1343,6 +1344,7 @@ export const projects: CaseStudy[] = [
               },
             ],
           },
+          { kind: "aeonReflectionMoments" },
         ],
       },
     ],

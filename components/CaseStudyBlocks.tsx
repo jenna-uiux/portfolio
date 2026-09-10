@@ -54,6 +54,7 @@ import { AeonVisualLanguageFigure } from "./AeonVisualLanguageFigure";
 import { AeonMoodSoundBoard } from "./AeonMoodSoundBoard";
 import { AeonFinalDesignFigures } from "./AeonFinalDesignFigures";
 import { AeonOutcomeProof } from "./AeonOutcomeProof";
+import { AeonReflectionMoments } from "./AeonReflectionMoments";
 
 type RichTextProps = {
   text: string;
@@ -473,6 +474,10 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
 
   if (block.kind === "aeonOutcomeProof") {
     return <AeonOutcomeProof />;
+  }
+
+  if (block.kind === "aeonReflectionMoments") {
+    return <AeonReflectionMoments />;
   }
 
   if (block.kind === "teamGrid") {

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Play, X } from "lucide-react";
+import { ArrowUpRight, X } from "lucide-react";
 import { R2_MEDIA, r2Url } from "@/lib/media";
 import styles from "./AeonReflectionMoments.module.css";
 
@@ -10,22 +10,19 @@ const photos = [
   {
     src: "/images/aeon/reflection/team.jpg",
     alt: "Three AEON teammates taking a selfie in front of their vehicle design boards",
-    label: "01 / The people",
-    title: "amazing team, on & offline <3",
-    caption: "The people who made AEON happen. Including our teammates on the other side of the screen.",
+    title: "love this team <3",
+    caption: "the AEON crew, in person + online. couldn’t have done it without them.",
   },
   {
     src: "/images/aeon/reflection/autodesk.jpg",
     alt: "An online Autodesk session showing a vehicle design walkthrough",
-    label: "02 / The process",
-    title: "Autodesk session. fully locked in.",
-    caption: "Learning from the people who do this for real.",
+    title: "a little masterclass from Autodesk",
+    caption: "getting a walkthrough from the pros. so much to soak in.",
   },
 ] as const;
 
 export function AeonReflectionMoments() {
   const [selected, setSelected] = useState<number | null>(null);
-  const [playing, setPlaying] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -46,11 +43,27 @@ export function AeonReflectionMoments() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    let visible = false;
+    const syncPlayback = () => {
+      if (visible && !document.hidden) {
+        video.muted = true;
+        // Browser autoplay restrictions may leave the poster visible.
+        void video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    };
     const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) video.pause();
-    });
+      visible = entry.isIntersecting && entry.intersectionRatio >= 0.35;
+      syncPlayback();
+    }, { threshold: [0, 0.35] });
     observer.observe(video);
-    return () => observer.disconnect();
+    document.addEventListener("visibilitychange", syncPlayback);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", syncPlayback);
+      video.pause();
+    };
   }, []);
 
   const photo = selected === null ? null : photos[selected];
@@ -77,14 +90,13 @@ export function AeonReflectionMoments() {
               <span className={styles.expand} aria-hidden="true"><ArrowUpRight size={18} /></span>
             </button>
             <figcaption className={styles.caption}>
-              <span className={styles.label}>{item.label}</span>
               <p className={styles.title}>{item.title}</p>
               <p className={styles.description}>{item.caption}</p>
             </figcaption>
           </figure>
         ))}
 
-        <figure className={styles.moment}>
+        <figure className={styles.moment} tabIndex={0} aria-labelledby="waymo-moment-title">
           <div className={styles.videoFrame}>
             <video
               ref={videoRef}
@@ -92,21 +104,15 @@ export function AeonReflectionMoments() {
               poster="/images/aeon/reflection/waymo-poster.jpg"
               preload="none"
               playsInline
-              controls={playing}
+              loop
+              controls={false}
+              disablePictureInPicture
+              disableRemotePlayback
+              tabIndex={-1}
               muted
               aria-label="A Waymo ride that sparked ideas for AEON’s HUD"
-              onPlay={() => setPlaying(true)}
-              onPause={() => setPlaying(false)}
-              onEnded={() => setPlaying(false)}
               onError={() => setVideoError(true)}
             />
-            {!playing && !videoError && (
-              <button type="button" className={styles.playButton}
-                aria-label="Play Waymo ride video"
-                onClick={() => { void videoRef.current?.play().catch(() => setVideoError(true)); }}>
-                <span><Play size={17} fill="currentColor" /> Play moment <small>0:06</small></span>
-              </button>
-            )}
             {videoError && (
               <a className={styles.videoFallback} href={r2Url(R2_MEDIA.aeonReflection)} target="_blank" rel="noreferrer">
                 Open Waymo video <ArrowUpRight size={16} />
@@ -114,9 +120,8 @@ export function AeonReflectionMoments() {
             )}
           </div>
           <figcaption className={styles.caption}>
-            <span className={styles.label}>03 / The unexpected research</span>
-            <p className={styles.title}>mentally wireframing the windshield.</p>
-            <p className={styles.description}>One Waymo ride, a whole lot of “what if this were on the HUD?”</p>
+            <p id="waymo-moment-title" className={styles.title}>thinking about AEON’s HUD on a Waymo ride</p>
+            <p className={styles.description}>figuring out what info I’d want right in front of me.</p>
           </figcaption>
         </figure>
       </div>

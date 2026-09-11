@@ -13,18 +13,28 @@ export const metadata: Metadata = {
 };
 
 const experience = [
-  { role: "UI/UX Design Intern", org: "nibnab", period: "2025" },
+  { role: "Creative Partner", org: "Reve", period: "Apr 2026 – Present" },
   {
     role: "UI/UX Designer",
     org: "Autodesk × Academy of Art University",
-    period: "2025",
+    period: "Sep 2025 – Dec 2025",
+  },
+  {
+    role: "UI/UX Design Intern",
+    org: "nibnab",
+    period: "Aug 2025 – Nov 2025",
+  },
+  {
+    role: "Associate UI/UX Designer",
+    org: "Heritage PACE",
+    period: "Apr 2025 – Aug 2025",
   },
   {
     role: "UI/UX Designer",
     org: "Seeds of Empowerment · Stanford University",
-    period: "2023–2024",
+    period: "Dec 2023 – Aug 2024",
   },
-  { role: "Graphic Designer", org: "Foothill College", period: "2023–2024" },
+  { role: "Graphic Designer", org: "Foothill College", period: "Feb 2023 – Aug 2024" },
 ];
 
 const education = [

@@ -161,7 +161,17 @@ export function AeonMoodSoundBoard() {
 
         <div className="flex min-w-0 flex-col">
           <p className="mb-4 text-[13px] font-medium tracking-[0.04em] text-white/70">
-            Soundboard
+            <a
+              href="https://youtu.be/YVOA1h6iL3Q?si=MI5TbsuCVMJLfqBF"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-white"
+            >
+              Soundboard
+              <span aria-hidden className="text-[11px] leading-none">
+                ↗
+              </span>
+            </a>
           </p>
           <div className="flex flex-1 flex-col justify-between border-t border-white/10">
             {TRACKS.map((track) => {

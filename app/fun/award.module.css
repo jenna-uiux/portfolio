@@ -1,0 +1,2 @@
+.award { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: #ddd; font-size: 12px; line-height: 1.5; }
+.award svg { flex: none; }

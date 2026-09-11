@@ -1,0 +1,95 @@
+.page {
+  padding-block: 112px 100px;
+}
+.header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 38px; }
+.header h1 { font-size: 32px; line-height: 1; letter-spacing: -.04em; font-weight: 400; }
+.promptMark { font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, monospace; letter-spacing: 0; margin-right: .1em; }
+.immersiveButton { display: inline-flex; align-items: center; gap: 8px; padding: 10px 0 10px 14px; font-size: 14px; white-space: nowrap; }
+.immersiveButton svg { transition: transform .2s; }
+.immersiveButton:hover svg { transform: scale(1.12); }
+/* Gallery reveals use movement only, never fading the media. */
+.card { opacity: 1 !important; }
+.gallery { display: flex; flex-direction: column; gap: 24px; }
+.row { display: grid; gap: 24px; align-items: start; }
+/* A repeated two-column rhythm. Ratios match the media, not arbitrary offsets. */
+.opening { grid-template-columns: minmax(0, 256fr) minmax(0, 81fr); }
+.portraitLead { grid-template-columns: minmax(0, 81fr) minmax(0, 256fr); }
+.pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.musicPair {
+  /* Cap both frames together; 1429/720 is the sum of their native ratios. */
+  --music-height: min(580px, calc(100svh - 160px), calc((100vw - 64px) * 720 / 1429));
+  grid-template-columns: minmax(0, 1fr) calc(var(--music-height) * 9 / 16);
+}
+.musicPair .media { height: var(--music-height); aspect-ratio: auto; }
+.musicPair .card:first-child .media { background: #f0f0f0; }
+.musicPair .card:first-child .mediaButton { padding: clamp(20px, 3vw, 40px); }
+.card { min-width: 0; scroll-margin-top: 85px; overflow: clip; overflow-clip-margin: 6px; }
+.media { position: relative; width: 100%; aspect-ratio: var(--media-ratio); border-radius: 5px; isolation: isolate; background: #eee; }
+.mediaButton { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: inherit; }
+.mediaButton > video, .mediaButton > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.media > iframe { width: 100%; height: 100%; border: 0; border-radius: inherit; }
+.print { background: transparent; border-radius: 0; }
+.caption {
+  position: absolute; inset: 0; padding: clamp(16px, 2vw, 28px);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  border-radius: inherit; color: #fff;
+  background: linear-gradient(180deg, rgba(0,0,0,.02) 0%, rgba(0,0,0,.35) 28%, rgba(0,0,0,.87) 100%);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .22s ease, visibility .22s;
+}
+.card:hover .caption, .card:has(:focus-visible) .caption, .card[data-revealed="true"] .caption { opacity: 1; visibility: visible; }
+.caption h2 { color: #fff; font-size: clamp(16px, 1.5vw, 22px); line-height: 1.2; font-weight: 450; letter-spacing: -.025em; }
+.description { margin-top: 7px; max-width: 52ch; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,.87); }
+.tags { list-style: none; display: flex; flex-wrap: wrap; gap: 5px 10px; padding: 0; margin: 12px 0 0; }
+.tags li { font-size: 12px; line-height: 1.5; font-weight: 400; }
+.caption .tags { color: #ddd; }
+.tags li:not(:last-child)::after { content: "/"; padding-left: 10px; opacity: .5; }
+.projectCta { position: absolute; top: 14px; right: 14px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid rgba(255,255,255,.35); border-radius: 30px; background: rgba(20,20,20,.55); backdrop-filter: blur(8px); font-size: 12px; line-height: 1.4; color: #fff; pointer-events: auto; }
+.projectCta:hover { background: rgba(20,20,20,.8); }
+.projectCta:focus-visible { outline-color: #fff; }
+.hoverAction { position: absolute; bottom: 16px; right: 16px; padding: 10px; border-radius: 50%; background: rgba(255,255,255,.9); color: #171717; opacity: 0; transition: opacity .2s; }
+.card:hover .hoverAction, .card:has(:focus-visible) .hoverAction { opacity: 1; }
+.stopYoutube { position: absolute; right: 12px; top: 12px; display: grid; place-items: center; width: 36px; height: 36px; background: #fff; border-radius: 50%; }
+.loadNote { position: absolute; left: 12px; top: 12px; background: #fff; color: #333; padding: 5px 9px; font-size: 12px; border-radius: 4px; }
+.dialog { position: fixed; inset: 0; margin: auto; width: min(1120px, 94vw); max-height: 94dvh; padding: 0; border: 0; border-radius: 8px; background: #fafafa; color: #171717; overflow: auto; }
+.dialog::backdrop { background: rgba(10,10,10,.8); backdrop-filter: blur(8px); }
+.dialogContent { position: relative; }
+.close { position: sticky; float: right; right: 12px; top: 12px; width: 40px; height: 40px; margin: 12px 12px -52px 0; display: flex; align-items: center; justify-content: center; border: 1px solid #d8d8d8; background: #fff; color: #171717; border-radius: 50%; z-index: 3; }
+.fullMedia { display: block; width: 100%; max-height: 68dvh; object-fit: contain; background: #111; }
+img.fullMedia { background: #f6f5f5; }
+.dialogCaption { padding: 20px 26px 26px; }
+.dialogCaption h2 { font-size: 23px; font-weight: 450; }
+.dialogCaption p { font-size: 15px; margin-top: 5px; color: #606060; }
+.dialogCaption p.details { font-size: 13px; }
+.dialogCaption > a { display: inline-flex; align-items: center; gap: 5px; font-size: 14px; margin: 18px 22px 0 0; text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 700px) {
+  .page { padding-block: 94px 70px; }
+  .header { margin-bottom: 30px; }
+  .header h1 { font-size: 28px; }
+  .header { gap: 12px; flex-wrap: wrap; }
+  .gallery, .row { gap: 20px; }
+  .opening, .portraitLead, .musicPair, .pair { grid-template-columns: minmax(0, 1fr); }
+  .musicPair .media { height: auto; aspect-ratio: var(--media-ratio); }
+  .opening .card:last-child, .portraitLead .card:first-child, .musicPair .card:last-child { width: min(100%, 326px, calc((100svh - 160px) * .5625)); justify-self: center; }
+  .caption { padding: 16px; }
+  .caption h2 { font-size: 17px; }
+  .description { margin-top: 5px; font-size: 13px; }
+  .caption .tags { margin-top: 8px; }
+  .dialogCaption { padding: 16px 18px 22px; }
+  .dialogCaption h2 { font-size: 20px; }
+}
+@media (hover: none) {
+  .card:hover:not([data-revealed="true"]) .caption { opacity: 0; visibility: hidden; }
+  .card:has(:focus-visible) .caption { opacity: 1; visibility: visible; }
+}
+@media (max-width: 420px) {
+  .caption { padding: 12px; }
+  .caption h2 { font-size: 16px; }
+  .description { font-size: 12px; line-height: 1.4; }
+  .projectCta { top: 10px; right: 10px; padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card, .media { transform: none !important; }
+  .immersiveButton svg { transition: none; transform: none; }
+  .caption, .hoverAction { transition: none; }
+}

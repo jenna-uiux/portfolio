@@ -1,0 +1,82 @@
+.room {
+  --gutter: clamp(24px, 3.6vw, 64px);
+  --text: #fff;
+  position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; background: #08090b; color: #fff;
+  overflow: clip; overscroll-behavior: contain; touch-action: pan-x; outline: none;
+  animation: openRoom .9s cubic-bezier(.76,0,.24,1) backwards;
+}
+.room::backdrop { background: transparent; }
+.room[data-closing="true"] { animation: closeRoom .46s cubic-bezier(.76,0,.24,1) forwards; pointer-events: none; }
+.atmosphere { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.ambient { position: absolute; inset: -15%; background-size: cover; background-position: center; filter: blur(80px) saturate(1.4) brightness(.48); pointer-events: none; }
+.ambient canvas { width: 100%; height: 100%; object-fit: cover; }
+.vignette { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(0deg, #08090bee 0%, #08090b99 22%, transparent 52%), radial-gradient(ellipse at 50% 36%, transparent 30%, #08090b88 100%); }
+/* Keep the film and the typography on separate, aligned areas. */
+.stage { position: absolute; inset: 88px var(--gutter) 260px; display: grid; place-items: center; }
+.scene { width: min(100%, calc((100dvh - 348px) * var(--ratio))); aspect-ratio: var(--ratio); max-height: 100%; position: relative; animation: arrive .85s cubic-bezier(.22,.61,.36,1) backwards; }
+.scene > video, .scene > iframe, .youtubePoster, .youtubePoster img { display: block; width: 100%; height: 100%; object-fit: contain; border: 0; }
+.youtubePoster { position: relative; }
+.youtubePoster > span { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: flex; align-items: center; gap: 10px; white-space: nowrap; padding: 14px 20px; background: #111c; border: 1px solid #ffffff50; border-radius: 40px; font-size: 14px; }
+.topbar, .bottom { position: absolute; inset-inline: var(--gutter); display: flex; align-items: center; justify-content: space-between; z-index: 2; }
+.topbar { top: max(24px, env(safe-area-inset-top)); }
+.mode { font-size: 14px; letter-spacing: -.04em; color: #fffc; }
+.promptMark { font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, monospace; letter-spacing: 0; margin-right: .1em; }
+.room button, .room a { -webkit-tap-highlight-color: transparent; color: #fff; }
+.topbar button, .bottom button { display: inline-flex; justify-content: center; align-items: center; gap: 10px; min-width: 40px; min-height: 40px; font-size: 13px; }
+.topbar button { padding-left: 12px; }
+.titleLink { text-decoration: none; }
+.titleLink svg { display: inline-block; width: .42em; height: .42em; vertical-align: .12em; transition: transform .18s ease; }
+.titleLink:hover span, .titleLink:focus-visible span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .13em; }
+.titleLink:hover svg { transform: translate(2px,-2px); }
+.room svg { stroke-width: 1.5; }
+.room button:hover, .room a:hover { color: #d9d9d9; }
+.room button:focus-visible, .room a:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
+.room button:disabled { opacity: .25; cursor: default; }
+.bottom { bottom: max(22px, env(safe-area-inset-bottom)); gap: 20px; padding-top: 14px; border-top: 1px solid #ffffff26; }
+.navigation { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.count { font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hint { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: #ffffff9c; }
+.info { position: absolute; z-index: 2; bottom: 108px; inset-inline: var(--gutter); display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr) minmax(160px,.55fr); gap: clamp(24px,4vw,64px); align-items: end; }
+.info h2 { color: #fff; font-size: clamp(32px,3.6vw,58px); line-height: 1.02; font-weight: 400; letter-spacing: -.055em; text-wrap: balance; margin: 0; }
+.description p { margin: 0; color: #dedede; font-size: 15px; line-height: 1.55; max-width: 42ch; }
+.projectMeta { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: #aaa; line-height: 1.6; }
+.tags span { white-space: nowrap; }
+.error { position: absolute; inset: 0; display: grid; place-items: center; padding: 30px; background: #111c; font-size: 14px; }
+.announcement { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@keyframes arrive { from { transform: translateY(28px) scale(.98); } to { transform: none; } }
+@keyframes openRoom { from { clip-path: inset(49.5% 0 49.5% 0); } to { clip-path: inset(0); } }
+@keyframes closeRoom { from { clip-path: inset(0); } to { clip-path: inset(50% 0 50% 0); } }
+@media (max-width: 900px) {
+  .info { grid-template-columns: 1fr 1fr; gap: 16px 28px; }
+  .projectMeta { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; }
+  .info h2 { font-size: 36px; }
+  .stage { bottom: 280px; }
+  .scene { width: min(100%, calc((100dvh - 368px) * var(--ratio))); }
+}
+@media (max-width: 600px) {
+  .room { --gutter: 22px; }
+  .topbar { top: max(16px, env(safe-area-inset-top)); }
+  .backLabel { display: none; }
+  .stage { top: 76px; bottom: 300px; }
+  .scene { width: min(100%, calc((100dvh - 376px) * var(--ratio))); }
+  .info { bottom: 94px; grid-template-columns: 1fr; gap: 12px; }
+  .info h2 { font-size: 29px; max-width: 22ch; }
+  .description p { font-size: 13px; line-height: 1.5; }
+  .projectMeta { gap: 10px; flex-wrap: wrap; }
+  .tags { font-size: 11px; }
+  .bottom { bottom: max(16px, env(safe-area-inset-bottom)); }
+  .hint { display: none; }
+  .navigation { gap: 3px; }
+  .ambient { filter: blur(50px) saturate(1.4) brightness(.48); }
+}
+@media (max-height: 600px) and (min-width: 601px) {
+  .stage { inset-block: 70px 182px; }
+  .scene { width: min(100%, calc((100dvh - 252px) * var(--ratio))); }
+  .info { bottom: 87px; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .info h2 { font-size: 26px; }
+  .description p { font-size: 12px; }
+  .projectMeta { grid-column: auto; flex-direction: column; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .room, .room[data-closing="true"], .scene { animation: none; } .titleLink svg { transition: none; transform: none; } }

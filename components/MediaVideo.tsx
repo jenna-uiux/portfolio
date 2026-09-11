@@ -51,6 +51,7 @@ export function MediaVideo({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [errored, setErrored] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [playBlocked, setPlayBlocked] = useState(false);
   const resolvedSrc = resolveMediaUrl(src);
   const resolvedPoster = poster ? resolveMediaUrl(poster) : undefined;
   const youTubeId = isYouTubeMediaUrl(src) ? parseYouTubeId(src) : null;
@@ -89,26 +90,28 @@ export function MediaVideo({
     if (!node || !video) return;
 
     let cancelled = false;
+    let visible = false;
 
     const play = () => {
-      if (cancelled) return;
+      if (cancelled || !visible) return;
       video.muted = true;
       video.defaultMuted = true;
       void video.play().catch(() => {
-        // Autoplay can still be blocked; controls/user gesture handle the rest.
+        if (!cancelled && visible) setPlayBlocked(true);
       });
     };
 
     if (typeof IntersectionObserver === "undefined") {
+      visible = true;
       play();
-      return;
+      return () => { cancelled = true; video.pause(); };
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        visible = entry?.isIntersecting ?? false;
         if (entry?.isIntersecting) {
-          if (video.readyState >= 2) play();
-          else video.addEventListener("loadeddata", play, { once: true });
+          play();
         } else {
           video.pause();
         }
@@ -120,7 +123,6 @@ export function MediaVideo({
     return () => {
       cancelled = true;
       observer.disconnect();
-      video.removeEventListener("loadeddata", play);
       video.pause();
     };
   }, [shouldLoad, autoPlay, youTubeId, resolvedSrc]);
@@ -178,15 +180,31 @@ export function MediaVideo({
             src={shouldLoad ? resolvedSrc : undefined}
             poster={resolvedPoster}
             controls={controls}
+            autoPlay={autoPlay}
             playsInline
-            preload={shouldLoad ? "metadata" : "none"}
+            preload={shouldLoad ? (autoPlay ? "auto" : "metadata") : "none"}
             loop={loop}
             muted={autoPlay ? true : (muted ?? false)}
             aria-label={description}
             onError={() => setErrored(true)}
+            onPlaying={() => setPlayBlocked(false)}
           >
             {description}
           </video>
+          {playBlocked && !controls ? (
+            <button
+              type="button"
+              aria-label={`Play ${description}`}
+              className="absolute left-1/2 top-1/2 z-20 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/65 text-white ring-1 ring-white/50"
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                void videoRef.current?.play().catch(() => setPlayBlocked(true));
+              }}
+            >
+              <span aria-hidden="true">▶</span>
+            </button>
+          ) : null}
         </>
       )}
     </div>

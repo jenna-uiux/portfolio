@@ -7,7 +7,10 @@ import { SketchbookFooter } from "@/components/footer/SketchbookFooter";
 export function ConditionalFooter() {
   const pathname = usePathname();
 
-  if (pathname === "/about" || pathname.startsWith("/about/")) {
+  if (
+    pathname === "/about/mind-world" ||
+    pathname.startsWith("/about/mind-world/")
+  ) {
     return null;
   }
 
@@ -22,7 +25,8 @@ export function ConditionalFooter() {
     pathname === "/work" ||
     pathname.startsWith("/work/") ||
     pathname === "/fun" ||
-    pathname.startsWith("/fun/");
+    pathname.startsWith("/fun/") ||
+    pathname === "/about";
 
   if (isSketchbook) {
     return <SketchbookFooter />;

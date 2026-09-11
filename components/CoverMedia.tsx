@@ -33,6 +33,7 @@ export function CoverMedia({ cover, ratio, compact, className }: Props) {
     return (
       <MediaVideo
         src={cover.videoSrc!}
+        poster={cover.poster}
         description={cover.description}
         ratio={r}
         autoPlay

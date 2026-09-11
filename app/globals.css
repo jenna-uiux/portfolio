@@ -478,6 +478,10 @@ html[data-theme="dark"] .pull-quote {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .footer-link-underline::after {
     transition: none;
   }

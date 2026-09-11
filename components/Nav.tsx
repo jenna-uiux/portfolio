@@ -2,25 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { site } from "@/lib/site";
 
 export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const aboutImagePreloaded = useRef(false);
 
-  const preloadAboutImage = useCallback(() => {
-    if (aboutImagePreloaded.current) return;
-    aboutImagePreloaded.current = true;
-    const image = new Image();
-    image.decoding = "async";
-    image.src = "/images/about/hero.webp";
-  }, []);
-
-  const isAbout =
-    pathname === "/about" || pathname.startsWith("/about/");
+  const isMindWorld =
+    pathname === "/about/mind-world" ||
+    pathname.startsWith("/about/mind-world/");
 
   useEffect(() => {
     setMounted(true);
@@ -32,16 +24,19 @@ export function Nav() {
 
   // Prevent hydration mismatch: initial render must match server HTML.
   const effectiveScrolled = mounted ? scrolled : false;
+  const isDarkHeader = isMindWorld || (pathname === "/about" && !effectiveScrolled);
 
-  const headerTone = isAbout
+  const headerTone = isMindWorld
     ? effectiveScrolled
       ? "border-b border-white/10 bg-[#060a0f]/72 backdrop-blur-md supports-[backdrop-filter]:bg-[#060a0f]/60"
       : "border-b border-transparent bg-transparent"
+    : pathname === "/about" && effectiveScrolled
+      ? "border-b border-transparent bg-bg"
     : scrolled
       ? "border-b hairline bg-bg/85 backdrop-blur supports-[backdrop-filter]:bg-bg/65"
       : "border-b border-transparent bg-transparent";
 
-  const homeLinkClass = isAbout
+  const homeLinkClass = isDarkHeader
     ? "text-[14px] font-normal tracking-tight underline-grow text-[#FAFAFA]"
     : "text-[14px] font-normal tracking-tight underline-grow";
 
@@ -65,7 +60,7 @@ export function Nav() {
             const active = isWork
               ? pathname === "/" || pathname.startsWith("/work")
               : pathname === item.href || pathname.startsWith(`${item.href}/`);
-            const linkTone = isAbout
+            const linkTone = isDarkHeader
               ? active
                 ? "text-[#FAFAFA]"
                 : "text-[#B8B8B8] hover:text-[#FAFAFA]"
@@ -96,13 +91,6 @@ export function Nav() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={className}
-                onPointerEnter={
-                  item.href === "/about" ? preloadAboutImage : undefined
-                }
-                onFocus={item.href === "/about" ? preloadAboutImage : undefined}
-                onTouchStart={
-                  item.href === "/about" ? preloadAboutImage : undefined
-                }
               >
                 {item.label}
               </Link>

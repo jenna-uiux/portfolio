@@ -24,7 +24,13 @@ export const metadata: Metadata = {
   description: site.description,
   metadataBase: new URL(site.url),
   icons: {
-    icon: [{ url: "/images/home/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/images/home/icon-j-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/images/home/icon-j-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/images/home/favicon.svg?v=j-20260911", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/images/home/icon-j-180.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/images/home/icon-j-32.png",
   },
   openGraph: {
     title: site.title,

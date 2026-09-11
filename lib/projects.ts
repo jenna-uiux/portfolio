@@ -8,6 +8,7 @@ export type ImagePlaceholder = {
   ratio?: ImageRatio;
   /** Public URL under `/public` (e.g. `/media/fini/thumbnail/demo.mp4`) */
   videoSrc?: string;
+  poster?: string;
   /** Public URL under `/public` for a static image cover. */
   src?: string;
 };
@@ -533,12 +534,14 @@ export const projects: CaseStudy[] = [
     cover: {
       filename: "fini_thumbnail.mp4",
       description: "Fini hero, phone in hand with planner UI",
+      poster: "/images/home/fini-poster.jpg",
       ratio: "16/9",
       videoSrc: r2Url(R2_MEDIA.finiThumbnail),
     },
     teaserCover: {
       filename: "fini_thumbnail.mp4",
       description: "Fini home teaser, phone in hand with planner UI",
+      poster: "/images/home/fini-poster.jpg",
       ratio: "21/9",
       videoSrc: r2Url(R2_MEDIA.finiThumbnail),
     },
@@ -838,12 +841,14 @@ export const projects: CaseStudy[] = [
     cover: {
       filename: "strawberryMatcha_thumbnail.mp4",
       description: "Strawberry Matcha hero demo",
+      poster: "/images/home/strawberry-matcha-poster.jpg",
       ratio: "16/9",
       videoSrc: r2Url(R2_MEDIA.strawberryMatchaThumbnail),
     },
     teaserCover: {
       filename: "strawberryMatcha_thumbnail.mp4",
       description: "Strawberry Matcha home teaser",
+      poster: "/images/home/strawberry-matcha-poster.jpg",
       ratio: "21/9",
       videoSrc: r2Url(R2_MEDIA.strawberryMatchaThumbnail),
     },

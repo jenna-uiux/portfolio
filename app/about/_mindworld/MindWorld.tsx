@@ -18,7 +18,10 @@ gsap.registerPlugin(useGSAP);
 
 type Phase = "hero" | "entering" | "map" | "zooming" | "island";
 
-export function MindWorld() {
+export function MindWorld({ startExploring = false, onExit }: {
+  startExploring?: boolean;
+  onExit?: () => void;
+} = {}) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const mapWrapRef = useRef<HTMLDivElement | null>(null);
   const dimRef = useRef<HTMLDivElement | null>(null);
@@ -43,12 +46,17 @@ export function MindWorld() {
     });
   }, []);
 
-  const [phase, setPhase] = useState<Phase>("hero");
+  const [phase, setPhase] = useState<Phase>(startExploring ? "entering" : "hero");
   const [activeKey, setActiveKey] = useState<IslandKey | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [worldReady, setWorldReady] = useState(false);
   const [mapIntro, setMapIntro] = useState(false);
   const mapIntroShownRef = useRef(false);
+
+  // Direct entry is mounted by the user's Explore click, just like enterMap.
+  useEffect(() => {
+    if (startExploring) soundRef.current?.enableSound();
+  }, [startExploring]);
 
   // ── Detect mobile (no hotspot map below 760px)
   useEffect(() => {
@@ -189,7 +197,7 @@ export function MindWorld() {
 
   // Let the camera settle and the foreground mist clear before showing targets.
   useEffect(() => {
-    if (phase !== "entering") return;
+    if (phase !== "entering" || !worldReady) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timer = window.setTimeout(() => {
       setPhase("map");
@@ -199,7 +207,7 @@ export function MindWorld() {
       }
     }, reduce ? 0 : 1150);
     return () => window.clearTimeout(timer);
-  }, [phase, isMobile]);
+  }, [phase, isMobile, worldReady]);
 
   const dismissMapIntro = useCallback(() => setMapIntro(false), []);
 
@@ -307,7 +315,7 @@ export function MindWorld() {
   return (
     <div
       ref={rootRef}
-      className={[s.root, worldReady ? s.ready : ""].filter(Boolean).join(" ")}
+      className={[s.root, startExploring ? s.directEntry : "", worldReady ? s.ready : ""].filter(Boolean).join(" ")}
       aria-label="Mind World"
       data-phase={phase}
     >
@@ -436,11 +444,11 @@ export function MindWorld() {
           .filter(Boolean)
           .join(" ")}
       >
-        <Hero
+        {!startExploring && <Hero
           ready={worldReady}
           visible={phase === "hero"}
           onExplore={enterMap}
-        />
+        />}
 
         {!isMobile && (
           <WorldMap
@@ -470,6 +478,11 @@ export function MindWorld() {
 
       <ContactDock hidden={phase !== "map"} />
       <SoundToggle ref={soundRef} />
+      {onExit && !activeKey && (
+        <button type="button" className={s.exitWorld} onClick={onExit}>
+          <span aria-hidden="true">←</span> Back to About
+        </button>
+      )}
     </div>
   );
 }

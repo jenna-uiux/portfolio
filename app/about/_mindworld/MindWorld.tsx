@@ -1,5 +1,6 @@
 "use client";
 
+import NextImage from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -15,7 +16,7 @@ import { ContactDock } from "./ContactDock";
 
 gsap.registerPlugin(useGSAP);
 
-type Phase = "hero" | "map" | "zooming" | "island";
+type Phase = "hero" | "entering" | "map" | "zooming" | "island";
 
 export function MindWorld() {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -23,8 +24,8 @@ export function MindWorld() {
   const dimRef = useRef<HTMLDivElement | null>(null);
   const soundRef = useRef<SoundToggleHandle | null>(null);
 
-  // Preload island background images so we don't mount a blank (black) scene
-  // on slow networks (e.g. Vercel cold start + large JPGs).
+  // Preload island background images so we don't mount a blank scene during
+  // the in-world zoom transition.
   const preloadImage = useCallback((src: string) => {
     return new Promise<void>((resolve) => {
       const img = new Image();
@@ -57,37 +58,6 @@ export function MindWorld() {
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
-
-  // About entry: preload main textures so the world fades in instead of showing a blank/black frame.
-  useEffect(() => {
-    let cancelled = false;
-
-    const sources = [
-      "/images/about/hero.png",
-      "/images/about/cloud/cloud_1.png",
-      "/images/about/cloud/cloud_2.png",
-      "/images/about/cloud/cloud_3.png",
-    ];
-
-    const run = async () => {
-      try {
-        await Promise.all(sources.map((src) => preloadImage(src)));
-      } finally {
-        if (!cancelled) setWorldReady(true);
-      }
-    };
-
-    const t = window.setTimeout(() => {
-      if (!cancelled) setWorldReady(true);
-    }, 7000);
-
-    void run();
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(t);
-    };
-  }, [preloadImage]);
 
   // ── Atmospheric layer animations + cursor parallax
   useGSAP(
@@ -212,13 +182,24 @@ export function MindWorld() {
   // ── Phase transitions ─────────────────────────────────────────────────
 
   const enterMap = useCallback(() => {
+    if (!worldReady || phase !== "hero") return;
     soundRef.current?.enableSound();
-    setPhase("map");
-    if (!mapIntroShownRef.current) {
-      mapIntroShownRef.current = true;
-      setMapIntro(true);
-    }
-  }, []);
+    setPhase("entering");
+  }, [worldReady, phase]);
+
+  // Let the camera settle and the foreground mist clear before showing targets.
+  useEffect(() => {
+    if (phase !== "entering") return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timer = window.setTimeout(() => {
+      setPhase("map");
+      if (!mapIntroShownRef.current) {
+        mapIntroShownRef.current = true;
+        setMapIntro(true);
+      }
+    }, reduce ? 0 : 1150);
+    return () => window.clearTimeout(timer);
+  }, [phase, isMobile]);
 
   const dismissMapIntro = useCallback(() => setMapIntro(false), []);
 
@@ -316,7 +297,7 @@ export function MindWorld() {
         },
         0.7
       );
-  }, []);
+  }, [preloadImage]);
 
   const closeIsland = useCallback(() => {
     setActiveKey(null);
@@ -324,7 +305,12 @@ export function MindWorld() {
   }, []);
 
   return (
-    <div ref={rootRef} className={s.root} aria-label="Mind World">
+    <div
+      ref={rootRef}
+      className={[s.root, worldReady ? s.ready : ""].filter(Boolean).join(" ")}
+      aria-label="Mind World"
+      data-phase={phase}
+    >
       {/* World shell — fixed atmospheric stack */}
       <div
         className={[s.world, worldReady ? s.worldVisible : ""]
@@ -333,16 +319,29 @@ export function MindWorld() {
         aria-hidden="true"
       >
         <div ref={mapWrapRef} className={s.mapWrap}>
-          <div className={s.map} />
+          <div className={s.map}>
+            <NextImage
+              src="/images/about/hero.webp"
+              alt=""
+              fill
+              priority
+              fetchPriority="high"
+              sizes="106vw"
+              unoptimized
+              className={s.mapImage}
+              onLoad={() => setWorldReady(true)}
+              onError={() => setWorldReady(true)}
+            />
+          </div>
           <div className={s.mapTint} />
         </div>
 
         {/* Drifting clouds — real PNG textures with cast shadows on the terrain */}
         <div className={s.cloudLayer}>
           {[
-            { src: "/images/about/cloud/cloud_1.png", className: s.cloud1 },
-            { src: "/images/about/cloud/cloud_2.png", className: s.cloud2 },
-            { src: "/images/about/cloud/cloud_3.png", className: s.cloud3 },
+            { src: "/images/about/cloud/cloud_1.webp", className: s.cloud1 },
+            { src: "/images/about/cloud/cloud_2.webp", className: s.cloud2 },
+            { src: "/images/about/cloud/cloud_3.webp", className: s.cloud3 },
           ].map(({ src, className }) => (
             <div key={src} className={`${s.cloudGroup} ${className}`}>
               <span
@@ -358,8 +357,9 @@ export function MindWorld() {
                 src={src}
                 alt=""
                 className={s.cloudImg}
-                loading="eager"
+                loading="lazy"
                 decoding="async"
+                fetchPriority="low"
               />
             </div>
           ))}
@@ -383,10 +383,13 @@ export function MindWorld() {
         <div className={s.vignette} />
       </div>
 
+      <div className={s.entryShade} aria-hidden="true" />
+      <div className={s.entryMist} aria-hidden="true" />
+
       {/* Dark transition overlay (sits above world, below content) */}
       <div ref={dimRef} className={s.dim} aria-hidden="true" />
 
-      {/* Map intro hint — brief 40% scrim + helper text on first map entry */}
+      {/* Original first-entry guide: dimmed world, hotspot and tapping cue. */}
       <div
         className={[s.mapIntro, mapIntro ? s.mapIntroVisible : ""]
           .filter(Boolean)
@@ -408,7 +411,7 @@ export function MindWorld() {
               fill="none"
               aria-hidden="true"
             >
-              {/* Simple cursor pointer */} 
+              {/* Simple cursor pointer */}
               <path
                 d="M9 6l14 12-7 1.3 2.2 6.7-3 1-2.2-6.6-4.6 5.7L9 6Z"
                 fill="rgba(248,241,226,0.22)"
@@ -419,13 +422,25 @@ export function MindWorld() {
             </svg>
           </div>
 
-          <p className={s.mapIntroHint}>Tap a glowing point to open an island.</p>
+          <p className={s.mapIntroHint}>
+            {isMobile
+              ? "Tap an island card to explore its story."
+              : "Tap a glowing point to open an island."}
+          </p>
         </div>
       </div>
 
       {/* Content phases */}
-      <div className={s.content}>
-        <Hero visible={phase === "hero"} onExplore={enterMap} />
+      <div
+        className={[s.content, worldReady ? s.contentVisible : ""]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        <Hero
+          ready={worldReady}
+          visible={phase === "hero"}
+          onExplore={enterMap}
+        />
 
         {!isMobile && (
           <WorldMap
@@ -435,7 +450,7 @@ export function MindWorld() {
           />
         )}
 
-        {isMobile && phase !== "hero" && (
+        {isMobile && (phase === "map" || phase === "island") && (
           <MobileIslandList
             islands={islands}
             onSelect={(k) => {
@@ -453,7 +468,7 @@ export function MindWorld() {
         )}
       </div>
 
-      <ContactDock hidden={phase === "hero" || phase === "island"} />
+      <ContactDock hidden={phase !== "map"} />
       <SoundToggle ref={soundRef} />
     </div>
   );

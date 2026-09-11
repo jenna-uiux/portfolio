@@ -183,7 +183,7 @@ export function FunGallery() {
       <h1 aria-label="Things I made">
         <span className={styles.promptMark} aria-hidden="true">&gt;</span>Things I made<span className="prompt-cursor" aria-hidden="true">_</span>
       </h1>
-      <button className={styles.immersiveButton} onClick={() => {
+      <button type="button" className={styles.immersiveButton} aria-label="Immersive view" onClick={() => {
         const ordered = funRows.flatMap(row => [...row.items]);
         const visible = ordered.findIndex(id => {
           const rect = document.getElementById(id)?.getBoundingClientRect();
@@ -191,7 +191,10 @@ export function FunGallery() {
         });
         setYoutubePlaying(false);
         setImmersiveIndex(Math.max(0, visible));
-      }}><Maximize2 size={16} strokeWidth={1.5} aria-hidden="true" /> Immersive view</button>
+      }}>
+        <span>Immersive view</span>
+        <Maximize2 size={15} strokeWidth={1.5} aria-hidden="true" />
+      </button>
     </header>
 
     <div className={styles.gallery}>

@@ -2,13 +2,22 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "@/lib/site";
 
 export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const aboutImagePreloaded = useRef(false);
+
+  const preloadAboutImage = useCallback(() => {
+    if (aboutImagePreloaded.current) return;
+    aboutImagePreloaded.current = true;
+    const image = new Image();
+    image.decoding = "async";
+    image.src = "/images/about/hero.webp";
+  }, []);
 
   const isAbout =
     pathname === "/about" || pathname.startsWith("/about/");
@@ -87,6 +96,13 @@ export function Nav() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={className}
+                onPointerEnter={
+                  item.href === "/about" ? preloadAboutImage : undefined
+                }
+                onFocus={item.href === "/about" ? preloadAboutImage : undefined}
+                onTouchStart={
+                  item.href === "/about" ? preloadAboutImage : undefined
+                }
               >
                 {item.label}
               </Link>

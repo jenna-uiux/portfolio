@@ -16,6 +16,21 @@
   -webkit-font-smoothing: antialiased;
 }
 
+.root::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  background: #060a0f;
+  opacity: 1;
+  transition: opacity 0.75s cubic-bezier(0.22, 0.6, 0.18, 1);
+}
+
+.root.ready::after {
+  opacity: 0;
+}
+
 .root *::selection {
   background: rgba(255, 255, 255, 0.18);
   color: #fff;
@@ -33,12 +48,51 @@
   overflow: hidden;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transform: scale(1.22);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 0.6, 0.18, 1),
+    transform 2.4s cubic-bezier(0.22, 0.6, 0.18, 1);
 }
 
 .worldVisible {
   opacity: 1;
+  transform: scale(1);
 }
+
+.root[data-phase="hero"] .worldVisible {
+  transform: scale(1.1);
+}
+
+/* A shaded foreground gives the introduction depth. Both layers clear as
+   the camera opens out into the map; neither interrupts island transitions. */
+.entryShade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 46%, rgba(3, 19, 24, 0.62), rgba(3, 19, 24, 0.24) 68%),
+    linear-gradient(180deg, rgba(3, 12, 18, 0.16), transparent 28%, rgba(3, 12, 18, 0.28));
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+
+.entryMist {
+  position: absolute;
+  inset: -12%;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 0% 88%, rgba(209, 229, 223, 0.26), transparent 48%),
+    radial-gradient(ellipse at 100% 12%, rgba(240, 227, 200, 0.21), transparent 43%);
+  opacity: 0;
+  transform: scale(1.28);
+  transition: opacity 1.3s ease, transform 2s cubic-bezier(0.22, 0.6, 0.18, 1);
+}
+
+.root[data-phase="hero"] .entryShade,
+.root[data-phase="hero"] .entryMist { opacity: 1; }
+.root[data-phase="hero"] .entryMist { transform: scale(1); }
 
 .mapWrap {
   position: absolute;
@@ -53,11 +107,13 @@
   position: absolute;
   /* slightly larger than viewport so cursor parallax has room */
   inset: -6%;
-  background-image: url("/images/about/hero.png");
-  background-size: cover;
-  background-position: center;
   will-change: transform;
   transform: translate3d(0, 0, 0);
+}
+
+.mapImage {
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Very soft tint — mostly transparent so the painted world stays vivid.
@@ -288,7 +344,7 @@
  * ------------------------------------------------------------------ */
 
 .mapIntro {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 11;
   pointer-events: none;
@@ -429,6 +485,11 @@
   .mapIntroInner {
     transition: none !important;
   }
+
+  .tapHand,
+  .tapRing {
+    animation: none !important;
+  }
 }
 
 /* ------------------------------------------------------------------ *
@@ -440,6 +501,13 @@
   z-index: 10;
   width: 100%;
   min-height: 100svh;
+  opacity: 0;
+}
+
+.contentVisible { opacity: 1; }
+
+@media (max-width: 640px) {
+  .root[data-phase="hero"] .content { min-height: max(100svh, 600px); }
 }
 
 /* Reduced motion: still readable, just static */
@@ -451,5 +519,15 @@
   .map {
     animation: none !important;
     transition: none !important;
+  }
+
+  .root::after,
+  .world,
+  .entryShade,
+  .entryMist,
+  .mapIntro,
+  .content {
+    transition: none !important;
+    transform: none !important;
   }
 }

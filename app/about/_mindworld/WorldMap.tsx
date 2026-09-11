@@ -49,9 +49,9 @@ export function WorldMap({ islands, visible, onSelect }: Props) {
     { dependencies: [visible], scope: wrapRef }
   );
 
-  // Pointer-events follow visibility (handled via class) — no JS needed.
+  // Move keyboard focus into the world when its entrance finishes.
   useEffect(() => {
-    // no-op; class drives transition
+    if (visible) wrapRef.current?.focus({ preventScroll: true });
   }, [visible]);
 
   return (
@@ -59,6 +59,9 @@ export function WorldMap({ islands, visible, onSelect }: Props) {
       ref={wrapRef}
       className={`${s.wrap} ${visible ? s.visible : ""}`}
       aria-hidden={!visible}
+      inert={!visible}
+      tabIndex={-1}
+      aria-label="Explore the four islands"
     >
       <p ref={helperRef} className={s.helper}>
         About Jihyeon

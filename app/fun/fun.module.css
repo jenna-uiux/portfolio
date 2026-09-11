@@ -4,9 +4,11 @@
 .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 38px; }
 .header h1 { font-size: 32px; line-height: 1; letter-spacing: -.04em; font-weight: 400; }
 .promptMark { font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, monospace; letter-spacing: 0; margin-right: .1em; }
-.immersiveButton { display: inline-flex; align-items: center; gap: 8px; padding: 10px 0 10px 14px; font-size: 14px; white-space: nowrap; }
-.immersiveButton svg { transition: transform .2s; }
-.immersiveButton:hover svg { transform: scale(1.12); }
+/* One glass action surface, without a toggle track or separate thumb. */
+.immersiveButton { display: inline-flex; align-items: center; justify-content: center; gap: 9px; flex: none; min-height: 44px; margin-left: auto; padding: 0 15px; border: 1px solid #e5e5e5; border-radius: 999px; background: linear-gradient(160deg, #ffffffd9, #ffffff70); color: #333; font-size: 13px; line-height: 1.4; font-weight: 400; white-space: nowrap; backdrop-filter: blur(14px) saturate(145%); -webkit-backdrop-filter: blur(14px) saturate(145%); box-shadow: inset 0 1px 0 #fffffff2, inset 0 -1px 1px #00000005, 0 8px 20px #0000000c; cursor: pointer; transition: box-shadow .25s ease, border-color .25s ease; }
+.immersiveButton:hover, .immersiveButton:focus-visible { border-color: #d9d9d9; box-shadow: inset 0 1px 0 #fff, inset 0 -1px 1px #00000005, 0 10px 24px #00000012; }
+.immersiveButton:focus-visible { outline: 1px solid #777; outline-offset: 4px; }
+.immersiveButton:active { box-shadow: inset 0 1px 3px #0000000c, 0 3px 8px #00000008; }
 /* Gallery reveals use movement only, never fading the media. */
 .card { opacity: 1 !important; }
 .gallery { display: flex; flex-direction: column; gap: 24px; }
@@ -91,5 +93,6 @@ img.fullMedia { background: #f6f5f5; }
 @media (prefers-reduced-motion: reduce) {
   .card, .media { transform: none !important; }
   .immersiveButton svg { transition: none; transform: none; }
+  .immersiveButton { transition: none; }
   .caption, .hoverAction { transition: none; }
 }

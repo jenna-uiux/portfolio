@@ -54,7 +54,6 @@ export function PhotoCollage() {
           </figure>
         ))}
       </div>
-      <p className={s.photoHint}>A few moments along the way.</p>
     </div>
   );
 }

@@ -27,7 +27,7 @@ export type Island = {
 const buildMemories = (key: IslandKey, exts: string[]): string[] =>
   exts.map((ext, i) => `/images/about/memories/${key}/${i + 1}.${ext}`);
 
-export const heroImage = "/images/about/hero.png";
+export const heroImage = "/images/about/hero.webp";
 
 export const islands: Island[] = [
   {
@@ -93,7 +93,7 @@ export const islands: Island[] = [
     image: "/images/about/island_interest.jpg",
     description:
       "I want to explore Physical AI and multi-sensory interaction more deeply.\nI'm curious about interfaces that move beyond screens and become part of the physical world through vision, sound, movement, and space.",
-    memories: buildMemories("interest", ["jpg", "png", "jpg", "png", "jpg"]),
+    memories: buildMemories("interest", ["jpg", "jpg", "jpg", "jpg", "jpg"]),
   },
   {
     key: "visual",
@@ -103,7 +103,7 @@ export const islands: Island[] = [
     image: "/images/about/island_visual.jpg",
     description:
       "Design intuition is what AI cannot replace.\nI create visuals guided by my visual sensitivity, aesthetic sense, and empathy.\nThis journey led me to become a **Creative Partner at Reve.**",
-    memories: buildMemories("visual", ["png", "png", "png", "png", "png"]),
+    memories: buildMemories("visual", ["jpg", "jpg", "jpg", "jpg", "jpg"]),
   },
 ];
 

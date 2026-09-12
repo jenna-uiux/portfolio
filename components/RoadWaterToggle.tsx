@@ -198,7 +198,7 @@ function RoadStage() {
   return (
     <div className="absolute inset-0">
       <Image
-        src="/images/aeon/hud/road-bg.png"
+        src="/images/aeon/hud/road-bg.jpg"
         alt=""
         fill
         priority
@@ -239,7 +239,7 @@ function RoadStage() {
 
       <div className="absolute bottom-0 left-0 right-0 h-[34%]">
         <Image
-          src="/images/aeon/hud/road-interior.png"
+          src="/images/aeon/hud/road-interior.jpg"
           alt=""
           fill
           className="pointer-events-none object-cover object-bottom"
@@ -254,7 +254,7 @@ function WaterStage() {
   return (
     <div className="absolute inset-0">
       <Image
-        src="/images/aeon/hud/water-bg.png"
+        src="/images/aeon/hud/water-bg.jpg"
         alt=""
         fill
         className="object-cover"

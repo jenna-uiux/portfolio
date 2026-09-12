@@ -21,8 +21,8 @@ export function ModesShowcase() {
       <ModeFrame
         modeLabel="ROAD MODE"
         modeSubLabel="Traffic-aware route adjustment"
-        bgImage="/images/aeon/hud/road-bg.png"
-        interiorImage="/images/aeon/hud/road-interior.png"
+        bgImage="/images/aeon/hud/road-bg.jpg"
+        interiorImage="/images/aeon/hud/road-interior.jpg"
         showTrafficCallout
       />
 
@@ -30,8 +30,8 @@ export function ModesShowcase() {
       <ModeFrame
         modeLabel="ROAD MODE"
         modeSubLabel="Alternate route surfaced in peripheral vision"
-        bgImage="/images/aeon/hud/road-bg.png"
-        interiorImage="/images/aeon/hud/road-interior.png"
+        bgImage="/images/aeon/hud/road-bg.jpg"
+        interiorImage="/images/aeon/hud/road-interior.jpg"
         showTrafficCallout
         showAlternateRoute
       />
@@ -319,7 +319,7 @@ function InteractiveToggle() {
             >
               {/* Road BG */}
               <Image
-                src="/images/aeon/hud/road-bg.png"
+                src="/images/aeon/hud/road-bg.jpg"
                 alt=""
                 fill
                 className="object-cover"
@@ -330,7 +330,7 @@ function InteractiveToggle() {
                 style={{ background: "rgba(0,0,0,0.42)" }}
               />
               <Image
-                src="/images/aeon/hud/road-interior.png"
+                src="/images/aeon/hud/road-interior.jpg"
                 alt=""
                 fill
                 className="object-cover object-bottom"
@@ -361,7 +361,7 @@ function InteractiveToggle() {
                 }}
               />
               <Image
-                src="/images/aeon/hud/water-bg.png"
+                src="/images/aeon/hud/water-bg.jpg"
                 alt=""
                 fill
                 className="object-cover object-center"
@@ -372,7 +372,7 @@ function InteractiveToggle() {
                 style={{ background: "rgba(0,0,0,0.38)" }}
               />
               <Image
-                src="/images/aeon/hud/road-interior.png"
+                src="/images/aeon/hud/road-interior.jpg"
                 alt=""
                 fill
                 className="object-cover object-bottom opacity-90"

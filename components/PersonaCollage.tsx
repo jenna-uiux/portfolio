@@ -12,7 +12,7 @@ export function PersonaCollage() {
         {/* Hero tile — Rafi with quote (col 1-7, row 1-2) */}
         <div className="relative col-span-12 row-span-2 overflow-hidden rounded-2xl md:col-span-7">
           <Image
-            src="/images/aeon/persona/rafi-hero.png"
+            src="/images/aeon/persona/rafi-hero.jpg"
             alt="Rafi Nugroho, Field Engineer, Jakarta 2050"
             fill
             className="object-cover"
@@ -50,46 +50,46 @@ export function PersonaCollage() {
 
         {/* Palm trees — col 8-9, row 1 */}
         <Tile
-          src="/images/aeon/persona/rafi-palm.png"
+          src="/images/aeon/persona/rafi-palm.jpg"
           label="Enjoy hang out with friends"
           className="col-span-6 row-span-1 md:col-span-3"
         />
 
         {/* Sunset grass — col 10-12, row 1 (small square) */}
         <Tile
-          src="/images/aeon/persona/rafi-sunset.png"
+          src="/images/aeon/persona/rafi-sunset.jpg"
           className="col-span-6 row-span-1 md:col-span-2"
         />
 
         {/* Iguana — col 10-12, row 2 */}
         <Tile
-          src="/images/aeon/persona/rafi-iguana.png"
+          src="/images/aeon/persona/rafi-iguana.jpg"
           className="col-span-6 row-span-1 md:col-span-2"
         />
 
         {/* Beach — col 8-9, row 2 */}
         <Tile
-          src="/images/aeon/persona/rafi-beach.png"
+          src="/images/aeon/persona/rafi-beach.jpg"
           className="col-span-6 row-span-1 md:col-span-3"
         />
 
         {/* Explorer mountain — col 1-3, row 3 */}
         <Tile
-          src="/images/aeon/persona/rafi-explorer.png"
+          src="/images/aeon/persona/rafi-explorer.jpg"
           label="Explorer"
           className="col-span-6 row-span-1 md:col-span-3"
         />
 
         {/* Jakarta night — col 4-5, row 3 */}
         <Tile
-          src="/images/aeon/persona/rafi-jakarta.png"
+          src="/images/aeon/persona/rafi-jakarta.jpg"
           label="Jakarta, 2025"
           className="col-span-6 row-span-1 md:col-span-3"
         />
 
         {/* Traffic — col 6-12, row 3 */}
         <Tile
-          src="/images/aeon/persona/rafi-traffic.png"
+          src="/images/aeon/persona/rafi-traffic.jpg"
           label="Constant delays make him feel like his time is being wasted."
           className="col-span-12 row-span-1 md:col-span-6"
         />

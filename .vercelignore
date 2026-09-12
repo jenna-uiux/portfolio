@@ -1,0 +1,8 @@
+# Local scratch / export folders — never ship to Vercel
+.tmp/
+.tmp-screens/
+.tmp-footprint-tests/
+
+# macOS junk
+.DS_Store
+**/.DS_Store

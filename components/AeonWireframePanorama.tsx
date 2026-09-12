@@ -7,19 +7,19 @@ const MODES = [
   {
     id: "parking",
     label: "Parking mode",
-    src: "/images/aeon/ia/modes/parking.png",
+    src: "/images/aeon/ia/modes/parking.jpg",
     accent: "#3a3a3a",
   },
   {
     id: "road",
     label: "Road mode",
-    src: "/images/aeon/ia/modes/road.png",
+    src: "/images/aeon/ia/modes/road.jpg",
     accent: "#d0893a",
   },
   {
     id: "water",
     label: "Water mode",
-    src: "/images/aeon/ia/modes/water.png",
+    src: "/images/aeon/ia/modes/water.jpg",
     accent: "#7cc2ff",
   },
 ] as const;

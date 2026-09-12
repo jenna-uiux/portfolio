@@ -167,7 +167,7 @@ export function IAPriorityMatrix() {
         >
           {/* Background photo */}
           <Image
-            src="/images/aeon/hud/road-interior.png"
+            src="/images/aeon/hud/road-interior.jpg"
             alt="AEON cabin interior"
             fill
             className="object-cover"

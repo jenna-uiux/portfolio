@@ -72,7 +72,7 @@
 .photo:nth-child(2) { width: 42%; top: 24%; right: 0; z-index: 2; }
 .photo:nth-child(3) { width: 50%; top: 57%; left: 3%; z-index: 3; }
 .photoImage { position: relative; display: block; aspect-ratio: 1; width: 100%; overflow: hidden; }
-.photo:nth-child(2) .photoImage { aspect-ratio: 3 / 4; }
+.photo:nth-child(2) .photoImage { aspect-ratio: 4 / 3; }
 .photo:nth-child(3) .photoImage { aspect-ratio: 4 / 3; }
 .photoImage img { object-fit: cover; }
 .photoCaption {

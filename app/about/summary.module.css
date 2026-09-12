@@ -102,7 +102,6 @@
   gap: 40px;
   margin-top: 68px;
   padding-top: 32px;
-  border-top: 1px solid var(--border);
 }
 .note h3 { margin: 18px 0 12px; font-size: 18px; font-weight: 500; line-height: 1.4; letter-spacing: -0.02em; }
 .note p { font-size: 15px; line-height: 1.7; }

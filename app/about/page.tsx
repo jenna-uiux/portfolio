@@ -80,7 +80,7 @@ export default function AboutPage() {
             <div className={a.noteMedia}>
               <Image src="/images/about/memories/learn/2.jpg" alt="Jihyeon at AMD AI DevDay" fill sizes="(max-width: 760px) 100vw, 33vw" />
             </div>
-            <h3>I love learning, and I learn by doing.</h3>
+            <h3>I love learning, and I learn by doing</h3>
             <p>Hackathons, workshops, and side projects constantly pull me into unfamiliar spaces. I&apos;m happiest when I&apos;m learning, experimenting, and turning ideas into something real.</p>
           </article>
           <article className={a.note}>

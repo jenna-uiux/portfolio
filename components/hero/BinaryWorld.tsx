@@ -30,9 +30,13 @@ void main(){
  mat2 rotX=mat2(cos(pitch),-sin(pitch),sin(pitch),cos(pitch));
  p.xz=rotY*p.xz;p.yz=rotX*p.yz;
  normal.xz=rotY*normal.xz;normal.yz=rotX*normal.yz;
- float radius=min(uSize.x*.36,uSize.y*.387);
+ float mobile=1.-step(768.,uSize.x);
+ float desktopRadius=min(uSize.x*.36,uSize.y*.387);
+ float mobileRadius=min(uSize.x*.62,uSize.y*.38);
+ float radius=mix(desktopRadius,mobileRadius,mobile);
  float perspective=3.8/(3.8-p.z);
- vec2 pos=p.xy*radius*perspective+uSize*vec2(.5,.49);
+ float centerY=.49;
+ vec2 pos=p.xy*radius*perspective+uSize*vec2(.5,centerY);
  // Independent falling columns land from bottom to top, assembling the world.
  // Once the intro ends this branch is skipped entirely.
  if(uArrivalTime<3.35){
@@ -58,15 +62,15 @@ void main(){
  pos+=direction*sin(dist*.055-uTime*7.)*influence*uEnergy*30.;
  vec2 clip=pos/uSize*2.-1.;
  gl_Position=vec4(clip.x,-clip.y,0.,1.);
- gl_PointSize=(10.5+(p.z+.7)*2.0)*uDpr;
+ gl_PointSize=(mix(10.5,8.5,mobile)+(p.z+.7)*2.0)*uDpr;
  float depth=smoothstep(-.65,.65,p.z);
  float centerX=1.-smoothstep(uSize.x<600.?uSize.x*.33:205.,uSize.x<600.?uSize.x*.47:305.,abs(pos.x-uSize.x*.5));
- float centerY=1.-smoothstep(46.,88.,abs(pos.y-uSize.y*.49));
+ float centerFadeY=1.-smoothstep(46.,88.,abs(pos.y-uSize.y*centerY));
  float contour=pow(1.-abs(normal.z),2.);
  float surface=smoothstep(-.3,.8,normal.z);
  float ink=.22+depth*.24+surface*.24+contour*.19;
  // Keep connected contours around the title instead of erasing the whole middle.
- vAlpha=min(.9,ink+influence*.12)*(1.-centerX*centerY*.56)*uIntro;
+ vAlpha=min(.9,ink+influence*.12)*(1.-centerX*centerFadeY*.56)*uIntro;
  vDigit=step(.5,fract(aSeed.z+floor(uTime*4.)*influence*uVelocity*.05));
 }`;
 const fragment = `

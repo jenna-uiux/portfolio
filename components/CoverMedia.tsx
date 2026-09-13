@@ -9,6 +9,8 @@ type Props = {
   cover: ImagePlaceholder;
   /** Overrides `cover.ratio` when set (e.g. teaser layout) */
   ratio?: ImageRatio;
+  /** Optional small-screen ratio; the regular ratio resumes at md. */
+  mobileRatio?: ImageRatio;
   compact?: boolean;
   className?: string;
 };
@@ -22,8 +24,20 @@ const ratioClass: Record<ImageRatio, string> = {
   "3/2": "aspect-[3/2]",
 };
 
-export function CoverMedia({ cover, ratio, compact, className }: Props) {
+const desktopRatioClass: Record<ImageRatio, string> = {
+  "16/9": "md:aspect-[16/9]",
+  "21/9": "md:aspect-[21/9]",
+  "4/3": "md:aspect-[4/3]",
+  "4/5": "md:aspect-[4/5]",
+  "1/1": "md:aspect-square",
+  "3/2": "md:aspect-[3/2]",
+};
+
+export function CoverMedia({ cover, ratio, mobileRatio, compact, className }: Props) {
   const r = ratio ?? cover.ratio ?? "16/9";
+  const responsiveRatioClass = mobileRatio
+    ? `${ratioClass[mobileRatio]} ${desktopRatioClass[r]}`
+    : undefined;
 
   const isVideo =
     cover.videoSrc &&
@@ -36,6 +50,7 @@ export function CoverMedia({ cover, ratio, compact, className }: Props) {
         poster={cover.poster}
         description={cover.description}
         ratio={r}
+        mobileRatio={mobileRatio}
         autoPlay
         loop
         controls={false}
@@ -55,7 +70,7 @@ export function CoverMedia({ cover, ratio, compact, className }: Props) {
       <div
         className={[
           "relative w-full overflow-hidden",
-          ratioClass[r],
+          responsiveRatioClass ?? ratioClass[r],
           compact ? "rounded-md" : "rounded-lg",
           className ?? "",
         ]

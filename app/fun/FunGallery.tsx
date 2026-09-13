@@ -92,7 +92,7 @@ export function FunGallery() {
     const media = gsap.matchMedia();
     media.add({
       desktop: "(min-width: 701px)",
-      mobile: "(max-width: 700px)",
+      mobile: "(max-width: 767px)",
       reduce: "(prefers-reduced-motion: reduce)",
     }, context => {
       if (!page.current) return;

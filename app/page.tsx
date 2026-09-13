@@ -1,5 +1,6 @@
 import { Hero } from "@/components/Hero";
 import { CaseStudyTeaser } from "@/components/CaseStudyTeaser";
+import { HomeFunSection } from "@/components/HomeFunSection";
 import { getFeatured } from "@/lib/projects";
 
 export default function HomePage() {
@@ -18,6 +19,8 @@ export default function HomePage() {
           />
         ))}
       </div>
+
+      <HomeFunSection />
     </>
   );
 }

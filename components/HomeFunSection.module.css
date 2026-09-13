@@ -1,0 +1,127 @@
+.section {
+  padding-block: clamp(4.5rem, 8vw, 8rem) clamp(6rem, 10vw, 10rem);
+}
+
+.heading {
+  margin-bottom: 24px;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+}
+
+.promptMark {
+  margin-right: 0.12em;
+  font-family: "SF Mono", "SFMono-Regular", ui-monospace, Menlo, monospace;
+  letter-spacing: 0;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.row {
+  display: grid;
+  align-items: start;
+  gap: 24px;
+}
+
+.opening {
+  grid-template-columns: minmax(0, 256fr) minmax(0, 81fr);
+}
+
+.closing {
+  grid-template-columns: minmax(0, 81fr) minmax(0, 212fr);
+}
+
+.card {
+  min-width: 0;
+}
+
+.media {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: var(--media-ratio);
+  border-radius: 5px;
+  background: #eeeeee;
+}
+
+.media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: clamp(2.5rem, 4vw, 4rem);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+}
+
+.cta span:first-child {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0 1px;
+  transition: background-size 360ms ease;
+}
+
+.cta span:last-child {
+  transition: transform 360ms ease;
+}
+
+.cta:hover span:first-child,
+.cta:focus-visible span:first-child {
+  background-size: 100% 1px;
+}
+
+.cta:hover span:last-child,
+.cta:focus-visible span:last-child {
+  transform: translateX(4px);
+}
+
+@media (max-width: 767px) {
+  .section {
+    padding-block: 4.5rem 6.5rem;
+  }
+
+  .heading {
+    margin-bottom: 20px;
+  }
+
+  .gallery,
+  .row {
+    gap: 20px;
+  }
+
+  .opening,
+  .closing {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .opening .card:last-child,
+  .closing .card:first-child {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .cta {
+    margin-top: 2.75rem;
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta span {
+    transition: none;
+  }
+}

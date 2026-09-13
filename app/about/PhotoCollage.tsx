@@ -7,8 +7,8 @@ import s from "./summary.module.css";
 
 const photos = [
   { src: "/images/about/memories/background/1.jpg", alt: "Jihyeon in a white shirt", caption: "Hi, it's me!", angle: "-6deg" },
-  { src: "/images/about/memories/learn/1.jpg", alt: "Jihyeon working on her laptop at a hackathon", caption: "At a hackathon", angle: "7deg" },
-  { src: "/images/about/memories/background/4.jpg", alt: "Jihyeon teaching in a classroom", caption: "My teaching days", angle: "-4deg" },
+  { src: "/images/about/memories/learn/1.jpg", alt: "Jihyeon working on her laptop at a hackathon", caption: "me at a hackathon", angle: "7deg" },
+  { src: "/images/about/memories/background/4.jpg", alt: "Jihyeon teaching in a classroom", caption: "my teaching days", angle: "-4deg" },
 ];
 
 export function PhotoCollage() {
@@ -48,13 +48,12 @@ export function PhotoCollage() {
             style={{ "--angle": photo.angle } as CSSProperties}
           >
             <span className={s.photoImage}>
-              <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 760px) 55vw, 290px" />
+              <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 767px) 55vw, 290px" />
             </span>
             <figcaption className={s.photoCaption}>{photo.caption}</figcaption>
           </figure>
         ))}
       </div>
-      <p className={s.photoHint}>A few moments along the way.</p>
     </div>
   );
 }

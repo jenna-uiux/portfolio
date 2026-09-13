@@ -22,10 +22,20 @@ const ratioClass: Record<ImageRatio, string> = {
   "3/2": "aspect-[3/2]",
 };
 
+const desktopRatioClass: Record<ImageRatio, string> = {
+  "16/9": "md:aspect-[16/9]",
+  "21/9": "md:aspect-[21/9]",
+  "4/3": "md:aspect-[4/3]",
+  "4/5": "md:aspect-[4/5]",
+  "1/1": "md:aspect-square",
+  "3/2": "md:aspect-[3/2]",
+};
+
 type Props = {
   src: string;
   description: string;
   ratio?: ImageRatio;
+  mobileRatio?: ImageRatio;
   poster?: string;
   className?: string;
   autoPlay?: boolean;
@@ -39,6 +49,7 @@ export function MediaVideo({
   src,
   description,
   ratio = "16/9",
+  mobileRatio,
   poster,
   className = "",
   autoPlay = false,
@@ -133,7 +144,9 @@ export function MediaVideo({
       className={[
         "relative w-full overflow-hidden rounded-lg",
         errored ? "border border-dashed border-ink/18 bg-white/40" : "bg-black",
-        ratioClass[ratio],
+        mobileRatio
+          ? `${ratioClass[mobileRatio]} ${desktopRatioClass[ratio]}`
+          : ratioClass[ratio],
         className,
       ].join(" ")}
     >

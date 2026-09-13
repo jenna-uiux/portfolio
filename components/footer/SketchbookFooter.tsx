@@ -22,11 +22,11 @@ export function SketchbookFooter({
     >
       <div
         className={[
-          "container-ultra pb-[clamp(2.75rem,5vw,4.25rem)] pt-[clamp(3.75rem,7vw,6rem)]",
+          "container-ultra pb-8 pt-10 md:pb-[clamp(2.75rem,5vw,4.25rem)] md:pt-[clamp(3.75rem,7vw,6rem)]",
           dark ? "border-t border-white/10" : "border-t border-black/[0.08]",
         ].join(" ")}
       >
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:items-stretch lg:gap-8">
+        <div className="grid grid-cols-1 gap-9 md:gap-16 lg:grid-cols-12 lg:items-stretch lg:gap-8">
           <div className="flex flex-col lg:col-span-7">
             <div
               className={
@@ -47,8 +47,8 @@ export function SketchbookFooter({
             <p
               className={
                 dark
-                  ? "mt-6 max-w-[22em] text-[24px] font-normal leading-[1.4] tracking-[-0.01em] text-[#f5f5f5]"
-                  : "mt-6 max-w-[22em] text-[24px] font-normal leading-[1.4] tracking-[-0.01em] text-black"
+                  ? "mt-4 max-w-[22em] text-[18px] font-normal leading-[1.4] tracking-[-0.01em] text-[#f5f5f5] md:mt-6 md:text-[24px]"
+                  : "mt-4 max-w-[22em] text-[18px] font-normal leading-[1.4] tracking-[-0.01em] text-black md:mt-6 md:text-[24px]"
               }
             >
               I design digital products,
@@ -65,8 +65,8 @@ export function SketchbookFooter({
         <div
           className={
             dark
-              ? "mt-16 flex flex-col gap-2 text-[13px] font-normal leading-[1.4] text-[#f5f5f5]/45 sm:flex-row sm:items-end sm:justify-between lg:mt-24"
-              : "mt-16 flex flex-col gap-2 text-[13px] font-normal leading-[1.4] text-[#6a6a6a] sm:flex-row sm:items-end sm:justify-between lg:mt-24"
+              ? "mt-10 flex items-center justify-between gap-3 whitespace-nowrap text-[10px] font-normal leading-[1.4] text-[#f5f5f5]/45 sm:text-[12px] lg:mt-24 lg:text-[13px]"
+              : "mt-10 flex items-center justify-between gap-3 whitespace-nowrap text-[10px] font-normal leading-[1.4] text-[#6a6a6a] sm:text-[12px] lg:mt-24 lg:text-[13px]"
           }
         >
           <p>{site.footer.copyright}</p>

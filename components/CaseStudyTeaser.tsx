@@ -39,7 +39,7 @@ export function CaseStudyTeaser({ project }: Props) {
     <section
       id={`work-${project.slug}`}
       aria-labelledby={`teaser-${project.slug}`}
-      className="section-y"
+      className="py-3 md:py-20 lg:py-24"
     >
       <div className="container-ultra">
         <div className="group block">
@@ -64,7 +64,7 @@ export function CaseStudyTeaser({ project }: Props) {
               data-cursor="read"
               className="absolute inset-0 z-10 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             />
-            <div className="mb-5 flex flex-wrap items-center gap-3">
+            <div className="mb-5 hidden flex-wrap items-center gap-3 md:flex">
               <h3
                 id={`teaser-${project.slug}`}
                 className="text-[16px] font-normal tracking-[-0.005em] text-ink/80"
@@ -81,7 +81,7 @@ export function CaseStudyTeaser({ project }: Props) {
               ))}
             </div>
 
-            <p className="mb-8 max-w-[80%] whitespace-pre-line text-[28px] font-normal leading-[1.25] tracking-[-0.018em] text-ink md:mb-10">
+            <p className="mb-10 hidden max-w-[80%] whitespace-pre-line text-[28px] font-normal leading-[1.25] tracking-[-0.018em] text-ink md:block">
               {project.summary}
             </p>
 
@@ -97,6 +97,7 @@ export function CaseStudyTeaser({ project }: Props) {
                 <CoverMedia
                   cover={project.teaserCover ?? project.cover}
                   ratio={(project.teaserCover ?? project.cover).ratio ?? "21/9"}
+                  mobileRatio={project.cover.ratio ?? "16/9"}
                 />
               </div>
 

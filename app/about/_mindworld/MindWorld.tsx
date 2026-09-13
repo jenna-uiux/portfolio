@@ -60,7 +60,7 @@ export function MindWorld({ startExploring = false, onExit }: {
 
   // ── Detect mobile (no hotspot map below 760px)
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 760px)");
+    const mq = window.matchMedia("(max-width: 767px)");
     const update = () => setIsMobile(mq.matches);
     update();
     mq.addEventListener("change", update);

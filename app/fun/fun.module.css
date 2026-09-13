@@ -64,7 +64,7 @@ img.fullMedia { background: #f6f5f5; }
 .dialogCaption p { font-size: 15px; margin-top: 5px; color: #606060; }
 .dialogCaption p.details { font-size: 13px; }
 .dialogCaption > a { display: inline-flex; align-items: center; gap: 5px; font-size: 14px; margin: 18px 22px 0 0; text-decoration: underline; text-underline-offset: 4px; }
-@media (max-width: 700px) {
+@media (max-width: 767px) {
   .page { padding-block: 94px 70px; }
   .header { margin-bottom: 30px; }
   .header h1 { font-size: 28px; }
@@ -72,7 +72,7 @@ img.fullMedia { background: #f6f5f5; }
   .gallery, .row { gap: 20px; }
   .opening, .portraitLead, .musicPair, .pair { grid-template-columns: minmax(0, 1fr); }
   .musicPair .media { height: auto; aspect-ratio: var(--media-ratio); }
-  .opening .card:last-child, .portraitLead .card:first-child, .musicPair .card:last-child { width: min(100%, 326px, calc((100svh - 160px) * .5625)); justify-self: center; }
+  .opening .card:last-child, .portraitLead .card:first-child, .musicPair .card:last-child { width: 100%; justify-self: stretch; }
   .caption { padding: 16px; }
   .caption h2 { font-size: 17px; }
   .description { margin-top: 5px; font-size: 13px; }

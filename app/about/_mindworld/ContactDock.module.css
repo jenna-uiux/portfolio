@@ -42,7 +42,7 @@
   display: block;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 767px) {
   .wrap {
     bottom: clamp(14px, 2.5vh, 22px);
   }

@@ -305,7 +305,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 767px) {
   .hero {
     min-height: auto;
     grid-template-columns: 1fr;

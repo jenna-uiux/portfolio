@@ -499,7 +499,7 @@
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 767px) {
   .scroll {
     padding-top: clamp(68px, 12vh, 88px);
   }

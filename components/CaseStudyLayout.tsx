@@ -59,12 +59,42 @@ export function CaseStudyLayout({ project }: Props) {
       : undefined;
 
   return (
-    <div className="pt-28 pb-24" style={accentOverride}>
+    <div className="pb-16 pt-20 md:pb-24 md:pt-28" style={accentOverride}>
       {project.theme === "dark" ? <ThemeController theme="dark" /> : null}
+      <div className="sticky top-14 z-30 mb-9 border-y border-ink/10 bg-bg/90 backdrop-blur-md md:hidden">
+        <div className="container-ultra flex h-12 items-center gap-3">
+          <Link href="/work" className="grid size-10 shrink-0 place-items-center text-[18px]" aria-label="All work">
+            ←
+          </Link>
+          <label htmlFor="mobile-section-jump" className="sr-only">Jump to section</label>
+          <select
+            id="mobile-section-jump"
+            value={activeId}
+            onChange={(event) => {
+              const target = document.getElementById(event.target.value);
+              target?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            className="h-10 min-w-0 flex-1 appearance-none bg-transparent pr-8 text-[13px] font-medium outline-none"
+            style={{
+              backgroundImage:
+                "linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%)",
+              backgroundPosition: "calc(100% - 12px) 50%, calc(100% - 7px) 50%",
+              backgroundSize: "5px 5px, 5px 5px",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            {project.sections.map((section) => (
+              <option key={section.id} value={section.id}>
+                {section.title}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       <div className="container-ultra grid min-w-0 gap-12 md:grid-cols-12">
         <aside
           aria-label="Case study outline"
-          className="min-w-0 md:col-span-3 md:sticky md:top-24 md:self-start"
+          className="hidden min-w-0 md:col-span-3 md:block md:sticky md:top-24 md:self-start"
         >
           <p className="t-h4">{project.title}</p>
 
@@ -94,18 +124,18 @@ export function CaseStudyLayout({ project }: Props) {
         <article className="min-w-0 md:col-span-9">
           <header className="grid items-end gap-10 md:grid-cols-12 md:gap-12">
             <div className="min-w-0 md:col-span-7">
-              <h1 className="font-normal leading-[1.02] tracking-[-0.02em] text-ink text-[clamp(48px,5.8vw,72px)] [font-family:'Instrument_Serif',serif]">
+              <h1 className="font-normal leading-[1.02] tracking-[-0.02em] text-ink text-[clamp(40px,11vw,48px)] md:text-[clamp(48px,5.8vw,72px)] [font-family:'Instrument_Serif',serif]">
                 {project.title}
               </h1>
               <p
                 className={
                   project.slug === "fini"
-                    ? "mt-10 max-w-full whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[42ch]"
+                    ? "mt-6 max-w-full whitespace-pre-line font-sans text-[21px] font-normal leading-[1.38] tracking-[-0.015em] text-[#171717] md:mt-10 md:max-w-[42ch] md:text-[24px]"
                     : project.slug === "aeon"
-                      ? "mt-10 max-w-full whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#f5f5f5b8] md:max-w-[40ch]"
+                      ? "mt-6 max-w-full whitespace-pre-line font-sans text-[21px] font-normal leading-[1.38] tracking-[-0.015em] text-[#f5f5f5b8] md:mt-10 md:max-w-[40ch] md:text-[24px]"
                       : project.slug === "strawberry-matcha"
-                        ? "mt-10 max-w-full whitespace-pre-line font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[48ch]"
-                        : "mt-10 max-w-[20ch] font-sans text-[24px] font-normal leading-[1.35] tracking-[-0.015em] text-[#171717] md:max-w-[26ch]"
+                        ? "mt-6 max-w-full whitespace-pre-line font-sans text-[21px] font-normal leading-[1.38] tracking-[-0.015em] text-[#171717] md:mt-10 md:max-w-[48ch] md:text-[24px]"
+                        : "mt-6 max-w-[20ch] font-sans text-[21px] font-normal leading-[1.38] tracking-[-0.015em] text-[#171717] md:mt-10 md:max-w-[26ch] md:text-[24px]"
                 }
               >
                 {project.tagline}
@@ -461,7 +491,7 @@ function OutlineLink({
 
 function Meta({ label, value }: { label: string; value: string }) {
   return (
-    <div className="grid grid-cols-[5.5rem_1fr] items-baseline gap-x-6 py-3.5 last:pb-0 sm:grid-cols-[6.5rem_1fr]">
+    <div className="grid grid-cols-[4.5rem_1fr] items-baseline gap-x-4 py-3.5 last:pb-0 sm:grid-cols-[6.5rem_1fr] sm:gap-x-6">
       <dt className="font-sans text-[13px] font-medium text-ink">{label}</dt>
       <dd className="min-w-0 text-[14px] font-light leading-[1.5] text-ink/75">
         {value}

@@ -61,7 +61,7 @@ export function ReflectionInsights({ items, photo, layout }: Props) {
     <div>
       <div className="space-y-12 md:space-y-16">
         {items.map((item) => (
-          <article key={item.number} className="max-w-[62ch]">
+          <article key={item.number}>
             <h3 className="text-[24px] font-medium leading-[1.3] tracking-[-0.015em] text-ink">
               <RichText text={item.title} />
             </h3>

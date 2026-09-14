@@ -925,7 +925,7 @@ export const projects: CaseStudy[] = [
       {
         id: "outcome",
         title: "Outcome",
-        eyebrow: "Designed, built, and shipped.",
+        eyebrow: "Designed, built, and shipped",
         body: "Strawberry Matcha is an AI assistant for people preparing a marriage-based green card application without a lawyer. It connects case intake, personalized guidance, form preparation, and next steps. I took it from research and design through development and deployment.",
         contentBlocks: [
           {
@@ -1168,7 +1168,7 @@ export const projects: CaseStudy[] = [
       {
         id: "reflection",
         title: "Reflection",
-        eyebrow: "Building it changed how I decide what is worth building.",
+        eyebrow: "This project made me rethink what makes a good product in the AI era",
         body: "My biggest takeaway was that being able to build a product is only part of deciding whether it is worth building. I now think more carefully about the work customers need done, what it costs to deliver, and why they would trust a business to do it.",
         contentBlocks: [
           {

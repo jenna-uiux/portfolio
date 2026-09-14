@@ -22,8 +22,8 @@ const logicSteps = [
   },
   {
     number: "03",
-    title: "Match",
-    body: "Select or break down the next realistic step.",
+    title: "Recommend",
+    body: "Select or break down a next step.",
     icon: Sparkles,
   },
 ];
@@ -46,7 +46,7 @@ export function ProductLogicFlow() {
             <InputCard
               icon={Activity}
               label="Context input"
-              title="Apple Health data"
+              title="Apple Health signals"
               body="Sleep · HRV · Activity"
             />
           </div>
@@ -108,10 +108,10 @@ export function ProductLogicFlow() {
               />
             </div>
             <h4 className="mt-6 text-[20px] font-medium leading-[1.25] tracking-[-0.015em] text-ink">
-              One next step
+              A recommended next step
             </h4>
             <p className="mt-3 text-[14px] font-light leading-[1.55] text-ink/60">
-              Fini shows the selected step and the reasoning behind it.
+              Show the recommendation and the reasoning behind it.
             </p>
             <div className="mt-auto flex flex-wrap gap-2 pt-7">
               {["Review", "Edit", "Override"].map((action) => (

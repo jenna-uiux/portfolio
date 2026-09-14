@@ -13,6 +13,7 @@ type Props = {
   mobileRatio?: ImageRatio;
   compact?: boolean;
   className?: string;
+  edgeCrop?: boolean;
 };
 
 const ratioClass: Record<ImageRatio, string> = {
@@ -33,7 +34,7 @@ const desktopRatioClass: Record<ImageRatio, string> = {
   "3/2": "md:aspect-[3/2]",
 };
 
-export function CoverMedia({ cover, ratio, mobileRatio, compact, className }: Props) {
+export function CoverMedia({ cover, ratio, mobileRatio, compact, className, edgeCrop }: Props) {
   const r = ratio ?? cover.ratio ?? "16/9";
   const responsiveRatioClass = mobileRatio
     ? `${ratioClass[mobileRatio]} ${desktopRatioClass[r]}`
@@ -54,6 +55,7 @@ export function CoverMedia({ cover, ratio, mobileRatio, compact, className }: Pr
         autoPlay
         loop
         controls={false}
+        edgeCrop={edgeCrop}
         className={[
           compact ? "rounded-md" : "rounded-lg",
           className ?? "",

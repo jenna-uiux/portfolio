@@ -1,6 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import {
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -129,6 +133,23 @@ const POSTPONED_DOTS = Array.from({ length: 15 }, (_, columnIndex) => {
 
 export function ObligationCapacityChart() {
   const root = useRef<HTMLDivElement>(null);
+  const [hoveredStage, setHoveredStage] = useState<number | null>(null);
+  const [selectedStage, setSelectedStage] = useState<number | null>(null);
+  const activeStage = hoveredStage ?? selectedStage;
+
+  const stageForX = (x: number) => {
+    if (x < 170) return 0;
+    if (x < 620) return 1;
+    if (x < 830) return 2;
+    return 3;
+  };
+
+  const handlePointerMove = (event: ReactPointerEvent<SVGSVGElement>) => {
+    if (event.pointerType === "touch") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width) * 1000;
+    setHoveredStage(stageForX(x));
+  };
 
   useGSAP(
     () => {
@@ -302,12 +323,46 @@ export function ObligationCapacityChart() {
 
   return (
     <div ref={root} className="h-full w-full min-w-0 overflow-hidden">
+      <div className="mb-3 flex items-center justify-between gap-4 text-[11px] font-light text-ink/50">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <span className="inline-flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-[color:var(--accent-orange)]" />
+            User&apos;s energy capacity
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-ink/25" />
+            Postponed plan
+          </span>
+        </div>
+        <span className="hidden sm:inline">Hover or tap a moment</span>
+      </div>
       <svg
         viewBox="0 0 1000 350"
-        className="h-full w-full"
+        className="h-full w-full touch-pan-y"
         preserveAspectRatio="xMidYMid meet"
         overflow="hidden"
+        onPointerMove={handlePointerMove}
+        onPointerLeave={() => setHoveredStage(null)}
       >
+      {activeStage !== null ? (
+        <g aria-hidden="true" className="pointer-events-none">
+          <line
+            x1={COLUMNS[activeStage].x + COLUMNS[activeStage].width / 2}
+            x2={COLUMNS[activeStage].x + COLUMNS[activeStage].width / 2}
+            y1="18"
+            y2="332"
+            stroke={activeStage === 3 ? INK : ENERGY_ACCENT}
+            strokeOpacity="0.18"
+            strokeDasharray="2 6"
+          />
+          <circle
+            cx={COLUMNS[activeStage].x + COLUMNS[activeStage].width / 2}
+            cy="18"
+            r="3"
+            fill={activeStage === 3 ? INK : ENERGY_ACCENT}
+          />
+        </g>
+      ) : null}
       <g aria-label="Energy decreases as external obligations consume attention">
         {DOT_COLUMNS.map((dots, columnIndex) => (
           <g key={columnIndex} data-drift-column>
@@ -320,53 +375,16 @@ export function ObligationCapacityChart() {
                 cy={dot.y}
                 r={dot.radius}
                 fill={ENERGY_ACCENT}
-                fillOpacity={dot.opacity}
+                fillOpacity={
+                  activeStage === null || stageForX(dot.x) === activeStage
+                    ? dot.opacity
+                    : 0.1
+                }
+                style={{ transition: "fill-opacity 240ms ease" }}
               />
             ))}
           </g>
         ))}
-      </g>
-
-      <g
-        data-energy-axis
-        aria-label="Orange dots represent the user's energy capacity"
-      >
-        <circle
-          cx="5"
-          cy="160"
-          r="3.2"
-          fill={ENERGY_ACCENT}
-          fillOpacity="0.95"
-        />
-        <text
-          x="14"
-          y="164"
-          fontFamily="inherit"
-          fontSize="10"
-          fontWeight="400"
-          fill={INK}
-          fillOpacity="0.55"
-        >
-          User&apos;s energy capacity
-        </text>
-        <circle
-          cx="152"
-          cy="160"
-          r="3.2"
-          fill={INK}
-          fillOpacity="0.3"
-        />
-        <text
-          x="161"
-          y="164"
-          fontFamily="inherit"
-          fontSize="10"
-          fontWeight="400"
-          fill={INK}
-          fillOpacity="0.55"
-        >
-          Postponed plan
-        </text>
       </g>
 
       <g aria-label="The unfinished plan carries into tomorrow without energy">
@@ -378,72 +396,102 @@ export function ObligationCapacityChart() {
             cy={dot.y}
             r={dot.radius}
             fill={INK}
-            fillOpacity={dot.opacity}
+            fillOpacity={
+              activeStage === null || activeStage === 3 ? dot.opacity : 0.08
+            }
+            style={{ transition: "fill-opacity 240ms ease" }}
           />
         ))}
       </g>
 
-      {COLUMNS.map((column) => (
-        <g key={column.period} data-stage>
+      {COLUMNS.map((column, stageIndex) => {
+        const isActive = activeStage === stageIndex;
+        const isDimmed = activeStage !== null && !isActive;
+
+        return (
+        <g
+          key={column.period}
+          data-stage
+          role="button"
+          tabIndex={0}
+          aria-label={`${column.period}: ${column.title}. ${column.lines.join(" ")}`}
+          aria-pressed={selectedStage === stageIndex}
+          className="cursor-pointer outline-none"
+          onPointerEnter={() => setHoveredStage(stageIndex)}
+          onPointerLeave={() => setHoveredStage(null)}
+          onFocus={() => setHoveredStage(stageIndex)}
+          onBlur={() => setHoveredStage(null)}
+          onClick={() =>
+            setSelectedStage((current) =>
+              current === stageIndex ? null : stageIndex
+            )
+          }
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              setSelectedStage((current) =>
+                current === stageIndex ? null : stageIndex
+              );
+            }
+          }}
+        >
+          <g
+            opacity={isDimmed ? 0.32 : 1}
+            style={{ transition: "opacity 240ms ease" }}
+          >
           <text
             x={column.x + 6}
-            y="187"
+            y="199"
             fontFamily="inherit"
             fontSize="11"
             fill={INK}
-            fillOpacity="0.48"
+            fillOpacity={isActive ? 0.75 : 0.48}
           >
             {column.period}
           </text>
-          <rect
-            x={column.x}
-            y="200"
-            width={column.width}
-            height="140"
-            fill={INK}
-            fillOpacity="0.035"
-          />
           <line
             data-evening-rule={column.accent ? true : undefined}
             x1={column.x}
             x2={column.x + column.width}
-            y1="200"
-            y2="200"
-            stroke={column.accent ? ENERGY_ACCENT : INK}
-            strokeOpacity={column.accent || column.dark ? 0.9 : 0.12}
-            strokeWidth={column.accent || column.dark ? 2 : 1}
+            y1="214"
+            y2="214"
+            stroke={isActive || column.accent ? ENERGY_ACCENT : INK}
+            strokeOpacity={isActive ? 1 : column.accent || column.dark ? 0.65 : 0.14}
+            strokeWidth={isActive ? 3 : column.accent || column.dark ? 2 : 1}
           />
           <text
-            x={column.x + 16}
-            y="228"
+            x={column.x + 6}
+            y="244"
             fontFamily="inherit"
             fontSize="12"
             fontWeight="500"
-            fill={INK}
+            fill={isActive ? ENERGY_ACCENT : INK}
           >
             {column.title}
           </text>
           <text
-            x={column.x + 16}
-            y="256"
+            x={column.x + 6}
+            y="273"
             fontFamily="inherit"
             fontSize="12"
             fontWeight="300"
             fill={INK}
-            fillOpacity="0.58"
+            fillOpacity={isActive ? 0.72 : 0.58}
           >
             {column.lines.map((line, index) => (
               <tspan
                 key={line}
-                x={column.x + 16}
+                x={column.x + 6}
                 dy={index === 0 ? 0 : 20}
               >
                 {line}
               </tspan>
             ))}
           </text>
+          </g>
         </g>
-      ))}
+        );
+      })}
       </svg>
     </div>
   );

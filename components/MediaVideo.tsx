@@ -43,6 +43,7 @@ type Props = {
   muted?: boolean;
   controls?: boolean;
   objectFit?: "cover" | "contain";
+  edgeCrop?: boolean;
 };
 
 export function MediaVideo({
@@ -57,6 +58,7 @@ export function MediaVideo({
   muted,
   controls = true,
   objectFit = "cover",
+  edgeCrop = false,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -189,6 +191,7 @@ export function MediaVideo({
             className={[
               "absolute inset-0 h-full w-full",
               objectFit === "contain" ? "object-contain" : "object-cover",
+              edgeCrop ? "scale-[1.01]" : "",
             ].join(" ")}
             src={shouldLoad ? resolvedSrc : undefined}
             poster={resolvedPoster}

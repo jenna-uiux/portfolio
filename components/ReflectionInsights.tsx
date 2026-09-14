@@ -10,6 +10,7 @@ type ReflectionItem = {
 
 type Props = {
   items: ReflectionItem[];
+  layout?: "editorial";
   photo?: {
     src: string;
     alt: string;
@@ -20,25 +21,53 @@ type Props = {
   };
 };
 
-export function ReflectionInsights({ items, photo }: Props) {
+export function ReflectionInsights({ items, photo, layout }: Props) {
+  if (layout === "editorial") {
+    return (
+      <div className={photo ? "space-y-8 md:space-y-10" : "h-full border-t border-ink/15 px-1 pb-4 pt-7 lg:pr-8"}>
+        <div className="space-y-10">
+          {!photo ? (
+            <p className="mb-7 text-[11px] font-medium uppercase tracking-[0.14em] text-[color:var(--body)]">What I learned</p>
+          ) : null}
+          {items.map((item) => (
+            <article key={item.number}>
+              <h3 className={photo ? "font-sans text-[26px] font-medium leading-[1.3] tracking-[-0.02em] text-ink md:text-[32px]" : "max-w-[24ch] text-[24px] font-medium leading-[1.3] tracking-[-0.015em] text-ink"}>
+                <RichText text={item.title} />
+              </h3>
+              <p className={`${photo ? "max-w-[82ch]" : "max-w-[58ch]"} mt-5 text-[16px] font-light leading-[1.7] text-[color:var(--body)]`}><RichText text={item.body} /></p>
+            </article>
+          ))}
+        </div>
+        {photo ? (
+          <figure className="min-w-0 overflow-hidden rounded-2xl border border-ink/10 bg-white">
+            <Image src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} sizes="(min-width: 768px) 72vw, 100vw" className="aspect-[16/9] w-full object-cover" />
+            <figcaption className="flex flex-col gap-3 p-5 md:p-6 xl:flex-row xl:items-center xl:justify-between xl:gap-6">
+              <div>
+              <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-[color:var(--accent-orange)]">Recognition</p>
+              <p className="mt-2 text-[14px] leading-[1.5] text-ink">{photo.caption}</p>
+              </div>
+              {photo.href ? (
+                <a href={photo.href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 shrink-0 items-center text-[13px] text-[color:var(--body)] underline decoration-ink/25 underline-offset-4 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+                  View Spring Show page ↗
+                </a>
+              ) : null}
+            </figcaption>
+          </figure>
+        ) : null}
+      </div>
+    );
+  }
   return (
     <div>
       <div className="space-y-12 md:space-y-16">
         {items.map((item) => (
-          <article
-            key={item.number}
-            className="grid gap-4 md:grid-cols-12 md:gap-10"
-          >
-            <div className="md:col-span-5">
-              <h3 className="text-[24px] font-medium leading-[1.3] tracking-[-0.015em] text-ink">
-                <RichText text={item.title} />
-              </h3>
-            </div>
-            <div className="md:col-span-7">
-              <p className="text-[16px] font-light leading-[1.7] text-[color:var(--body)]">
-                <RichText text={item.body} />
-              </p>
-            </div>
+          <article key={item.number} className="max-w-[62ch]">
+            <h3 className="text-[24px] font-medium leading-[1.3] tracking-[-0.015em] text-ink">
+              <RichText text={item.title} />
+            </h3>
+            <p className="mt-4 text-[16px] font-light leading-[1.7] text-[color:var(--body)]">
+              <RichText text={item.body} />
+            </p>
           </article>
         ))}
       </div>

@@ -78,9 +78,25 @@ export type CaseBlock = {
 
 export type CaseContentBlock =
   | {
+      kind: "privateAccessTeaser";
+      email: string;
+    }
+  | {
+      kind: "serviceVision";
+      current: { title: string; body: string };
+      ambition: { title: string; body: string };
+      foundations: { title: string; body: string }[];
+      takeaway: string;
+    }
+  | {
       kind: "callout";
       title?: string;
       body: string;
+    }
+  | {
+      kind: "decisionReasoning";
+      title: string;
+      items: { title: string; body: string }[];
     }
   | {
       kind: "logicDemo";
@@ -124,6 +140,7 @@ export type CaseContentBlock =
       filename: string;
       description: string;
       mediaType?: "image" | "video";
+      edgeCrop?: boolean;
       /** Optional public URL under `/public` (e.g. `/media/...`). If present, renders real media instead of a placeholder. */
       src?: string;
       ratio?: ImageRatio;
@@ -141,6 +158,7 @@ export type CaseContentBlock =
     }
   | {
       kind: "reflectionInsights";
+      layout?: "editorial";
       items: {
         number: string;
         title: string;
@@ -154,6 +172,11 @@ export type CaseContentBlock =
         height: number;
         href?: string;
       };
+    }
+  | {
+      kind: "nextStepHighlight";
+      title: string;
+      body: string;
     }
   | {
       kind: "storyBeats";
@@ -203,7 +226,7 @@ export type CaseContentBlock =
           tools: string[];
         };
         /** Editorial arrangement of the step's artifacts. Defaults to "single". */
-        layout?: "stacked" | "asymmetric" | "photoPair" | "single";
+        layout?: "stacked" | "asymmetric" | "photoPair" | "single" | "comparisons";
         images?: {
           src: string;
           alt: string;
@@ -214,6 +237,7 @@ export type CaseContentBlock =
           height: number;
           /** Photos may fill their frame; text-heavy artifacts must not be cropped. */
           fit?: "cover" | "contain";
+          compact?: boolean;
         }[];
       }[];
     }
@@ -359,6 +383,18 @@ export type CaseContentBlock =
       steps: { num: string; name: string; note?: string; tag?: string }[];
     }
   | {
+      kind: "responseFormatComparison";
+      reasoning: { title: string; body: string }[];
+      options: {
+        number: string;
+        title: string;
+        body: string;
+        image: { src: string; description: string };
+      }[];
+      selectedNumber: string;
+      caption: string;
+    }
+  | {
       kind: "explorationCards";
       intro?: string;
       options: {
@@ -493,6 +529,7 @@ export type CaseStudy = {
   role: string;
   tools: string[];
   focus: string[];
+  status?: string;
   team?: string;
   /** Optional 4th meta column rendered next to Role/Tools/Focus when present. */
   timeline?: string;
@@ -514,22 +551,14 @@ export const projects: CaseStudy[] = [
     slug: "fini",
     title: "Fini",
     tagline:
-      "An AI planner that makes personal goals\neasier to start and easier to achieve.",
+      "AI planner designed to turn personal goals into manageable next steps",
     summary:
-      "Designed and developed an AI productivity mobile app that adapts to users' energy levels using Apple Health data",
+      "Designed and built an AI planner that uses Apple Health data to turn personal goals into manageable next steps",
     category: "AI UX / Productivity",
     tags: ["Agentic Coding"],
     role: "Sole Designer + Developer",
-    tools: [
-      "Cursor",
-      "SwiftUI",
-      "Supabase",
-      "Figma",
-    ],
-    focus: [
-      "Agentic Coding",
-      "Bio-adaptive UX",
-    ],
+    tools: ["Cursor", "SwiftUI", "Supabase", "Figma"],
+    focus: ["iPhone + Apple Watch working prototype"],
     year: "2026",
     cover: {
       filename: "fini_thumbnail.mp4",
@@ -548,10 +577,38 @@ export const projects: CaseStudy[] = [
     featured: true,
     sections: [
       {
+        id: "outcome",
+        title: "Outcome",
+        eyebrow: "",
+        body: "",
+        contentBlocks: [
+          {
+            kind: "reflectionInsights",
+            layout: "editorial",
+            items: [
+              {
+                number: "01",
+                title: "A working prototype, tested on real devices",
+                body: "I designed and built Fini across iPhone and Apple Watch, connecting Apple Health data with AI-powered task breakdown and recommendations in a working prototype. Testing it in my daily routine guided refinements to permissions, missing-data states, and cross-device sync.",
+              },
+            ],
+            photo: {
+              src: "/images/fini/fini_reflection_2.jpg",
+              alt: "Jihyeon presenting Fini on a large display at the Academy of Art University Spring Show",
+              caption:
+                "Selected for the Academy of Art University 2026 Spring Show!",
+              width: 2400,
+              height: 1602,
+              href: "https://2026springshow.academyart.edu/student/jihyeon-jang/",
+            },
+          },
+        ],
+      },
+      {
         id: "research",
         title: "Research",
         eyebrow:
-          "Personal goals kept losing to work, school, and deadlines.",
+          "Personal goals were pushed back until little energy remained",
         body: "Look at the plans you finished this week, then look at the ones you postponed. Personal goals rarely did, even when they mattered more to your long-term growth. Why does this keep happening?",
         contentBlocks: [
           {
@@ -603,7 +660,7 @@ export const projects: CaseStudy[] = [
       {
         id: "solution",
         title: "Solution",
-        eyebrow: "Design direction",
+        eyebrow: "Focus on the decision just before action",
         body: "The research pointed to a critical moment before action: users returned to personal plans with changing capacity and still had to decide what was realistic and where to begin. I translated these findings into one design goal and two principles for Fini.",
         contentBlocks: [
           {
@@ -612,17 +669,16 @@ export const projects: CaseStudy[] = [
               "Follow-through rose and fell with daily capacity",
               "Starting was the main point of failure",
             ],
-            goal:
-              "Help users begin with a manageable next step that fits their current capacity.",
+            goal: "Help users begin with a manageable next step that fits their current capacity.",
             principles: [
-              "Adapt the plan to the user's current capacity.",
-              "Make the next step clear and immediately actionable.",
+              "Recommend a next step based on estimated capacity.",
+              "Make the starting point explicit.",
             ],
           },
           {
             kind: "subheading",
-            title: "Product logic flow",
-            body: "Based on the design principles, I mapped Fini's product logic, including the inputs it uses, how it processes them, and where users can review or override the result.",
+            title: "From a goal to a next step the user can review",
+            body: "I designed the flow to turn a goal into smaller tasks and use an estimate of capacity to recommend where to begin. The flow includes the recommendation’s reasoning and options to edit or override it.",
           },
           {
             kind: "productLogicFlow",
@@ -633,7 +689,7 @@ export const projects: CaseStudy[] = [
         id: "final-product",
         title: "Final Product",
         eyebrow:
-          "Fini: making personal goals easier to start and easier to achieve.",
+          "Fini: an AI planner that turns personal goals into smaller steps and recommends where to start.",
         body: "Fini adapts task recommendations to the user's current capacity. It uses Apple Health data to prioritize tasks, breaks down larger tasks when capacity is low, and turns voice input into a structured plan.",
         contentBlocks: [
           {
@@ -641,24 +697,24 @@ export const projects: CaseStudy[] = [
             features: [
               {
                 number: "01",
-                title: "Capacity-aware recommendations",
-                body: "Fini estimates the user's current capacity using sleep, HRV, and activity data from Apple Health. Tasks are prioritized based on that estimate.",
-                videoSrc: r2Url(R2_MEDIA.finiThumbnail),
-                videoDescription:
-                  "Fini recommends and prioritizes tasks based on the user's current capacity",
-              },
-              {
-                number: "02",
-                title: "Adaptive task breakdown",
-                body: "When capacity is low, Fini breaks large tasks into smaller steps and shows where to start.",
+                title: "Give users a smaller place to start",
+                body: "Research pointed to difficulty getting started. I designed Fini to break larger tasks into smaller steps when estimated capacity is low, giving users a specific starting point.",
                 videoSrc: r2Url(R2_MEDIA.finiProactiveAtomization),
                 videoDescription:
                   "Fini breaks a large task into manageable next steps",
               },
               {
+                number: "02",
+                title: "Use health data to inform task priorities",
+                body: "Because participants’ energy varied from day to day, I explored Apple Health data as an input to task recommendations. Fini uses sleep, heart rate variability (HRV), and activity signals to estimate capacity and suggest priorities.",
+                videoSrc: r2Url(R2_MEDIA.finiThumbnail),
+                videoDescription:
+                  "Fini recommends and prioritizes tasks based on the user's current capacity",
+              },
+              {
                 number: "03",
-                title: "Voice-based task capture",
-                body: "Users can describe a goal by voice. Fini converts it into tasks, subtasks, and a default priority.",
+                title: "Capture the goal before organizing it",
+                body: "Users describe what they want to do in their own words. Fini turns the spoken goal into tasks, subtasks, and a suggested priority.",
                 videoSrc: r2Url(R2_MEDIA.finiVoiceTaskEntry),
                 videoDescription:
                   "Fini converts a spoken goal into structured tasks and subtasks",
@@ -670,15 +726,15 @@ export const projects: CaseStudy[] = [
       {
         id: "build-iterate",
         title: "Process",
-        eyebrow: "How I built Fini with an agentic coding workflow",
-        body: "I built and tested the iOS and watchOS apps with Cursor. An agentic coding workflow helped me get the core system working early, so I could test live AI responses, HealthKit data, and cross-device behavior on real devices.",
+        eyebrow: "Build the experience to test it on real devices",
+        body: "I built a working iOS and watchOS prototype to test live AI responses, HealthKit data, and cross-device behavior. Using Cursor helped me get the core workflow running early so I could evaluate how these parts worked together.",
         contentBlocks: [
           {
             kind: "processSteps",
             steps: [
               {
                 num: "01",
-                title: "Define the Product and System",
+                title: "Define how the system works together",
                 body: "I created the PRD and Systems Architecture first to map the data flow, device responsibilities, permissions, and fallback states before coding. Because Fini works across iOS, watchOS, HealthKit, AI, and a backend, designing each screen separately would not show where the experience could break.",
                 overview: {
                   label: "Define",
@@ -707,7 +763,7 @@ export const projects: CaseStudy[] = [
               },
               {
                 num: "02",
-                title: "Build a Working Prototype",
+                title: "Build and review the core workflow",
                 body: "I used the PRD and Systems Architecture as project context for the first working build. I reviewed the generated code and refined each feature against the product logic.",
                 overview: {
                   label: "Build",
@@ -737,7 +793,7 @@ export const projects: CaseStudy[] = [
               },
               {
                 num: "03",
-                title: "Test On-Device",
+                title: "Test in daily use",
                 body: "I used Fini in my daily routine and recorded issues in a QA log. I checked permissions, missing data, loading time, and iPhone–Watch behavior, then fixed the issues in short iterations.",
                 overview: {
                   label: "Test",
@@ -768,17 +824,36 @@ export const projects: CaseStudy[] = [
               },
               {
                 num: "04",
-                title: "Refine the Experience",
-                body: "Once the core workflow was stable, I used Figma to refine the information hierarchy, interaction states, and visual consistency across iOS and watchOS. I then applied those changes to the working build.",
+                title: "Refine hierarchy and interaction states",
+                body: "Once the core workflow was working, I refined the information hierarchy, interaction states, and visual consistency in Figma, then applied those changes to the iOS and watchOS build.",
                 overview: {
                   label: "Refine",
                   output: "Refined cross-device experience",
                   tools: ["Figma", "Cursor", "SwiftUI"],
                 },
-                layout: "single",
+                layout: "comparisons",
                 images: [
                   {
+                    src: "/images/fini/process/task-entry-before-after.jpg",
+                    alt: "Before and after task entry: an inline add control beside search becomes a prominent orange action in the bottom navigation",
+                    caption:
+                      "Task entry: from an inline control beside search to a prominent action in the bottom navigation.",
+                    width: 3840,
+                    height: 2160,
+                    fit: "contain",
+                  },
+                  {
+                    src: "/images/fini/process/visual-trust-before-after.jpg",
+                    alt: "Before and after recommendation context: the refined design shows health signals alongside the recommended next step",
+                    caption:
+                      "Recommendation context: health signals are shown alongside the next step.",
+                    width: 3840,
+                    height: 2160,
+                    fit: "contain",
+                  },
+                  {
                     src: "/images/fini/process/process_04_1.png",
+                    compact: true,
                     alt: "Figma design system page with Fini's typography scale, color ramps, buttons, spacing, radius, and shadow tokens",
                     caption:
                       "A shared design system kept type, color, and spacing consistent across iOS and watchOS.",
@@ -799,27 +874,19 @@ export const projects: CaseStudy[] = [
         contentBlocks: [
           {
             kind: "reflectionInsights",
+            layout: "editorial",
             items: [
               {
                 number: "01",
-                title: "0→1 Product Development",
-                body: "I took Fini from research and product definition to a working iOS and watchOS product, gaining experience across design, architecture, and implementation.",
-              },
-              {
-                number: "02",
-                title: "Multimodal Systems Thinking",
-                body: "Working across voice input, health data, iOS, and watchOS taught me that friction often appears between touchpoints. Looking at the full system helped me make better product decisions.",
+                title: "Designing the connections between screens",
+                body: "Testing Fini in daily use surfaced issues with timing, permissions, and sync. Those issues showed me how much the experience depended on the connections between devices and data sources.",
               },
             ],
-            photo: {
-              src: "/images/fini/fini_reflection_2.jpg",
-              alt: "Jihyeon presenting Fini on a large display at the Academy of Art University Spring Show",
-              caption:
-                "Selected for the Academy of Art University 2026 Spring Show!",
-              width: 4324,
-              height: 2886,
-              href: "https://2026springshow.academyart.edu/student/jihyeon-jang/",
-            },
+          },
+          {
+            kind: "nextStepHighlight",
+            title: "Launch on the App Store",
+            body: "I’m preparing Fini for an App Store launch. After launch, I plan to gather feedback on how its recommendations fit into people’s daily routines.",
           },
         ],
       },
@@ -829,14 +896,15 @@ export const projects: CaseStudy[] = [
     slug: "strawberry-matcha",
     title: "Strawberry Matcha",
     tagline:
-      "AI agent for marriage-based green card applicants\n(CR1 or F2A) filing without a lawyer.",
+      "An AI assistant for people preparing a marriage-based green card application without a lawyer.",
     summary:
-      "Designed a trustworthy AI assistant for legal workflows, focusing on safety guardrails, transparency, and human oversight",
+      "Designed, built, and shipped an AI assistant that helps people prepare a marriage-based green card application without a lawyer",
     category: "AI UX / Legal workflow",
     tags: ["Agentic Coding"],
-    role: "AI UX Designer · Solo project",
+    role: "AI Product Designer + Builder",
     tools: ["Cursor", "Claude API", "Supabase", "Figma"],
     focus: ["Conversational AI", "Decision-support UX"],
+    status: "Shipped · Private access",
     year: "2026",
     cover: {
       filename: "strawberryMatcha_thumbnail.mp4",
@@ -855,9 +923,21 @@ export const projects: CaseStudy[] = [
     featured: true,
     sections: [
       {
+        id: "outcome",
+        title: "Outcome",
+        eyebrow: "Designed, built, and shipped.",
+        body: "Strawberry Matcha is an AI assistant for people preparing a marriage-based green card application without a lawyer. It connects case intake, personalized guidance, form preparation, and next steps. I took it from research and design through development and deployment.",
+        contentBlocks: [
+          {
+            kind: "privateAccessTeaser",
+            email: "jihyeonjang102@gmail.com",
+          },
+        ],
+      },
+      {
         id: "problem",
         title: "Problem",
-        eyebrow: "Filing alone leads to mistakes. General AI makes it worse.",
+        eyebrow: "Filing alone leads to mistakes. General AI makes it worse",
         body: "Many couples applying for a marriage-based green card file without a lawyer. Legal fees run thousands of dollars, and the process looks doable, so they handle it themselves. Then the details catch up. 1 in 4 applicants gets a Request for Evidence for avoidable errors, and each one adds three to five months. General AI doesn't fill the gap. It hallucinates on legal details and answers for a generic case, not theirs.",
         contentBlocks: [
           {
@@ -878,7 +958,7 @@ export const projects: CaseStudy[] = [
             kind: "subheading",
             first: true,
             title:
-              "Ask Strawberry Matcha, a conversation that knows your case.",
+              "Ask Strawberry Matcha, a conversation that knows your case",
             body: "Users can ask anything, anytime. Strawberry Matcha answers based on the applicant's actual case status and preparation progress, and updates the case as the conversation continues.",
           },
           {
@@ -886,13 +966,14 @@ export const projects: CaseStudy[] = [
             filename: "demo_01.mp4",
             description: "Ask Strawberry Matcha demo",
             mediaType: "video",
+            edgeCrop: true,
             ratio: "16/9",
             src: r2Url(R2_MEDIA.strawberryMatchaDemo01),
           },
           {
             kind: "subheading",
             title:
-              "Field Translator, fills the gap between your real life and the form.",
+              "Field Translator, fills the gap between your real life and the form",
             body: "When users upload any edition of a USCIS form PDF, Strawberry Matcha reads the actual form fields, cross-references them with the user's case data, and tells them exactly what to enter in each field. It also handles tricky format conversions, such as restructuring a Korean address to fit U.S. form fields or matching a Korean name to its passport romanization.",
           },
           { kind: "fieldTranslator" },
@@ -901,13 +982,14 @@ export const projects: CaseStudy[] = [
             filename: "demo_02.mp4",
             description: "Field Translator walkthrough",
             mediaType: "video",
+            edgeCrop: true,
             ratio: "16/9",
             src: r2Url(R2_MEDIA.strawberryMatchaDemo02),
           },
           {
             kind: "subheading",
             title:
-              "Timeline guidance, so you know where you are and what's next.",
+              "Timeline guidance, so you know where you are and what's next",
             body: "Each milestone shows where the applicant is in the process, what the step actually means, and what usually happens next, so the case never feels like a black box.",
           },
           {
@@ -915,6 +997,7 @@ export const projects: CaseStudy[] = [
             filename: "demo_03.mp4",
             description: "Timeline screen",
             mediaType: "video",
+            edgeCrop: true,
             ratio: "16/9",
             src: r2Url(R2_MEDIA.strawberryMatchaDemo03),
           },
@@ -923,7 +1006,7 @@ export const projects: CaseStudy[] = [
       {
         id: "process",
         title: "How I Built",
-        eyebrow: "From concept to crafted product in five steps.",
+        eyebrow: "From concept to crafted product in five steps",
         body: "",
         contentBlocks: [
           {
@@ -970,26 +1053,27 @@ export const projects: CaseStudy[] = [
         contentBlocks: [
           {
             kind: "subheading",
-            title: "Reducing cognitive overload in chat.",
+            title: "Restructuring answers around a next step",
             compact: true,
           },
           {
-            kind: "prose",
-            body: "The first version dumped each response into one long paragraph. In user testing, the answers were accurate but people didn't act on them. They skimmed, asked me to repeat things the AI had already said, and gave up mid-task. I explored three response formats before settling on one.",
-          },
-          {
-            kind: "explorationCards",
+            kind: "responseFormatComparison",
+            reasoning: [
+              {
+                title: "What testing revealed",
+                body: "In testing, users skimmed long answers, asked me to repeat information already on screen, and abandoned tasks.",
+              },
+              {
+                title: "Why I changed the format",
+                body: "I explored three response formats. I chose an acknowledgment, structured information, a focused case question, and suggested follow-ups to keep the exchange conversational while giving users a clearer way to continue.",
+              },
+            ],
             options: [
               {
                 number: "1",
-                title: "Single response paragraph.",
-                pros: ["Fast to implement; no extra UI."],
-                cons: [
-                  "Buries what matters most.",
-                  "Users don't know what to ask next.",
-                ],
+                title: "Single paragraph",
+                body: "Simple to implement, but key information was buried.",
                 image: {
-                  filename: "conversationalAIUI/01.png",
                   description:
                     "Single response paragraph: a long block of text that buries the answer.",
                   src: "/images/strawberryMatcha/designDecision/conversationalAIUI/01.png",
@@ -997,14 +1081,9 @@ export const projects: CaseStudy[] = [
               },
               {
                 number: "2",
-                title: "Full doc-style hierarchy with headers and bullets.",
-                pros: ["Maximum scannability."],
-                cons: [
-                  "Loses conversational warmth.",
-                  "Overkill for short answers.",
-                ],
+                title: "Document-style response",
+                body: "Clear sections, but too heavy for short exchanges.",
                 image: {
-                  filename: "conversationalAIUI/02.png",
                   description:
                     "Doc-style response with bold headers and bullet lists.",
                   src: "/images/strawberryMatcha/designDecision/conversationalAIUI/02.png",
@@ -1012,39 +1091,31 @@ export const projects: CaseStudy[] = [
               },
               {
                 number: "3",
-                title:
-                  "Two-layer voice (serif acknowledgment + sans-serif info) with suggested follow-ups.",
-                pros: [
-                  "Reads warm and human.",
-                  "Scannable at a glance.",
-                  "Nudges the next question.",
-                ],
-                cons: ["More design and prompt work."],
+                title: "Structured answer with follow-ups",
+                body: "My choice for balancing readability and conversational tone. Required more design and prompt work.",
                 image: {
-                  filename: "conversationalAIUI/03.png",
                   description:
                     "Two-layer response: serif acknowledgment, sans-serif body, suggested follow-up chips.",
                   src: "/images/strawberryMatcha/designDecision/conversationalAIUI/03.png",
                 },
               },
             ],
-            finalPickLabel: "Final pick: Version 3",
-            finalPickBody:
-              "Two-layer voice keeps the chat warm but makes the answer scannable, and the suggested follow-ups stop users from getting stuck on what to ask next.",
+            selectedNumber: "3",
+            caption: "Three design explorations. Version 3 was selected for the prototype.",
           },
           {
-            kind: "image",
-            src: "/images/strawberryMatcha/designDecision/conversationalAIUI/final.jpg",
-            alt: "Final design: two-layer voice response with serif acknowledgment, sans-serif info, and suggested follow-up chips.",
-          },
-          {
-            kind: "subheading",
-            title: "Redesigning onboarding to stop hallucinations.",
-            compact: true,
-          },
-          {
-            kind: "prose",
-            body: "The original onboarding was too short. The AI guessed to fill gaps, and hallucinations broke trust fast. So I studied how immigration lawyers intake clients. Their upfront questions are how a lawyer learns the case before giving advice. I rebuilt onboarding around those same questions, so the AI starts with enough context to be accurate from the first message.",
+            kind: "decisionReasoning",
+            title: "Collecting case context before the first conversation",
+            items: [
+              {
+                title: "What I learned",
+                body: "The original onboarding left gaps in the applicant’s case information, and the AI filled them with assumptions. I studied how immigration lawyers intake clients and rebuilt onboarding around those questions.",
+              },
+              {
+                title: "What I changed",
+                body: "The revised flow collects case details upfront and ends with a summary users can review. I made this change to reduce assumptions at the start of the conversation.",
+              },
+            ],
           },
           {
             kind: "imageCarousel",
@@ -1097,26 +1168,34 @@ export const projects: CaseStudy[] = [
       {
         id: "reflection",
         title: "Reflection",
-        eyebrow:
-          "What I took away from designing an AI agent for a high-stakes legal workflow.",
-        body: "",
+        eyebrow: "Building it changed how I decide what is worth building.",
+        body: "My biggest takeaway was that being able to build a product is only part of deciding whether it is worth building. I now think more carefully about the work customers need done, what it costs to deliver, and why they would trust a business to do it.",
         contentBlocks: [
           {
-            kind: "takeawayCards",
-            cards: [
+            kind: "serviceVision",
+            current: {
+              title: "Help getting an application ready.",
+              body: "I connected intake, guidance, and form preparation to address more of the work applicants seek from an immigration attorney.",
+            },
+            ambition: {
+              title: "A service applicants could hire.",
+              body: "[YC’s focus](https://podcasts.apple.com/us/podcast/how-to-pick-a-startup-idea/id1236907421?i=1000773139706) on selling outcomes shaped my ambition to provide the service itself. If AI lowers delivery costs, that help could become affordable to more applicants.",
+            },
+            foundations: [
               {
-                title: "Designing an AI agent is designing how it thinks.",
-                body: "Most of the work happened underneath the screens. Prompts, follow-up logic, what the AI asks versus what it answers, what it stores about the user. The visible UI was the smallest part.",
+                title: "Demand and trust",
+                body: "What would applicants pay to hand over, and trust us to do?",
               },
               {
-                title: "Onboarding is data acquisition, not a signup.",
-                body: "How well an AI agent performs depends on what it knows going in. Designing onboarding well is designing the AI's first impression of the user, and everything downstream flows from there.",
+                title: "Quality and cost",
+                body: "How much human review is needed, and can the price cover it?",
               },
               {
-                title: "Conversational UX is about pacing, not just tone.",
-                body: "Users filing alone don't need more information. They need information at the right moment, in a shape they can act on, with a clear next step. That's a design problem, not a content problem.",
+                title: "Scope and permissions",
+                body: "What can the service commit to delivering, and what qualifications and permissions would that require?",
               },
             ],
+            takeaway: "I shipped the product. Now I need to test whether it can support a business.",
           },
         ],
       },
@@ -1139,7 +1218,8 @@ export const projects: CaseStudy[] = [
     theme: "dark",
     cover: {
       filename: "final_4_1.jpg",
-      description: "AEON on water with gull-wing door open and seat extended — case study hero",
+      description:
+        "AEON on water with gull-wing door open and seat extended — case study hero",
       ratio: "16/9",
       src: "/images/aeon/final/final_4_1.jpg",
     },
@@ -1164,8 +1244,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "annotatedCallout",
             label: "Autodesk Mission",
-            body:
-              "\u201CTo empower everyone, everywhere to design and make anything.\u201D",
+            body: "\u201CTo empower everyone, everywhere to design and make anything.\u201D",
             tone: "neutral",
             variant: "panel",
           },
@@ -1208,7 +1287,7 @@ export const projects: CaseStudy[] = [
       {
         id: "problem",
         title: "Problem",
-        eyebrow: "Rising sea levels could make existing roads unreliable.",
+        eyebrow: "Rising sea levels could make existing roads unreliable",
         body: "With Autodesk's mission as a starting point, we researched the challenges that could affect how people move in 2050. Rising sea levels became our focus because flooding could make existing roads increasingly unreliable.",
         contentBlocks: [
           {
@@ -1238,8 +1317,7 @@ export const projects: CaseStudy[] = [
                 tagline: "One continuous experience, two terrains.",
                 videoSrc: r2Url(R2_MEDIA.aeonPrinciple1),
                 iconSrc: "/images/aeon/principles/seamless.svg",
-                hoverDescription:
-                  "Move seamlessly between\nland and water.",
+                hoverDescription: "Move seamlessly between\nland and water.",
               },
               {
                 number: "02",
@@ -1247,8 +1325,7 @@ export const projects: CaseStudy[] = [
                 tagline: "The right information, on the right surface.",
                 videoSrc: r2Url(R2_MEDIA.aeonPrinciple2),
                 iconSrc: "/images/aeon/principles/multisensory.svg",
-                hoverDescription:
-                  "Stay aware through multisensory cues.",
+                hoverDescription: "Stay aware through multisensory cues.",
               },
               {
                 number: "03",
@@ -1257,8 +1334,7 @@ export const projects: CaseStudy[] = [
                   "The UI steps back when it can, shows up when it matters.",
                 videoSrc: r2Url(R2_MEDIA.aeonPrinciple3),
                 iconSrc: "/images/aeon/principles/freedom.svg",
-                hoverDescription:
-                  "Move beyond traditional roads.",
+                hoverDescription: "Move beyond traditional roads.",
               },
             ],
           },

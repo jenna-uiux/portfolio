@@ -15,6 +15,8 @@ export function Nav() {
   const isMindWorld =
     pathname === "/about/mind-world" ||
     pathname.startsWith("/about/mind-world/");
+  const isAeon =
+    pathname === "/work/aeon" || pathname.startsWith("/work/aeon/");
 
   useEffect(() => {
     setMounted(true);
@@ -45,12 +47,11 @@ export function Nav() {
   // Prevent hydration mismatch: initial render must match server HTML.
   const effectiveScrolled = mounted ? scrolled : false;
   const hasSolidBackground = effectiveScrolled || mobileOpen;
+  const isDarkPage = isMindWorld || isAeon;
   const isDarkHeader =
-    isMindWorld ||
-    (!hasSolidBackground &&
-      (pathname === "/about" || pathname === "/work/aeon"));
+    isDarkPage || (!hasSolidBackground && pathname === "/about");
 
-  const headerTone = isMindWorld
+  const headerTone = isDarkPage
     ? hasSolidBackground
       ? "bg-[#060a0f]"
       : "bg-transparent"

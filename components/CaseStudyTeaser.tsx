@@ -39,12 +39,12 @@ export function CaseStudyTeaser({ project }: Props) {
     <section
       id={`work-${project.slug}`}
       aria-labelledby={`teaser-${project.slug}`}
-      className="py-3 md:py-20 lg:py-24"
+      className="py-[5px] md:py-20 lg:py-24"
     >
       <div className="container-ultra">
-        <div className="group block">
+        <div className="group -mx-[10px] block md:mx-0">
           <motion.div
-            className="relative"
+            className="home-project-reveal relative"
             ref={ref}
             initial={reduceMotion ? false : { opacity: 1, y: 44 }}
             animate={
@@ -85,7 +85,7 @@ export function CaseStudyTeaser({ project }: Props) {
               {project.summary}
             </p>
 
-            <div className="relative overflow-hidden rounded-lg">
+            <div className="relative overflow-hidden rounded-[5px] md:rounded-lg">
               <div className="relative z-20 origin-center scale-[1.04] transition-transform duration-700 ease-out group-hover:scale-[1.06]">
                 <Link
                   href={`/work/${project.slug}`}

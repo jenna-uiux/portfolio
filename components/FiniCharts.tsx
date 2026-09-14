@@ -41,7 +41,7 @@ function ChartFrame({
     <figure className="w-full min-w-0">
       {isObligation ? (
         <div
-          role="img"
+          role="group"
           aria-label={TITLES[kind]}
           className="w-full min-w-0 overflow-x-auto overscroll-x-contain rounded-lg [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >

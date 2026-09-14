@@ -91,14 +91,14 @@ export function FunGallery() {
   useGSAP(() => {
     const media = gsap.matchMedia();
     media.add({
-      desktop: "(min-width: 701px)",
+      desktop: "(min-width: 768px)",
       mobile: "(max-width: 767px)",
       reduce: "(prefers-reduced-motion: reduce)",
     }, context => {
       if (!page.current) return;
       // Layout cards stay fixed; only their clipped media surface moves.
       gsap.set(page.current.querySelectorAll("article"), { clearProps: "opacity,transform" });
-      if (context.conditions?.reduce) return;
+      if (context.conditions?.reduce || context.conditions?.mobile) return;
 
       const desktop = context.conditions?.desktop;
       const groups = page.current.querySelectorAll<HTMLElement>(desktop ? "[data-gallery-row]" : "article");

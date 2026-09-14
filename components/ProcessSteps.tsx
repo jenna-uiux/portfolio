@@ -18,6 +18,7 @@ export type ProcessStepImage = {
   width: number;
   height: number;
   fit?: "cover" | "contain";
+  compact?: boolean;
 };
 
 export type ProcessStep = {
@@ -29,7 +30,7 @@ export type ProcessStep = {
     output: string;
     tools: string[];
   };
-  layout?: "stacked" | "asymmetric" | "photoPair" | "single";
+  layout?: "stacked" | "asymmetric" | "photoPair" | "single" | "comparisons";
   images?: ProcessStepImage[];
 };
 
@@ -310,6 +311,23 @@ function StepArtifacts({ step }: { step: ProcessStep }) {
 
   const [primary, supporting] = images;
   const layout = step.layout ?? "single";
+
+  if (layout === "comparisons") {
+    return (
+      <div className="mt-8 space-y-10 md:mt-10 md:space-y-12">
+        {images.map((image) => (
+          <figure key={image.src}>
+            <div className={image.compact ? "mx-auto md:w-[85%]" : undefined}>
+              <Artifact image={image} sizes={image.compact ? "(min-width: 768px) 61vw, 100vw" : "(min-width: 768px) 72vw, 100vw"} />
+            </div>
+            <figcaption className="mt-3 text-center">
+              <p className="mx-auto max-w-[72ch] t-caption">{image.caption}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    );
+  }
 
   if (layout === "stacked") {
     return (

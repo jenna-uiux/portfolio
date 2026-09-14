@@ -47,8 +47,11 @@ export function useScrollReveal<T extends HTMLElement = HTMLElement>(
       const reduced =
         typeof window !== "undefined" &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const mobile =
+        typeof window !== "undefined" &&
+        window.matchMedia("(max-width: 767px)").matches;
 
-      if (reduced) {
+      if (reduced || mobile) {
         gsap.set(targets, { autoAlpha: 1, y: 0 });
         return;
       }

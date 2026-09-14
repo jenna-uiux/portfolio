@@ -24,6 +24,10 @@ import { AnnotatedCallout } from "./AnnotatedCallout";
 import { ProblemStatementCallout } from "./ProblemStatementCallout";
 import { NumberedTimeline } from "./NumberedTimeline";
 import { ExplorationCards } from "./ExplorationCards";
+import { ResponseFormatComparison } from "./ResponseFormatComparison";
+import { DecisionReasoning } from "./DecisionReasoning";
+import { ServiceVision } from "./ServiceVision";
+import { PrivateAccessTeaser } from "./PrivateAccessTeaser";
 import { ImageCarousel } from "./ImageCarousel";
 import { ResearchMeta } from "./ResearchMeta";
 import { EvidenceInsights } from "./EvidenceInsights";
@@ -36,6 +40,7 @@ import { ProductLogicFlow } from "./ProductLogicFlow";
 import { ProcessSteps } from "./ProcessSteps";
 import { TakeawayCards } from "./TakeawayCards";
 import { ReflectionInsights } from "./ReflectionInsights";
+import { NextStepHighlight } from "./NextStepHighlight";
 import { ContrastGrid } from "./ContrastGrid";
 import { RoadWaterToggle } from "./RoadWaterToggle";
 import { IAPriorityMatrix } from "./IAPriorityMatrix";
@@ -149,6 +154,18 @@ function AgenticMetricPanel() {
 }
 
 export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
+  if (block.kind === "privateAccessTeaser") {
+    return <PrivateAccessTeaser {...block} />;
+  }
+
+  if (block.kind === "serviceVision") {
+    return <ServiceVision {...block} />;
+  }
+
+  if (block.kind === "decisionReasoning") {
+    return <DecisionReasoning {...block} />;
+  }
+
   if (block.kind === "chart") {
     return (
       <Chart
@@ -294,6 +311,7 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
         ratio={block.ratio ?? "16/9"}
         mediaType={block.mediaType ?? "image"}
         src={block.src}
+        edgeCrop={block.edgeCrop}
         sourceCaption={block.sourceCaption}
         captionLabel={block.captionLabel}
       />
@@ -423,6 +441,10 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
         finalPickBody={block.finalPickBody}
       />
     );
+  }
+
+  if (block.kind === "responseFormatComparison") {
+    return <ResponseFormatComparison {...block} />;
   }
 
   if (block.kind === "imageCarousel") {
@@ -670,7 +692,11 @@ export function ContentBlockRenderer({ block }: { block: CaseContentBlock }) {
   }
 
   if (block.kind === "reflectionInsights") {
-    return <ReflectionInsights items={block.items} photo={block.photo} />;
+    return <ReflectionInsights items={block.items} photo={block.photo} layout={block.layout} />;
+  }
+
+  if (block.kind === "nextStepHighlight") {
+    return <NextStepHighlight title={block.title} body={block.body} />;
   }
 
   if (block.kind === "image") {
@@ -918,6 +944,7 @@ function MediaPlaceholder({
   src,
   sourceCaption,
   captionLabel,
+  edgeCrop,
 }: {
   filename: string;
   description: string;
@@ -926,6 +953,7 @@ function MediaPlaceholder({
   src?: string;
   sourceCaption?: string;
   captionLabel?: string;
+  edgeCrop?: boolean;
 }) {
   if (src && mediaType === "video") {
     return (
@@ -939,7 +967,8 @@ function MediaPlaceholder({
           muted
           controls
           objectFit="contain"
-          className="rounded-2xl border border-ink/10"
+          edgeCrop={edgeCrop}
+          className="rounded-2xl border-0"
         />
         {sourceCaption ? <p className="mt-3 t-mono">{sourceCaption}</p> : null}
       </div>

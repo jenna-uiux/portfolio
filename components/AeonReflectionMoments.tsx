@@ -55,7 +55,7 @@ export function AeonReflectionMoments() {
     <div id="reflection-moments" className={`not-prose scroll-mt-24 ${styles.moments}`}>
       <div className={styles.heading}>
         <p className="t-eyebrow-mut">Behind the scenes</p>
-        <h3>A few moments along the way.</h3>
+        <h3>A few moments along the way</h3>
       </div>
 
       <div className={styles.grid}>

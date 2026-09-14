@@ -61,36 +61,6 @@ export function CaseStudyLayout({ project }: Props) {
   return (
     <div className="pb-16 pt-20 md:pb-24 md:pt-28" style={accentOverride}>
       {project.theme === "dark" ? <ThemeController theme="dark" /> : null}
-      <div className="sticky top-14 z-30 mb-9 border-y border-ink/10 bg-bg/90 backdrop-blur-md md:hidden">
-        <div className="container-ultra flex h-12 items-center gap-3">
-          <Link href="/work" className="grid size-10 shrink-0 place-items-center text-[18px]" aria-label="All work">
-            ←
-          </Link>
-          <label htmlFor="mobile-section-jump" className="sr-only">Jump to section</label>
-          <select
-            id="mobile-section-jump"
-            value={activeId}
-            onChange={(event) => {
-              const target = document.getElementById(event.target.value);
-              target?.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
-            className="h-10 min-w-0 flex-1 appearance-none bg-transparent pr-8 text-[13px] font-medium outline-none"
-            style={{
-              backgroundImage:
-                "linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%)",
-              backgroundPosition: "calc(100% - 12px) 50%, calc(100% - 7px) 50%",
-              backgroundSize: "5px 5px, 5px 5px",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-            {project.sections.map((section) => (
-              <option key={section.id} value={section.id}>
-                {section.title}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
       <div className="container-ultra grid min-w-0 gap-12 md:grid-cols-12">
         <aside
           aria-label="Case study outline"
@@ -152,7 +122,10 @@ export function CaseStudyLayout({ project }: Props) {
             >
               <Meta label="Role" value={project.role} />
               <Meta label="Tools" value={project.tools.join(", ")} />
-              <Meta label="Focus" value={project.focus.join(", ")} />
+              <Meta
+                label={project.status ? "Status" : project.slug === "fini" ? "Outcome" : "Focus"}
+                value={project.status ?? project.focus.join(", ")}
+              />
               {project.timeline ? (
                 <Meta label="Timeline" value={project.timeline} />
               ) : null}
@@ -160,7 +133,11 @@ export function CaseStudyLayout({ project }: Props) {
           </header>
 
           <div className="mt-10">
-            <CoverMedia cover={project.cover} ratio={project.cover.ratio ?? "16/9"} />
+            <CoverMedia
+              cover={project.cover}
+              ratio={project.cover.ratio ?? "16/9"}
+              edgeCrop={project.slug === "strawberry-matcha"}
+            />
           </div>
 
           <div className="mt-12">
@@ -186,7 +163,11 @@ export function CaseStudyLayout({ project }: Props) {
                 firstBlock?.kind === "backgroundPinnedDeck" &&
                 Boolean(firstBlock.kicker?.trim());
               const contentBlocksWrapperClass =
-                project.slug === "fini" && s.id === "research"
+                project.slug === "fini" && s.id === "reflection"
+                  ? "mt-6 grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10"
+                  : project.slug === "fini" && s.id === "outcome"
+                    ? "mt-6"
+                  : project.slug === "fini" && s.id === "research"
                   ? `mt-10 ${contentBlockRhythm}`
                   : s.body.trim()
                     ? `mt-12 ${contentBlockRhythm}`

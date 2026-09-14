@@ -1,0 +1,22 @@
+.root { margin: 0; min-width: 0; }
+.path { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 38px; }
+.current, .ambition { min-width: 0; border-top: 2px solid #bcc3a3; padding-top: 20px; }
+.ambition { border-top-color: #788449; }
+.label { margin: 0; color: #66713e; font-size: 12px; line-height: 1.5; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
+.path h3 { margin: 12px 0 0; color: #171717; font-size: 23px; font-weight: 500; line-height: 1.3; letter-spacing: -.025em; }
+.detail { margin: 14px 0 0; color: #555; font-size: 16px; line-height: 1.75; }
+.detail a { color: #5e693b; font-weight: 500; text-decoration: underline; text-decoration-color: #9aa57a; text-underline-offset: .2em; transition: color 160ms ease, text-decoration-color 160ms ease; }
+.detail a:hover { color: #3d4825; text-decoration-color: #3d4825; }
+.detail a:focus-visible { outline: 2px solid #788449; outline-offset: 3px; border-radius: 2px; }
+.foundations { margin-top: 34px; padding: 26px; background: #f2f3ed; border-radius: 10px; }
+.requirements { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 24px 0 0; }
+.requirement { min-width: 0; padding-top: 16px; border-top: 1px solid #daddd2; }
+.requirement dt { color: #5e693b; font-size: 16px; line-height: 1.6; font-weight: 500; }
+.requirement dd { margin: 8px 0 0; color: #555; font-size: 16px; line-height: 1.75; max-width: 74ch; }
+.takeaway { margin: 12px 0 0; max-width: 80ch; color: #34392b; font-size: 18px; line-height: 1.65; }
+@media (max-width: 767px) {
+  .path { grid-template-columns: 1fr; gap: 28px; }
+  .path h3 { font-size: 22px; }
+  .foundations { margin-top: 28px; padding: 22px; }
+  .requirements { grid-template-columns: 1fr; gap: 20px; }
+}

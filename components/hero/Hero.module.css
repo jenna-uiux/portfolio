@@ -107,111 +107,92 @@
   font-size: 16px;
   line-height: 1;
   transform: translateX(-50%);
-  animation: scroll-cue-float 2.1s ease-in-out infinite;
+  transition: border-color .25s, box-shadow .25s;
 }
-.scrollCue:hover {
+.scrollCue:hover,
+.scrollCue:focus-visible {
   background: #fff;
   box-shadow: 0 10px 24px #00000014;
+  border-color: #bcbcbc;
 }
-@keyframes scroll-cue-float {
-  0%,
-  100% {
-    transform: translateX(-50%) translateY(0);
-  }
-  50% {
-    transform: translateX(-50%) translateY(7px);
-  }
+.scrollArrow {
+  transform: translateY(calc(var(--exhale, 0) * 7px));
+}
+.scrollLabel {
+  position: absolute;
+  bottom: 58px;
+  white-space: nowrap;
+  font-size: 10px;
+  letter-spacing: .04em;
+  color: #686868;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity .2s, transform .2s;
+  pointer-events: none;
+}
+.scrollCue:hover .scrollLabel,
+.scrollCue:focus-visible .scrollLabel {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scrollCue:focus-visible,
+.root :global(.voice) button:focus-visible {
+  outline: 2px solid #777;
+  outline-offset: 4px;
 }
 .root :global(.voice) {
   position: absolute;
-  bottom: 32px;
+  bottom: 40px;
   right: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-.root :global(.voice) label,
-.root :global(.voice-caption) {
-  font-size: 9px;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #686868;
-  cursor: pointer;
-  text-align: center;
-  max-width: 160px;
-  line-height: 1.35;
-}
-.root :global(.voice-caption):global(.is-status) {
-  text-transform: none;
-  letter-spacing: 0.01em;
-  font-size: 10px;
-}
-.root :global(.voice-switch) {
-  position: relative;
-  width: 96px;
-  height: 44px;
 }
 .root :global(.voice) [data-slot='switch'] {
-  position: absolute;
-  inset: 0;
-  width: 96px;
-  height: 44px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid #e5e5e5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-width: 132px;
+  height: 36px;
+  padding: 0 14px;
+  color: #626262;
+  background: rgba(255, 255, 255, .45);
+  border: 1px solid #dedede;
   border-radius: 999px;
-  box-shadow: 0 8px 20px #0000000c;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.root :global(.voice):hover [data-slot='switch'],
+.root :global(.voice):focus-within [data-slot='switch'] {
+  border-color: #aaa;
+  color: #202020;
 }
 .root :global(.voice) [data-slot='switch'][data-checked] {
-  background: #171717;
-  border-color: #171717;
-}
-.root :global(.voice) [data-slot='switch-thumb'] {
-  width: 36px;
-  height: 36px;
-  position: absolute;
-  left: 4px;
-  top: 3px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 3px 8px #00000018;
-  translate: none;
-  transform: none;
-  transition: transform 0.3s;
-}
-.root :global(.voice) [data-slot='switch-thumb'][data-checked] {
-  transform: translateX(52px);
+  background: #f0f0f0;
+  border-color: #b8b8b8;
+  color: #171717;
 }
 .root :global(.switch-label) {
-  pointer-events: none;
-  position: absolute;
-  right: 13px;
-  top: 14px;
-  font-size: 10px;
-  line-height: 14px;
-  letter-spacing: 0.16em;
-  color: #555;
-}
-.root :global(.switch-label):global(.on) {
-  left: 13px;
-  right: auto;
-  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: .01em;
+  white-space: nowrap;
 }
 .root :global(.sound-icon) {
-  position: absolute;
-  pointer-events: none;
-  top: 11px;
-  left: 10px;
   display: flex;
   align-items: center;
-  gap: 1.75px;
+  gap: 1.5px;
   height: 16px;
-  transition: transform 0.3s;
+  flex: 0 0 auto;
+  pointer-events: none;
 }
-.root [data-slot='switch-thumb'] :global(.sound-icon) {
-  top: 10px;
-  left: 10px;
+.root :global(.voice-error) {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  width: 220px;
+  color: #686868;
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: right;
 }
 .root :global(.voice) button:disabled {
   cursor: wait;
@@ -221,7 +202,7 @@
   display: block;
   width: 1.75px;
   height: 6px;
-  background: #333;
+  background: currentColor;
   border-radius: 1px;
 }
 .root :global(.sound-icon) i:nth-child(2),
@@ -230,6 +211,20 @@
 }
 .root :global(.sound-icon) i:nth-child(3) {
   height: 14px;
+}
+.root :global(.voice):hover button:not([data-checked]) :global(.sound-icon) i,
+.root :global(.voice):focus-within button:not([data-checked]) :global(.sound-icon) i {
+  animation: sound-preview .8s ease-in-out infinite alternate;
+  animation-delay: var(--bar-delay, 0s);
+}
+.root :global(.sound-icon) i:nth-child(even) { --bar-delay: -.3s; }
+.root :global(.sound-icon) i:nth-child(3) { --bar-delay: -.55s; }
+.root :global(.voice) button[data-checked] :global(.sound-icon) i {
+  transform: scaleY(calc(.35 + var(--audio-level, 0) * 1.15));
+}
+@keyframes sound-preview {
+  from { transform: scaleY(.4); }
+  to { transform: scaleY(1.2); }
 }
 @media (max-width: 767px) {
   .root {

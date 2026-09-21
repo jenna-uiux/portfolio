@@ -26,6 +26,7 @@ export function Hero() {
     }
     audio.current = null;
     energy.current = 0;
+    interaction.current.soundEnabled = false;
   };
   async function toggle(on: boolean) {
     const id = ++request.current;
@@ -62,11 +63,12 @@ export function Hero() {
         let sum = 0;
         for (let i = 0; i < samples.length; i++)
           sum += ((samples[i] - 128) / 128) ** 2;
-        energy.current +=
-          (Math.min(1, Math.sqrt(sum / 256) * 5) - energy.current) * 0.18;
+        const level = Math.min(1, Math.sqrt(sum / 256) * 9);
+        energy.current += (level - energy.current) * (level > energy.current ? .4 : .1);
         audio.current.frame = requestAnimationFrame(update);
       };
       update();
+      interaction.current.soundEnabled = true;
       setVoice(true);
     } catch {
       stream?.getTracks().forEach((t) => t.stop());
@@ -91,16 +93,35 @@ export function Hero() {
     <section className={styles.root} aria-label="Introduction">
       <BinaryWorld energy={energy} interaction={interaction} />
       <InteractiveHeadline interaction={interaction} />
-      <a className={styles.scrollCue} href="#work" aria-label="Selected work">
-        <span aria-hidden="true">↓</span>
+      <a className={styles.scrollCue} href="#work" aria-label="Selected work"
+        onPointerEnter={() => { interaction.current.scrollPreview = 1; }}
+        onPointerLeave={() => { interaction.current.scrollPreview = 0; }}
+        onFocus={() => { interaction.current.scrollPreview = 1; }}
+        onBlur={() => { interaction.current.scrollPreview = 0; }}
+        onClick={(event) => {
+          if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            interaction.current.scrollAt = performance.now();
+          }
+        }}
+      >
+        <span className={styles.scrollLabel} aria-hidden="true">Selected work</span>
+        <span className={styles.scrollArrow} aria-hidden="true">↓</span>
       </a>
-      <div className="voice">
-        <div className="voice-switch">
+      <div className="voice"
+        onPointerEnter={() => { interaction.current.soundPreview = 1; }}
+        onPointerLeave={() => { interaction.current.soundPreview = 0; }}
+        onFocus={() => { interaction.current.soundPreview = 1; }}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) interaction.current.soundPreview = 0;
+        }}
+      >
           <button
             type="button"
             role="switch"
             id="hero-voice"
-            aria-label="Sound Reactive"
+            aria-label="Sound reactive microphone"
+            aria-describedby="hero-voice-caption"
+            title={voice ? 'Turn off microphone' : 'Use your microphone to animate the particles'}
             aria-checked={voice}
             aria-busy={pending}
             disabled={pending}
@@ -108,21 +129,18 @@ export function Hero() {
             data-checked={voice ? '' : undefined}
             onClick={() => void toggle(!voice)}
           >
-            <span className={'switch-label ' + (voice ? 'on' : '')} aria-hidden="true">
-              {pending ? '…' : voice ? 'ON' : 'OFF'}
-            </span>
-            <span data-slot="switch-thumb" data-checked={voice ? '' : undefined} aria-hidden="true">
-              <span className="sound-icon"><i /><i /><i /><i /><i /></span>
+            <span className="sound-icon" aria-hidden="true"><i /><i /><i /><i /><i /></span>
+            <span className="switch-label" aria-hidden="true">
+              {pending ? 'Connecting' : 'Sound reactive'}
             </span>
           </button>
-        </div>
-        <label
-          htmlFor="hero-voice"
-          className={'voice-caption' + (voice || error ? ' is-status' : '')}
+        <span
+          id="hero-voice-caption"
+          className={error ? 'voice-error' : 'sr-only'}
           aria-live="polite"
         >
-          {error || (voice ? 'Listening · nothing recorded' : 'Sound Reactive')}
-        </label>
+          {error || (pending ? 'Requesting microphone access' : voice ? 'Listening. Make a sound to animate the particles. Nothing recorded.' : 'Enable your microphone to animate the particles with sound.')}
+        </span>
       </div>
     </section>
   );

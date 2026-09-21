@@ -9,6 +9,7 @@ attribute vec3 aPosition;
 attribute vec4 aAppearance;
 uniform vec2 uSize,uPointer,uLightPosition;
 uniform float uLight,uTime,uYaw,uPitch,uEnergy,uVelocity,uDpr,uIntro,uLive,uEntrance;
+uniform float uBreath,uSoundPreview,uScrollHover,uDeparture;
 varying float vAlpha,vDigit,vDetail,vBlur;
 void main(){
  float seed=aAppearance.y;
@@ -18,7 +19,7 @@ void main(){
  // Calibrate the resting silhouette to equal horizontal and vertical radii.
  // Depth still controls glyph size, focus, and parallax when the camera moves.
  p.xy*=(3.6-p.z)/3.6;
- float breath=sin(uTime*.3)*.003+uEnergy*.035;
+ float breath=uBreath*(.035+uSoundPreview*.045)+uEnergy*.20;
  p.xy*=1.+breath;
  p.y+=sin(aPosition.x*8.+aPosition.y*3.+uTime*.2)*.008;
  float yaw=uYaw*.95;
@@ -73,6 +74,9 @@ void main(){
  vec2 direction=delta/max(dist,1.);
  pos+=direction*influence*(9.+uVelocity*16.);
  pos+=vec2(-direction.y,direction.x)*influence*uVelocity*10.;
+ float lowerHalf=smoothstep(uSize.y*.48,uSize.y*.8,pos.y);
+ pos.y+=uScrollHover*lowerHalf*12.;
+ pos.y+=uDeparture*uDeparture*uSize.y*(.16+seed*.18);
  float illumination=(1.-smoothstep(30.,280.,length(pos-uLightPosition)))*uLight;
  float depth=smoothstep(-.5,.5,p.z);
  float accent=traveler;
@@ -90,7 +94,8 @@ void main(){
  float appear=mix(worldReveal,smoothstep(.0,.25,uEntrance-startDelay)*(1.-dissolve),traveler);
  float absorption=mix(1.+.24*reception,mix(1.,.45,landing),traveler);
  // Falling glyphs enter through the viewport edge instead of fading in below it.
- vAlpha=(aAppearance.z*fog+influence*.045+illumination*.012)*clearText*appear*absorption;
+ float respiration=1.+uBreath*.14+uEnergy*.24;
+ vAlpha=(aAppearance.z*fog+influence*.045+illumination*.012)*clearText*appear*absorption*respiration*(1.-uDeparture*.3);
  vDigit=step(.5,fract(seed*11.1));
 }`;
 const fragment = `
@@ -236,6 +241,10 @@ export function BinaryWorld({ energy, interaction }: {
         'Intro',
         'Entrance',
         'Live',
+        'Breath',
+        'SoundPreview',
+        'ScrollHover',
+        'Departure',
       ].map((n) => [n, gl.getUniformLocation(program, 'u' + n)]),
     );
     let width = 0,
@@ -256,6 +265,8 @@ export function BinaryWorld({ energy, interaction }: {
       velocity = 0,
       targetVelocity = 0,
       lastInput = 0,
+      soundPreview = 0,
+      scrollPreview = 0,
       visible = true;
     const resize = () => {
       width = canvas.clientWidth;
@@ -310,7 +321,10 @@ export function BinaryWorld({ energy, interaction }: {
         (!reduced && elapsed < 3.8) ||
         now - lastInput < 1800 ||
         energy.current > 0.005 ||
-        interaction.current.light > 0.01;
+        interaction.current.light > 0.01 ||
+        interaction.current.soundPreview > 0 ||
+        interaction.current.scrollPreview > 0 ||
+        interaction.current.scrollAt >= 0;
       if (now - last < (active && !coarse ? 16 : 33)) {
         raf = requestAnimationFrame(render);
         return;
@@ -332,6 +346,18 @@ export function BinaryWorld({ energy, interaction }: {
       targetVelocity *= Math.exp(-dt * 4);
       gl.clear(gl.COLOR_BUFFER_BIT);
       const light = interaction.current;
+      soundPreview += ((light.soundEnabled ? 0 : light.soundPreview) - soundPreview) * smooth;
+      scrollPreview += (light.scrollPreview - scrollPreview) * smooth;
+      const breathingTime = Math.max(0, elapsed - 3.7);
+      const phase = breathingTime / 4.8 * Math.PI * 2;
+      const breath = reduced ? 0 : (.5 - .5 * Math.cos(phase));
+      const exhale = reduced ? 0 : Math.max(0, -Math.sin(phase));
+      const departureAge = light.scrollAt < 0 ? -1 : now - light.scrollAt;
+      const departure = reduced || departureAge < 0 ? 0 : Math.min(1, departureAge / 700);
+      if (departureAge > 1100) light.scrollAt = -1;
+      const hero = canvas.parentElement!;
+      hero.style.setProperty('--exhale', exhale.toFixed(3));
+      hero.style.setProperty('--audio-level', (reduced ? 0 : energy.current).toFixed(3));
       const bounds = canvas.getBoundingClientRect();
       gl.uniform2f(uniforms.LightPosition, light.x - bounds.left, light.y - bounds.top);
       gl.uniform1f(uniforms.Light, reduced ? 0 : light.light * live);
@@ -350,6 +376,10 @@ export function BinaryWorld({ energy, interaction }: {
       gl.uniform1f(uniforms.Intro, reduced ? 1 : Math.min(1, elapsed / 1.5));
       gl.uniform1f(uniforms.Entrance, reduced ? 3.7 : Math.min(3.7, elapsed));
       gl.uniform1f(uniforms.Live, live);
+      gl.uniform1f(uniforms.Breath, breath);
+      gl.uniform1f(uniforms.SoundPreview, reduced ? 0 : soundPreview);
+      gl.uniform1f(uniforms.ScrollHover, reduced ? 0 : scrollPreview);
+      gl.uniform1f(uniforms.Departure, departure);
       gl.drawArrays(gl.POINTS, 0, count);
       if (!reduced || elapsed < 1) raf = requestAnimationFrame(render);
     }
@@ -387,6 +417,8 @@ export function BinaryWorld({ energy, interaction }: {
       canvas.parentElement?.removeEventListener('pointermove', move);
       canvas.parentElement?.removeEventListener('pointerdown', move);
       canvas.parentElement?.removeEventListener('pointerleave', leave);
+      canvas.parentElement?.style.removeProperty('--exhale');
+      canvas.parentElement?.style.removeProperty('--audio-level');
       window.removeEventListener('pointerup', up);
       gl.deleteBuffer(buffer);
       gl.deleteBuffer(appearanceBuffer);

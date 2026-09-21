@@ -139,10 +139,10 @@ export function InteractiveHeadline({ interaction }: {
       <span className="headline-light" ref={light} aria-hidden="true" />
       <div className="headline" ref={root}>
         <h1 ref={heading}>
-          <span className="headline-entry">I design and build intuitive ways</span>
-          <br />
+          <span className="headline-entry">I design and build<br className="mobile-break" /> intuitive ways</span>
+          <br className="desktop-break" />{' '}
           <span className="second-line headline-entry">
-            for people to <span className="interact-word" ref={word}>interact</span> with AI
+            for people<br className="mobile-break" /> to <span className="interact-word" ref={word}>interact</span> with AI
           </span>
         </h1>
       </div>

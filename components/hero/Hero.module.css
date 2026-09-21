@@ -55,6 +55,9 @@
 .root :global(.second-line):global(.headline-entry) {
   animation-delay: 0.18s;
 }
+.root :global(.mobile-break) {
+  display: none;
+}
 @keyframes headline-arrive {
   from {
     transform: translate3d(0, 8px, 0);
@@ -228,6 +231,36 @@
 }
 @media (max-width: 767px) {
   .root {
+    height: auto;
+    min-height: 0;
+    padding: 148px 24px 64px;
+  }
+  .root :global(.headline) {
+    position: relative;
+    top: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+  }
+  .root h1 {
+    font-size: clamp(23px, 6.15vw, 32px);
+    line-height: 1.4;
+  }
+  .root :global(.headline-entry) {
+    display: inline;
+    white-space: normal;
+  }
+  .root :global(.second-line) {
+    margin-top: 0;
+  }
+  .root :global(.mobile-break) {
+    display: initial;
+  }
+  .root :global(.desktop-break),
+  .root :global(.binary-field),
+  .root :global(.headline-light),
+  .root :global(.voice),
+  .scrollCue {
     display: none;
   }
 }

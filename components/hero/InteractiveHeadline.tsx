@@ -1,160 +1,151 @@
 'use client';
-import { useEffect, useRef, useState, type PointerEvent } from 'react';
+import { useEffect, useRef, type MutableRefObject } from 'react';
+import type { HeadlineInteraction } from './interaction';
 
-function LetterLine({ text }: { text: string }) {
-  const frame = useRef(0);
-  useEffect(() => () => cancelAnimationFrame(frame.current), []);
-
-  function move(event: PointerEvent<HTMLSpanElement>) {
-    const line = event.currentTarget;
-    const x = event.clientX;
-    const y = event.clientY;
-    cancelAnimationFrame(frame.current);
-    frame.current = requestAnimationFrame(() => {
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      for (const letter of line.querySelectorAll<HTMLElement>('.letter')) {
-        const r = letter.getBoundingClientRect();
-        const dx = x - (r.left + r.width / 2);
-        const dy = y - (r.top + r.height / 2);
-        const weight = Math.max(0, 1 - Math.hypot(dx, dy * 0.65) / 105);
-        letter.style.transform = `translate3d(${dx * weight * 0.035}px,${-weight * 9}px,0) rotate(${dx * weight * 0.025}deg)`;
-      }
-    });
-  }
-
-  function leave(event: PointerEvent<HTMLSpanElement>) {
-    cancelAnimationFrame(frame.current);
-    for (const letter of event.currentTarget.querySelectorAll<HTMLElement>(
-      '.letter',
-    ))
-      letter.style.transform = '';
-  }
-
-  return (
-    <span
-      className="letter-line"
-      aria-label={text}
-      onPointerMove={move}
-      onPointerLeave={leave}
-    >
-      <span aria-hidden="true">
-        {Array.from(text).map((char, index) => (
-          <span className="letter" key={index}>
-            {char === ' ' ? '\u00a0' : char}
-          </span>
-        ))}
-      </span>
-    </span>
-  );
-}
-
-function ChangingWord({ want }: { want: boolean }) {
-  const target = want ? 'want' : 'need';
-  const [display, setDisplay] = useState(target);
-  const [binary, setBinary] = useState<{ value: string; opacity: number }[]>([]);
-  const [phase, setPhase] = useState<'idle' | 'charge' | 'decode' | 'land'>(
-    'idle',
-  );
-  const previousTarget = useRef(target);
-
-  useEffect(() => {
-    if (previousTarget.current === target) return;
-    previousTarget.current = target;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setDisplay(target);
-      return;
-    }
-
-    setPhase('charge');
-    let digits: number | undefined;
-    const decode = window.setTimeout(() => {
-      setPhase('decode');
-      const scramble = () => setBinary(
-        Array.from({ length: 8 }, () => ({
-          value: Math.random() > 0.5 ? '1' : '0',
-          opacity: 0.3 + Math.random() * 0.7,
-        })),
-      );
-      scramble();
-      digits = window.setInterval(scramble, 40);
-    }, 100);
-    const land = window.setTimeout(() => {
-      if (digits) window.clearInterval(digits);
-      setDisplay(target);
-      setPhase('land');
-    }, 900);
-    const idle = window.setTimeout(() => setPhase('idle'), 1250);
-    return () => {
-      window.clearTimeout(decode);
-      window.clearTimeout(land);
-      window.clearTimeout(idle);
-      if (digits) window.clearInterval(digits);
-    };
-  }, [target]);
-
-  return (
-    <span className={`changing-word phase-${phase}`}>
-      <span className="word-sizer" aria-hidden="true">want</span>
-      <span className="word-sizer" aria-hidden="true">need</span>
-      <span className="word-glyph" aria-hidden="true">
-        {phase === 'decode'
-          ? binary.map((digit, index) => (
-              <span key={index} style={{ opacity: digit.opacity }}>{digit.value}</span>
-            ))
-          : display}
-      </span>
-      <span className="word-echo" aria-hidden="true">
-        {target}
-      </span>
-      <span className="sr-only" aria-live="polite" aria-atomic="true">
-        {target}
-      </span>
-    </span>
-  );
-}
-
-export function InteractiveHeadline({ want }: { want: boolean }) {
+export function InteractiveHeadline({ interaction }: {
+  interaction: MutableRefObject<HeadlineInteraction>;
+}) {
   const root = useRef<HTMLDivElement>(null);
-  const frame = useRef(0);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const word = useRef<HTMLSpanElement>(null);
+  const light = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const headline = root.current;
-    if (!headline) return;
-    const element = headline;
-    function move(event: globalThis.PointerEvent) {
-      cancelAnimationFrame(frame.current);
-      frame.current = requestAnimationFrame(() => {
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        const x = (event.clientX / window.innerWidth - 0.5) * 2;
-        const y = (event.clientY / window.innerHeight - 0.5) * 2;
-        element.style.setProperty('--headline-x', `${x * 8}px`);
-        element.style.setProperty('--headline-y', `${y * 5}px`);
-      });
-    }
-    function leave() {
-      element.style.setProperty('--headline-x', '0px');
-      element.style.setProperty('--headline-y', '0px');
-    }
-    window.addEventListener('pointermove', move, { passive: true });
-    window.addEventListener('pointerleave', leave);
-    return () => {
-      cancelAnimationFrame(frame.current);
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerleave', leave);
+    const container = root.current!;
+    const title = heading.current!;
+    const anchor = word.current!;
+    const halo = light.current!;
+    const hero = container.closest('section')!;
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const state = interaction.current;
+    let frame = 0, last = 0;
+    let x = 0, y = 0, targetX = 0, targetY = 0;
+    let lightX = 0, lightY = 0, targetLightX = 0, targetLightY = 0;
+    let presence = 0, targetPresence = 0;
+    let wordX = 0, wordY = 0;
+    let bounds = container.getBoundingClientRect();
+    let heroBounds = hero.getBoundingClientRect();
+
+    const measure = () => {
+      bounds = container.getBoundingClientRect();
+      heroBounds = hero.getBoundingClientRect();
+      const rect = anchor.getBoundingClientRect();
+      // Subtract the title's translation so pointer targets never chase their own motion.
+      wordX = rect.left + rect.width / 2 - x;
+      wordY = rect.top + rect.height / 2 - y;
     };
-  }, []);
+    const paint = () => {
+      title.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      const sourceX = wordX + x + lightX;
+      const sourceY = wordY + y + lightY;
+      halo.style.left = `${sourceX - heroBounds.left}px`;
+      halo.style.top = `${sourceY - heroBounds.top}px`;
+      halo.style.opacity = String(0.13 + presence * 0.87);
+      halo.style.transform = `translate(-50%, -50%) scale(${0.82 + presence * 0.18})`;
+      state.x = sourceX;
+      state.y = sourceY;
+      state.light = motion.matches ? 0 : presence;
+    };
+    const render = (now: number) => {
+      frame = 0;
+      const dt = Math.min((now - last) / 1000 || 1 / 60, 0.05);
+      last = now;
+      const follow = 1 - Math.exp(-dt * 9);
+      // Fast enough to connect to the hand; a longer fade leaves a short afterglow.
+      const fade = 1 - Math.exp(-dt * (targetPresence > presence ? 11 : 6));
+      x += (targetX - x) * follow;
+      y += (targetY - y) * follow;
+      lightX += (targetLightX - lightX) * follow;
+      lightY += (targetLightY - lightY) * follow;
+      presence += (targetPresence - presence) * fade;
+      paint();
+      const distance = Math.abs(targetX - x) + Math.abs(targetY - y) +
+        Math.abs(targetLightX - lightX) + Math.abs(targetLightY - lightY);
+      if (distance > 0.02 || Math.abs(targetPresence - presence) > 0.001) {
+        frame = requestAnimationFrame(render);
+      }
+    };
+    const wake = () => {
+      if (frame || motion.matches || document.hidden) return;
+      last = performance.now();
+      frame = requestAnimationFrame(render);
+    };
+    const move = (event: PointerEvent) => {
+      if (motion.matches) return;
+      measure();
+      const centerX = bounds.left + bounds.width / 2;
+      const centerY = bounds.top + bounds.height / 2;
+      // The two lines move as one intact composition, with no letter distortion.
+      targetX = event.pointerType === 'touch' ? 0 : 24 * Math.tanh((event.clientX - centerX) / 260);
+      targetY = event.pointerType === 'touch' ? 0 : 14 * Math.tanh((event.clientY - centerY) / 150);
+      const dx = event.clientX - wordX, dy = event.clientY - wordY;
+      const distance = Math.hypot(dx, dy * 1.2);
+      const near = Math.max(0, Math.min(1, (320 - distance) / 240));
+      targetPresence = near * near * (3 - 2 * near);
+      targetLightX = Math.max(-110, Math.min(110, dx)) * targetPresence;
+      targetLightY = Math.max(-70, Math.min(70, dy)) * targetPresence;
+      wake();
+    };
+    const leave = () => {
+      targetX = targetY = targetLightX = targetLightY = targetPresence = 0;
+      wake();
+    };
+    const up = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse') leave();
+    };
+    const reset = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      x = y = targetX = targetY = lightX = lightY = targetLightX = targetLightY = 0;
+      presence = targetPresence = 0;
+      title.style.transform = '';
+      measure();
+      paint();
+    };
+    const visibility = () => { if (document.hidden) reset(); };
+    const observer = new ResizeObserver(reset);
+    observer.observe(container);
+    observer.observe(anchor);
+    reset();
+    hero.addEventListener('pointermove', move, { passive: true });
+    hero.addEventListener('pointerdown', move, { passive: true });
+    hero.addEventListener('pointerleave', leave);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', leave);
+    window.addEventListener('blur', reset);
+    window.addEventListener('scroll', reset, { passive: true });
+    window.addEventListener('resize', reset);
+    document.addEventListener('visibilitychange', visibility);
+    motion.addEventListener('change', reset);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      state.light = 0;
+      hero.removeEventListener('pointermove', move);
+      hero.removeEventListener('pointerdown', move);
+      hero.removeEventListener('pointerleave', leave);
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', leave);
+      window.removeEventListener('blur', reset);
+      window.removeEventListener('scroll', reset);
+      window.removeEventListener('resize', reset);
+      document.removeEventListener('visibilitychange', visibility);
+      motion.removeEventListener('change', reset);
+    };
+  }, [interaction]);
 
   return (
-    <div className="headline" ref={root}>
-      <h1>
-        <span className="headline-entry">
-          <LetterLine text="I design and build" />
-        </span>
-        <br />
-        <span className="second-line headline-entry">
-          <LetterLine text="what you" /> <ChangingWord want={want} />
-        </span>
-      </h1>
-    </div>
+    <>
+      <span className="headline-light" ref={light} aria-hidden="true" />
+      <div className="headline" ref={root}>
+        <h1 ref={heading}>
+          <span className="headline-entry">I design and build intuitive ways</span>
+          <br />
+          <span className="second-line headline-entry">
+            for people to <span className="interact-word" ref={word}>interact</span> with AI
+          </span>
+        </h1>
+      </div>
+    </>
   );
 }

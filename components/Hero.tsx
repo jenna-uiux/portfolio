@@ -2,9 +2,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { BinaryWorld } from './hero/BinaryWorld';
 import { InteractiveHeadline } from './hero/InteractiveHeadline';
+import { createHeadlineInteraction } from './hero/interaction';
 import styles from './hero/Hero.module.css';
 
 export function Hero() {
+  const interaction = useRef(createHeadlineInteraction());
   const energy = useRef(0),
     audio = useRef<{
       stream: MediaStream;
@@ -14,9 +16,7 @@ export function Hero() {
     request = useRef(0);
   const [voice, setVoice] = useState(false),
     [pending, setPending] = useState(false),
-    [error, setError] = useState(''),
-    [want, setWant] = useState(false),
-    [visible, setVisible] = useState(true);
+    [error, setError] = useState('');
   const stop = () => {
     const a = audio.current;
     if (a) {
@@ -80,20 +80,6 @@ export function Hero() {
       if (id === request.current) setPending(false);
     }
   }
-  useEffect(() => {
-    const update = () => setVisible(!document.hidden);
-    update();
-    document.addEventListener('visibilitychange', update);
-    return () => document.removeEventListener('visibilitychange', update);
-  }, []);
-  useEffect(() => {
-    if (!visible || matchMedia('(prefers-reduced-motion:reduce)').matches)
-      return;
-    const id = setTimeout(() => {
-      if (!document.hidden) setWant((v) => !v);
-    }, 5000);
-    return () => clearTimeout(id);
-  }, [want, visible]);
   useEffect(
     () => () => {
       request.current++;
@@ -103,8 +89,8 @@ export function Hero() {
   );
   return (
     <section className={styles.root} aria-label="Introduction">
-      <BinaryWorld energy={energy} />
-      <InteractiveHeadline want={want} />
+      <BinaryWorld energy={energy} interaction={interaction} />
+      <InteractiveHeadline interaction={interaction} />
       <a className={styles.scrollCue} href="#work" aria-label="Selected work">
         <span aria-hidden="true">↓</span>
       </a>

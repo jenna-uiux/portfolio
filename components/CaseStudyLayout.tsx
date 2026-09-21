@@ -83,7 +83,7 @@ export function CaseStudyLayout({ project }: Props) {
 
           <div className="mt-10 hidden md:block">
             <Link
-              href="/work"
+              href="/#work"
               className="t-caption hover:text-ink transition-colors underline-grow"
             >
               ← Back to work
@@ -197,14 +197,14 @@ export function CaseStudyLayout({ project }: Props) {
                     useSentenceHeadline ? (
                       <h2
                         className={[
-                          "mt-3 max-w-[80%]",
+                          "mt-3 max-w-[80%] whitespace-pre-line",
                           isFiniFinalProduct ? "t-h3-serif" : "t-h3",
                         ].join(" ")}
                       >
                         {s.eyebrow}
                       </h2>
                     ) : (
-                      <h3 className="mt-3 t-h3">{s.eyebrow}</h3>
+                      <h3 className="mt-3 whitespace-pre-line t-h3">{s.eyebrow}</h3>
                     )
                   ) : null}
 
@@ -417,7 +417,7 @@ export function CaseStudyLayout({ project }: Props) {
 
           <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t hairline pt-10">
             <Link
-              href="/work"
+              href="/#work"
               className="t-caption hover:text-ink transition-colors underline-grow"
             >
               ← All work

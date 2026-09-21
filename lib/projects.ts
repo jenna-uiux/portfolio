@@ -207,6 +207,8 @@ export type CaseContentBlock =
       first?: boolean;
       /** Keeps local subheading spacing tight when parent content rhythm already provides separation. */
       compact?: boolean;
+      /** Section-style eyebrow above the h3 (same as case study section titles). */
+      eyebrow?: string;
       /** Small version label in a pill (e.g. v2), Apple-style doc header */
       kicker?: string;
     }
@@ -636,7 +638,7 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             title: "Affinity Mapping",
-            body: "I combined a 6-day diary study with semi-structured interviews to understand both what disrupted participants' plans and why. I mapped their diary entries and interview responses through affinity mapping, revealing two recurring patterns.",
+            body: "I combined the diary study with semi-structured interviews to understand both what disrupted participants' plans and why. I mapped their diary entries and interview responses through affinity mapping, revealing two recurring patterns.",
           },
           {
             kind: "affinityInsights",
@@ -957,9 +959,9 @@ export const projects: CaseStudy[] = [
           {
             kind: "subheading",
             first: true,
-            title:
-              "Ask Strawberry Matcha, a conversation that knows your case",
-            body: "Users can ask anything, anytime. Strawberry Matcha answers based on the applicant's actual case status and preparation progress, and updates the case as the conversation continues.",
+            eyebrow: "Ask Strawberry Matcha",
+            title: "A conversation connected to the applicant’s case",
+            body: "I designed the chat around case status and preparation progress. Responses use that context, and the case updates as the conversation continues.",
           },
           {
             kind: "mediaPlaceholder",
@@ -972,9 +974,9 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
-            title:
-              "Field Translator, fills the gap between your real life and the form",
-            body: "When users upload any edition of a USCIS form PDF, Strawberry Matcha reads the actual form fields, cross-references them with the user's case data, and tells them exactly what to enter in each field. It also handles tricky format conversions, such as restructuring a Korean address to fit U.S. form fields or matching a Korean name to its passport romanization.",
+            eyebrow: "Field Translator",
+            title: "Connecting personal details to form fields",
+            body: "I designed Field Translator to use an uploaded form’s fields alongside the applicant’s case data to suggest field-by-field entries. The example below shows a Korean address mapped to the form’s address fields.",
           },
           { kind: "fieldTranslator" },
           {
@@ -988,8 +990,8 @@ export const projects: CaseStudy[] = [
           },
           {
             kind: "subheading",
-            title:
-              "Timeline guidance, so you know where you are and what's next",
+            eyebrow: "Timeline guidance",
+            title: "Showing the current stage and what comes next",
             body: "Each milestone shows where the applicant is in the process, what the step actually means, and what usually happens next, so the case never feels like a black box.",
           },
           {
@@ -1168,7 +1170,7 @@ export const projects: CaseStudy[] = [
       {
         id: "reflection",
         title: "Reflection",
-        eyebrow: "This project made me rethink what makes a good product in the AI era",
+        eyebrow: "This project made me rethink\nwhat makes a good product in the AI era",
         body: "My biggest takeaway was that being able to build a product is only part of deciding whether it is worth building. I now think more carefully about the work customers need done, what it costs to deliver, and why they would trust a business to do it.",
         contentBlocks: [
           {
@@ -1230,10 +1232,6 @@ export const projects: CaseStudy[] = [
       src: "/images/aeon/hero/aeon_thumbnail.jpg",
     },
     featured: true,
-    externalLink: {
-      label: "Academy of Art × Autodesk",
-      href: "https://www.academyart.edu/",
-    },
     sections: [
       {
         id: "context",
